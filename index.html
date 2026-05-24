@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Tavaf Rehberi</title>
+<meta name="theme-color" content="#0a0e1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tavaf">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="Eller serbest, sesli tavaf rehberi: dua parça parça okunur, siz tekrar edersiniz.">
+<!-- Uygulama simgesi (SVG, Kâbe motifi) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230a0e1a'/%3E%3Crect x='62' y='62' width='56' height='56' rx='6' fill='%23121829' stroke='%23d4af6a' stroke-width='3'/%3E%3Crect x='62' y='84' width='56' height='8' fill='%238a7548'/%3E%3Ccircle cx='90' cy='90' r='72' fill='none' stroke='%23d4af6a' stroke-width='2' stroke-dasharray='4 6' opacity='0.5'/%3E%3Ccircle cx='150' cy='90' r='5' fill='%23f0d9a0'/%3E%3C/svg%3E">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -179,8 +187,10 @@ const KAABA={ lat:21.422487, lng:39.826206 };
 /* ---------- Sesler ---------- */
 function loadVoices(){
   const v=speechSynthesis.getVoices();
-  arVoice=v.find(x=>x.lang&&x.lang.toLowerCase().startsWith('ar'))||null;
-  trVoice=v.find(x=>x.lang&&x.lang.toLowerCase().startsWith('tr'))||null;
+  arVoice=v.find(x=>x.lang&&x.lang.toLowerCase().indexOf('ar')===0)
+        ||v.find(x=>(x.name||'').toLowerCase().indexOf('arab')>=0)||null;
+  trVoice=v.find(x=>x.lang&&x.lang.toLowerCase().indexOf('tr')===0)
+        ||v.find(x=>(x.name||'').toLowerCase().indexOf('turk')>=0)||null;
 }
 if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
 
@@ -190,15 +200,20 @@ function setMic(state, text){
   micText.textContent=text;
 }
 
-// metni seslendir; bitince callback
+// metni seslendir; bitince callback. Arapça ses yoksa Türkçeye, o da yoksa varsayılana düşer.
 function say(text, lang, rate, onEnd){
   if(!('speechSynthesis' in window)){ if(onEnd) onEnd(); return; }
   stopListening(); // konuşurken dinleme
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text);
-  if(lang==='ar' && arVoice){ u.voice=arVoice; u.lang=arVoice.lang; }
-  else if(lang==='ar'){ u.lang='ar-SA'; }
-  else { if(trVoice) u.voice=trVoice; u.lang='tr-TR'; }
+  if(lang==='ar'){
+    if(arVoice){ u.voice=arVoice; u.lang=arVoice.lang; }
+    else if(trVoice){ u.voice=trVoice; u.lang='tr-TR'; }  // Arapça yoksa Türkçe okunuşa düş
+    else { u.lang='tr-TR'; }                                // hiçbiri yoksa varsayılan
+  } else {
+    if(trVoice){ u.voice=trVoice; u.lang='tr-TR'; }
+    else { u.lang='tr-TR'; }
+  }
   u.rate=rate||0.85;
   busySpeaking=true;
   u.onend=()=>{ busySpeaking=false; if(onEnd) onEnd(); };
@@ -276,9 +291,38 @@ function renderIntro(){
     <h2>Tavafa Hazırlık</h2>
     <div class="lead">Hacerü'l-Esved Taşı'nın hizasına gelin, Kâbe sol omzunuzda kalsın. Rehber tamamen sesli ilerler: dua parça parça okunur, siz tekrar edersiniz. Sustuğunuzda sıradaki parçaya geçer. İstediğinizde <b>"tekrar"</b>, <b>"devam"</b> veya <b>"duraklat"</b> diyebilirsiniz.</div>
     <button id="beginBtn">Sesli Rehberi Başlat</button>
-    <div style="font-size:11.5px; color:var(--gold-dim); margin-top:14px; line-height:1.6;">Başlatınca mikrofon izni istenir. İzin vermezseniz rehber yine eller serbest çalışır, parçalar arası kendiliğinden ilerler.</div>
+    <button class="btn-ghost" id="testBtn" style="margin-top:10px;">🔊 Önce Sesi Test Et</button>
+    <div id="diag" style="font-size:11.5px; color:var(--gold-dim); margin-top:14px; line-height:1.6;">Başlatınca mikrofon izni istenir. Ses gelmezse önce "Sesi Test Et"e basın.</div>
   </div>`;
+  document.getElementById('testBtn').addEventListener('click', ()=>{
+    const diag=document.getElementById('diag');
+    if(!('speechSynthesis' in window)){ diag.textContent='Bu tarayıcı konuşma sentezini desteklemiyor.'; return; }
+    loadVoices();
+    const v=speechSynthesis.getVoices();
+    const langs=v.map(x=>x.lang).join(', ');
+    diag.innerHTML = `Bulunan ses sayısı: <b>${v.length}</b><br>Diller: ${langs||'(yok)'}<br>Arapça: ${arVoice?('VAR — '+arVoice.lang):'YOK'} · Türkçe: ${trVoice?('VAR — '+trVoice.lang):'YOK'}`;
+    // doğrudan dokunuşla test sesi (iOS bunu kabul eder)
+    speechSynthesis.cancel();
+    let tu;
+    if(arVoice){ tu=new SpeechSynthesisUtterance('بِسْمِ اللهِ'); tu.voice=arVoice; tu.lang=arVoice.lang; }
+    else if(trVoice){ tu=new SpeechSynthesisUtterance('Test, bir iki üç'); tu.voice=trVoice; tu.lang='tr-TR'; }
+    else if(v.length>0){ tu=new SpeechSynthesisUtterance('Test one two three'); tu.voice=v[0]; tu.lang=v[0].lang; }
+    else { tu=new SpeechSynthesisUtterance('test'); }
+    tu.rate=0.8;
+    speechSynthesis.speak(tu);
+  });
   document.getElementById('beginBtn').addEventListener('click', ()=>{
+    // ses motorunu uyandır (tarayıcı engelini aşmak için ilk dokunuşta sessiz bir konuşma)
+    if('speechSynthesis' in window){
+      loadVoices();
+      try{ const warm=new SpeechSynthesisUtterance(' '); warm.volume=0; speechSynthesis.speak(warm); }catch(e){}
+    }
+    // teşhis: kaç ses bulundu?
+    const v = ('speechSynthesis' in window) ? speechSynthesis.getVoices() : [];
+    if(v.length===0){
+      // ses motoru yok — kullanıcıyı bilgilendir ama yine de metinle devam et
+      alert("Cihazınızda konuşma (TTS) sesi bulunamadı. Uygulama yazıyla çalışacak. Ses için: Ayarlar > Erişilebilirlik > Metin okuma çıkışı bölümünden bir motor ve dil paketi yükleyin.");
+    }
     // mikrofon izni iste
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
       navigator.mediaDevices.getUserMedia({audio:true}).then(()=>{ initRecog(); renderIstilam(); }).catch(()=>{ renderIstilam(); });
