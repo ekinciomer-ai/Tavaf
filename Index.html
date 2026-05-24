@@ -1,1 +1,439 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tavaf Rehberi</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  :root{
+    --night:#0a0e1a; --night-2:#121829; --gold:#d4af6a; --gold-bright:#f0d9a0;
+    --gold-dim:#8a7548; --cream:#f5efe0; --text-dim:#9aa0b0; --line:rgba(212,175,106,0.18);
+    --listen:#6fae8a;
+  }
+  html,body{ background:var(--night); color:var(--cream); font-family:'Jost',sans-serif; overflow-x:hidden; min-height:100vh; -webkit-font-smoothing:antialiased;}
+  body{
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(212,175,106,0.10), transparent 60%),
+      radial-gradient(ellipse 100% 80% at 50% 110%, rgba(18,24,41,0.9), transparent),
+      var(--night);
+    padding:0 0 40px;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(245,239,224,0.5), transparent),
+      radial-gradient(1px 1px at 70% 60%, rgba(245,239,224,0.4), transparent),
+      radial-gradient(1px 1px at 40% 80%, rgba(245,239,224,0.3), transparent),
+      radial-gradient(1px 1px at 90% 20%, rgba(245,239,224,0.4), transparent);
+  }
+  .wrap{ position:relative; z-index:1; max-width:480px; margin:0 auto; padding:0 20px;}
+  header{ text-align:center; padding:30px 0 14px;}
+  header .eyebrow{ font-size:11px; letter-spacing:5px; text-transform:uppercase; color:var(--gold-dim); font-weight:500;}
+  header h1{ font-family:'Amiri',serif; font-size:30px; color:var(--gold-bright); margin:6px 0 2px; font-weight:700;}
+  header .ar{ font-family:'Amiri',serif; font-size:18px; color:var(--gold); opacity:.8;}
+
+  .dots{ display:flex; justify-content:center; gap:9px; margin:12px 0 6px;}
+  .dot{ width:11px; height:11px; border-radius:50%; border:1.5px solid var(--gold-dim); background:transparent; transition:all .4s ease;}
+  .dot.done{ background:var(--gold); border-color:var(--gold); box-shadow:0 0 10px rgba(212,175,106,0.6);}
+  .dot.active{ border-color:var(--gold-bright); box-shadow:0 0 12px rgba(240,217,160,0.7); animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
+  .shavt-label{ text-align:center; font-family:'Cormorant Garamond',serif; font-size:19px; color:var(--text-dim); letter-spacing:1px;}
+  .shavt-label b{ color:var(--gold-bright); font-weight:600;}
+
+  /* mikrofon durum çubuğu */
+  .mic-bar{ display:flex; align-items:center; justify-content:center; gap:10px; margin:10px auto 0; padding:9px 16px; border-radius:30px; background:rgba(245,239,224,0.04); border:1px solid var(--line); width:max-content; max-width:100%; font-size:12.5px; color:var(--text-dim); letter-spacing:.5px; transition:all .3s;}
+  .mic-bar .ico{ width:9px; height:9px; border-radius:50%; background:var(--gold-dim); transition:all .3s;}
+  .mic-bar.speaking{ color:var(--gold-bright); border-color:rgba(240,217,160,0.4);}
+  .mic-bar.speaking .ico{ background:var(--gold-bright); box-shadow:0 0 10px var(--gold-bright); animation:pulse 1s infinite;}
+  .mic-bar.listening{ color:var(--listen); border-color:rgba(111,174,138,0.4);}
+  .mic-bar.listening .ico{ background:var(--listen); box-shadow:0 0 12px var(--listen); animation:pulse .8s infinite;}
+
+  .compass-card{ margin:14px 0; background:linear-gradient(160deg,var(--night-2),rgba(10,14,26,0.6)); border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:0 20px 50px -20px rgba(0,0,0,0.7), inset 0 1px 0 rgba(245,239,224,0.04);}
+  .compass{ position:relative; width:170px; height:170px; margin:2px auto 0;}
+  .ring{ position:absolute; inset:0; border-radius:50%; border:1px dashed var(--line);}
+  .ring.inner{ inset:30px; border-style:solid;}
+  .kaaba{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:38px; height:38px; background:linear-gradient(145deg,#1a1f30,#05070d); border:1.5px solid var(--gold); border-radius:6px; box-shadow:0 0 24px rgba(212,175,106,0.35);}
+  .kaaba::after{ content:""; position:absolute; top:38%; left:0; right:0; height:5px; background:var(--gold-dim); opacity:.5;}
+  .pilgrim{ position:absolute; top:50%; left:50%; width:13px; height:13px; margin:-6.5px; border-radius:50%; background:var(--gold-bright); box-shadow:0 0 14px var(--gold-bright); transition:transform .5s cubic-bezier(.4,0,.2,1);}
+  .hajar{ position:absolute; width:9px; height:9px; border-radius:50%; background:#fff; box-shadow:0 0 10px #fff; top:50%; right:3px; margin-top:-4.5px;}
+  .hajar-label{ position:absolute; right:-8px; top:62%; font-size:8.5px; color:var(--text-dim); letter-spacing:.5px;}
+  .status{ text-align:center; margin-top:10px; font-size:12px; color:var(--text-dim); min-height:16px;}
+  .status.tracking{ color:var(--gold-bright);}
+
+  .dua-card{ background:linear-gradient(165deg, rgba(212,175,106,0.06), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:22px; padding:26px 22px; margin-top:6px; box-shadow:0 16px 40px -22px rgba(0,0,0,0.7); animation:fadeUp .6s ease;}
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);}}
+  .dua-card .tag{ font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--gold-dim); text-align:center;}
+  .repeat-hint{ text-align:center; font-size:12px; color:var(--gold); letter-spacing:.5px; margin-top:8px; opacity:.85;}
+  .dua-ar{ font-family:'Amiri',serif; font-size:27px; line-height:2; text-align:center; color:var(--gold-bright); direction:rtl; margin:14px 0 16px; transition:text-shadow .3s;}
+  .dua-ar.speaking{ text-shadow:0 0 24px rgba(240,217,160,0.6);}
+  .divider{ height:1px; background:linear-gradient(90deg,transparent,var(--line),transparent); margin:14px 0;}
+  .dua-tr{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:18px; color:var(--cream); text-align:center; line-height:1.6;}
+  .dua-mean{ font-size:13.5px; color:var(--text-dim); text-align:center; line-height:1.7; margin-top:14px;}
+
+  /* araya giren kıssa kartı */
+  .lore-card{ background:linear-gradient(165deg, rgba(111,174,138,0.07), rgba(18,24,41,0.4)); border:1px solid rgba(111,174,138,0.22); border-radius:22px; padding:24px 22px; margin-top:6px; box-shadow:0 16px 40px -22px rgba(0,0,0,0.7); animation:fadeUp .6s ease;}
+  .lore-card .tag{ font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--listen); text-align:center;}
+  .lore-card h3{ font-family:'Cormorant Garamond',serif; font-size:21px; color:var(--cream); text-align:center; font-weight:600; margin:10px 0 12px;}
+  .lore-card p{ font-size:14px; color:var(--text-dim); line-height:1.8; text-align:center;}
+
+  .voice-cmds{ display:flex; justify-content:center; gap:8px; margin-top:18px; flex-wrap:wrap;}
+  .vc{ font-size:11px; color:var(--text-dim); border:1px solid var(--line); border-radius:20px; padding:6px 13px; letter-spacing:.5px;}
+  .vc b{ color:var(--gold-bright); font-weight:600;}
+
+  .note{ font-size:12px; color:var(--gold-dim); text-align:center; margin-top:24px; line-height:1.7; padding:0 6px;}
+  .done-screen{ text-align:center; padding:30px 10px; animation:fadeUp .8s ease;}
+  .done-screen .ar{ font-family:'Amiri',serif; font-size:28px; color:var(--gold-bright); line-height:1.8;}
+  .done-screen p{ color:var(--text-dim); margin-top:14px; font-family:'Cormorant Garamond',serif; font-size:18px; font-style:italic;}
+
+  .start-card{ background:linear-gradient(165deg, rgba(212,175,106,0.08), rgba(18,24,41,0.5)); border:1px solid var(--line); border-radius:22px; padding:30px 24px; text-align:center; box-shadow:0 16px 40px -22px rgba(0,0,0,0.7); animation:fadeUp .6s ease;}
+  .start-card h2{ font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--gold-bright); font-weight:600; margin-bottom:6px;}
+  .start-card .lead{ font-size:13.5px; color:var(--text-dim); line-height:1.7; margin-bottom:18px;}
+  button{ font-family:'Jost',sans-serif; cursor:pointer; border:none; border-radius:14px; padding:15px 22px; font-size:14px; font-weight:600; letter-spacing:.5px; transition:all .25s;
+    background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a; box-shadow:0 8px 24px -8px rgba(212,175,106,0.6); width:100%;}
+  button:active{ transform:scale(.97);}
+  .btn-ghost{ background:rgba(245,239,224,0.05); color:var(--cream); border:1px solid var(--line); box-shadow:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Beytullah</div>
+    <h1>Tavaf Rehberi</h1>
+    <div class="ar">الطواف</div>
+  </header>
+
+  <div class="dots" id="dots"></div>
+  <div class="shavt-label" id="shavtLabel">Hazırlık</div>
+  <div class="mic-bar" id="micBar" style="display:none;"><span class="ico"></span><span id="micText">Hazır</span></div>
+  <div id="main"></div>
+
+  <div class="note">
+    Eller serbest sesli rehber. Uygulama duayı parça parça okur, siz tekrar edersiniz; sustuğunuzda sıradaki parçaya geçer. <b>"Tekrar"</b> deyince parçayı yeniden okur, <b>"Devam"</b> deyince ilerler, <b>"Duraklat"</b> deyince bekler. Sesli komut ve okuma cihazınızın ses paketlerine bağlıdır; gürültülü ortamda tanıma şaşabilir.
+  </div>
+</div>
+
+<script>
+const istilam = { tag:"İstilâm — Selamlama", ar:"بِسْمِ اللهِ وَاللهُ أَكْبَرُ", tr:"Bismillâhi vallâhu ekber", mean:"Allah'ın adıyla, Allah en büyüktür." };
+
+const shavtDuas = [
+  { tag:"1. Şavt", parts:[
+    { ar:"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً", tr:"Rabbenâ âtinâ fi'd-dünyâ haseneten", mean:"Rabbimiz! Bize dünyada iyilik ver" },
+    { ar:"وَفِي الْآخِرَةِ حَسَنَةً", tr:"ve fi'l-âhirati haseneten", mean:"ahirette de iyilik ver" },
+    { ar:"وَقِنَا عَذَابَ النَّارِ", tr:"ve kınâ azâben-nâr", mean:"ve bizi ateşin azabından koru. (Bakara, 201)" }
+  ]},
+  { tag:"2. Şavt", parts:[
+    { ar:"اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ", tr:"Allâhümme innî es'elüke'l-afve ve'l-âfiyete", mean:"Allah'ım! Senden af ve afiyet dilerim" },
+    { ar:"فِي الدُّنْيَا وَالْآخِرَةِ", tr:"fi'd-dünyâ ve'l-âhira", mean:"dünyada ve ahirette." }
+  ]},
+  { tag:"3. Şavt", parts:[
+    { ar:"اللَّهُمَّ اجْعَلْهُ حَجًّا مَبْرُورًا", tr:"Allâhümme'c'alhu haccen mebrûran", mean:"Allah'ım! Bunu makbul bir hac eyle" },
+    { ar:"وَسَعْيًا مَشْكُورًا", tr:"ve sa'yen meşkûran", mean:"karşılığı verilen bir çalışma" },
+    { ar:"وَذَنْبًا مَغْفُورًا", tr:"ve zenben mağfûrâ", mean:"ve bağışlanan bir günah eyle." }
+  ]},
+  { tag:"4. Şavt", parts:[
+    { ar:"لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ", tr:"Lâ ilâhe illallâhu vahdehû lâ şerîke leh", mean:"Allah'tan başka ilah yoktur, O tektir, ortağı yoktur" },
+    { ar:"لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ", tr:"lehü'l-mülkü ve lehü'l-hamd", mean:"Mülk O'nundur, hamd O'nadır." }
+  ]},
+  { tag:"5. Şavt", parts:[
+    { ar:"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ", tr:"Allâhümme innî eûzü bike min azâbi'l-kabri", mean:"Allah'ım! Kabir azabından sana sığınırım" },
+    { ar:"وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ", tr:"ve min fitneti'l-mahyâ ve'l-memât", mean:"hayatın ve ölümün fitnesinden de." }
+  ]},
+  { tag:"6. Şavt", parts:[
+    { ar:"اللَّهُمَّ اغْفِرْ لِي ذُنُوبِي كُلَّهَا", tr:"Allâhümmağfir lî zünûbî küllehâ", mean:"Allah'ım! Bütün günahlarımı bağışla" },
+    { ar:"دِقَّهَا وَجِلَّهَا", tr:"dikkahâ ve cillehâ", mean:"küçüğünü de büyüğünü de." }
+  ]},
+  { tag:"7. Şavt", parts:[
+    { ar:"اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ", tr:"Allâhümme innî es'elüke'l-cennete", mean:"Allah'ım! Senden cenneti dilerim" },
+    { ar:"وَأَعُوذُ بِكَ مِنَ النَّارِ", tr:"ve eûzü bike mine'n-nâr", mean:"ve cehennem ateşinden sana sığınırım." }
+  ]}
+];
+
+// Dua bitip şavt sürerse araya anlatılacak içerikler
+const loreItems = [
+  { title:"Kâbe'nin Önemi", text:"Kâbe, yeryüzünde Allah'a ibadet için inşa edilen ilk mâbed kabul edilir. Müslümanlar nerede olursa olsun namazda ona yönelir. Tavaf ederken aslında milyonların yöneldiği bu merkezin etrafında dönüyorsunuz." },
+  { title:"İstilâmın Anlamı", text:"Hacerü'l-Esved'i selamlamak, Allah'a verilen ahde sadakatin sembolüdür. Hz. Peygamber'in bu taşı selamladığı, dokunamayanın ise uzaktan elini kaldırıp tekbir getirdiği rivayet edilir." },
+  { title:"Tavafın Mânâsı", text:"Kâbe'nin etrafında dönmek, kalbin Allah'ın etrafında pervane gibi dönüşünü temsil eder. Her şavt, dünyanın gürültüsünden sıyrılıp merkeze, yani tevhide yönelişin bir adımıdır." },
+  { title:"Bir Kıssa — Emanet", text:"Kâbe yeniden inşa edilirken Hacerü'l-Esved'i yerine kimin koyacağı konusunda kabileler tartıştı. Genç Muhammed (s.a.v.), taşı bir örtüye koyup her kabileden birinin ucundan tutmasını istedi; böylece kavgayı önledi. Henüz peygamber olmadan önce 'el-Emîn' (güvenilir) diye anılırdı." },
+  { title:"Zemzem", text:"Hz. Hacer, oğlu İsmail için su ararken Safa ile Merve arasında koştu. Çıkan zemzem suyu bugün hâlâ akıyor. Tavaf sonrası zemzem içmek sünnettir; içerken dua etmeniz tavsiye edilir." },
+  { title:"Telbiye Rûhu", text:"'Lebbeyk Allâhümme lebbeyk' — 'Buyur Allah'ım buyur' demek, çağrıya icabet etmektir. Tavaf boyunca kalbinizden bu icabet duygusunu geçirebilirsiniz." },
+  { title:"Bir Kıssa — Merhamet", text:"Hz. Peygamber Mekke'yi fethettiğinde, kendisine yıllarca eziyet edenleri cezalandırmadı; 'Bugün size kınama yoktur, gidin hepiniz serbestsiniz' dedi. Affetmenin gücünü gösterdi." },
+  { title:"Duanın Edebi", text:"Dua ederken acele etmeyin. Kendi dilinizde, kendi dertlerinizle de dua edebilirsiniz; tavafta belirli bir duayı okuma zorunluluğu yoktur. Önemli olan kalbin huzuru ve samimiyettir." }
+];
+
+let phase='intro', shavt=0, partIdx=0, loreIdx=0;
+let tracking=false, watchId=null, lastAngle=null;
+let arVoice=null, trVoice=null;
+let recog=null, recogActive=false, paused=false;
+let silenceTimer=null, autoTimer=null;
+let busySpeaking=false;
+
+const dotsEl=document.getElementById('dots');
+const labelEl=document.getElementById('shavtLabel');
+const main=document.getElementById('main');
+const micBar=document.getElementById('micBar');
+const micText=document.getElementById('micText');
+const KAABA={ lat:21.422487, lng:39.826206 };
+
+/* ---------- Sesler ---------- */
+function loadVoices(){
+  const v=speechSynthesis.getVoices();
+  arVoice=v.find(x=>x.lang&&x.lang.toLowerCase().startsWith('ar'))||null;
+  trVoice=v.find(x=>x.lang&&x.lang.toLowerCase().startsWith('tr'))||null;
+}
+if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
+
+function setMic(state, text){
+  micBar.style.display='flex';
+  micBar.className='mic-bar'+(state?(' '+state):'');
+  micText.textContent=text;
+}
+
+// metni seslendir; bitince callback
+function say(text, lang, rate, onEnd){
+  if(!('speechSynthesis' in window)){ if(onEnd) onEnd(); return; }
+  stopListening(); // konuşurken dinleme
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  if(lang==='ar' && arVoice){ u.voice=arVoice; u.lang=arVoice.lang; }
+  else if(lang==='ar'){ u.lang='ar-SA'; }
+  else { if(trVoice) u.voice=trVoice; u.lang='tr-TR'; }
+  u.rate=rate||0.85;
+  busySpeaking=true;
+  u.onend=()=>{ busySpeaking=false; if(onEnd) onEnd(); };
+  u.onerror=()=>{ busySpeaking=false; if(onEnd) onEnd(); };
+  speechSynthesis.speak(u);
+}
+
+/* ---------- Ses tanıma (komut + sustu mu) ---------- */
+function initRecog(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR) return false;
+  recog=new SR();
+  recog.lang='tr-TR';
+  recog.continuous=true;
+  recog.interimResults=true;
+  recog.onresult=(e)=>{
+    let txt='';
+    for(let i=e.resultIndex;i<e.results.length;i++) txt+=e.results[i][0].transcript;
+    txt=txt.toLowerCase().trim();
+    // sesli komutlar
+    if(/tekrar|bir daha|anlamadım|anlamadim/.test(txt)){ resetSilence(); repeatCurrent(); return; }
+    if(/devam|geç|gec|sonraki|ileri/.test(txt)){ resetSilence(); advance(); return; }
+    if(/duraklat|dur |bekle|durdur/.test(txt)){ paused=true; setMic('', 'Duraklatıldı — "devam" deyin'); return; }
+    if(paused){ if(/devam|başla|basla/.test(txt)){ paused=false; speakCurrentPart(); } return; }
+    // konuşuyor demek; sustuğunda ilerlet
+    if(txt.length>0){ setMic('listening','Sizi dinliyorum…'); resetSilence(); }
+  };
+  recog.onerror=()=>{};
+  recog.onend=()=>{ if(recogActive){ try{ recog.start(); }catch(e){} } };
+  return true;
+}
+
+function startListening(){
+  if(!recog){ if(!initRecog()) return; }
+  recogActive=true;
+  try{ recog.start(); }catch(e){}
+}
+function stopListening(){
+  if(recog){ recogActive=false; try{ recog.stop(); }catch(e){} }
+  clearTimeout(silenceTimer);
+}
+
+// kullanıcı tekrar edip sustuğunda ilerle
+function resetSilence(){
+  clearTimeout(silenceTimer);
+  silenceTimer=setTimeout(()=>{ if(!paused && !busySpeaking) advance(); }, 1800);
+}
+
+/* ---------- Görsel ---------- */
+function buildDots(){
+  dotsEl.innerHTML='';
+  for(let i=0;i<7;i++){ const d=document.createElement('div'); d.className='dot';
+    if(i<shavt) d.classList.add('done'); else if(i===shavt&&phase==='shavt') d.classList.add('active');
+    dotsEl.appendChild(d); }
+}
+function compassHTML(txt){
+  return `<div class="compass-card">
+    <div class="compass"><div class="ring"></div><div class="ring inner"></div>
+      <div class="kaaba"></div><div class="hajar"></div>
+      <div class="hajar-label">Hacerü'l-Esved</div><div class="pilgrim" id="pilgrim"></div></div>
+    <div class="status" id="status">${txt}</div></div>`;
+}
+function voiceCmdsHTML(){
+  return `<div class="voice-cmds">
+    <span class="vc"><b>"Tekrar"</b> · yeniden oku</span>
+    <span class="vc"><b>"Devam"</b> · ilerle</span>
+    <span class="vc"><b>"Duraklat"</b> · bekle</span>
+  </div>`;
+}
+
+/* ---------- Ekranlar ---------- */
+function renderIntro(){
+  phase='intro'; labelEl.innerHTML='Hazırlık'; buildDots(); micBar.style.display='none';
+  main.innerHTML=`<div class="start-card">
+    <h2>Tavafa Hazırlık</h2>
+    <div class="lead">Hacerü'l-Esved Taşı'nın hizasına gelin, Kâbe sol omzunuzda kalsın. Rehber tamamen sesli ilerler: dua parça parça okunur, siz tekrar edersiniz. Sustuğunuzda sıradaki parçaya geçer. İstediğinizde <b>"tekrar"</b>, <b>"devam"</b> veya <b>"duraklat"</b> diyebilirsiniz.</div>
+    <button id="beginBtn">Sesli Rehberi Başlat</button>
+    <div style="font-size:11.5px; color:var(--gold-dim); margin-top:14px; line-height:1.6;">Başlatınca mikrofon izni istenir. İzin vermezseniz rehber yine eller serbest çalışır, parçalar arası kendiliğinden ilerler.</div>
+  </div>`;
+  document.getElementById('beginBtn').addEventListener('click', ()=>{
+    // mikrofon izni iste
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+      navigator.mediaDevices.getUserMedia({audio:true}).then(()=>{ initRecog(); renderIstilam(); }).catch(()=>{ renderIstilam(); });
+    } else { renderIstilam(); }
+  });
+}
+
+function renderIstilam(){
+  phase='istilam'; labelEl.innerHTML='İstilâm — Selamlama'; buildDots();
+  main.innerHTML=`<div class="dua-card">
+    <div class="tag">${istilam.tag}</div>
+    <div class="repeat-hint">▸ Dinleyin, Hacerü'l-Esved'i selamlayıp tekrar edin</div>
+    <div class="dua-ar">${istilam.ar}</div>
+    <div class="dua-tr">${istilam.tr}</div>
+    <div class="divider"></div>
+    <div class="dua-mean">${istilam.mean}</div>
+    ${voiceCmdsHTML()}
+  </div>`;
+  setMic('speaking','Okunuyor — siz tekrar edin');
+  say(istilam.ar,'ar',0.7, ()=>{
+    setMic('listening','Selamlayıp tekrar edin, sonra yürüyün…');
+    startListening();
+    // istilâmdan sonra ilk şavta geç (sustuğunda)
+    armAdvance(()=>{ shavt=0; partIdx=0; renderShavt(); });
+  });
+}
+
+// "ilerle" tetiğini hazırla: ya sesle sustuğunda ya da süre dolunca
+let advanceFn=null;
+function armAdvance(fn){
+  advanceFn=fn;
+  clearTimeout(autoTimer);
+  // mikrofon yoksa süreyle ilerle
+  if(!recog){ autoTimer=setTimeout(()=>{ if(!paused) advance(); }, 6000); }
+  else { resetSilence(); }
+}
+function advance(){
+  if(!advanceFn) return;
+  const fn=advanceFn; advanceFn=null;
+  clearTimeout(silenceTimer); clearTimeout(autoTimer);
+  fn();
+}
+
+function speakCurrentPart(){
+  const dua=shavtDuas[shavt], part=dua.parts[partIdx];
+  setMic('speaking','Okunuyor — siz tekrar edin');
+  const arEl=document.querySelector('.dua-ar'); if(arEl) arEl.classList.add('speaking');
+  say(part.ar,'ar',0.7, ()=>{
+    if(arEl) arEl.classList.remove('speaking');
+    setMic('listening','Tekrar edin… ("tekrar" / "devam")');
+    startListening();
+    armAdvance(nextPart);
+  });
+}
+
+function renderShavt(){
+  phase='shavt'; buildDots();
+  labelEl.innerHTML=`Şavt <b>${shavt+1}</b> / 7`;
+  const dua=shavtDuas[shavt], part=dua.parts[partIdx], total=dua.parts.length;
+  main.innerHTML=`
+    ${compassHTML(tracking?'Takip ediliyor':'Sesli mod — eller serbest')}
+    <div class="dua-card">
+      <div class="tag">${dua.tag} • bölüm ${partIdx+1}/${total}</div>
+      <div class="repeat-hint">▸ Dinleyin, tekrar edin · sustuğunuzda ilerler</div>
+      <div class="dua-ar">${part.ar}</div>
+      <div class="dua-tr">${part.tr}</div>
+      <div class="divider"></div>
+      <div class="dua-mean">${part.mean}</div>
+      ${voiceCmdsHTML()}
+    </div>`;
+  if(tracking) wireCompassStatus();
+  speakCurrentPart();
+}
+
+function repeatCurrent(){
+  if(phase==='istilam'){ say(istilam.ar,'ar',0.7, ()=>{ startListening(); armAdvance(()=>{shavt=0;partIdx=0;renderShavt();}); }); return; }
+  if(phase==='shavt'){ speakCurrentPart(); return; }
+  if(phase==='lore'){ const it=loreItems[(loreIdx-1+loreItems.length)%loreItems.length]; say(it.text,'tr',0.92,()=>{ startListening(); }); }
+}
+
+function nextPart(){
+  const dua=shavtDuas[shavt];
+  if(partIdx<dua.parts.length-1){ partIdx++; renderShavt(); return; }
+  // dua bitti: şavt henüz tamamlanmadıysa araya kıssa anlat (yavaş tavaf için)
+  // GPS turu algılarsa completeShavt() çağrılır; yoksa lore + sonra manuel/zaman
+  renderLore();
+}
+
+/* ---------- Araya giren dini bilgi / kıssa ---------- */
+function renderLore(){
+  phase='lore'; buildDots();
+  const it=loreItems[loreIdx % loreItems.length];
+  loreIdx++;
+  labelEl.innerHTML=`Şavt <b>${shavt+1}</b> / 7 — devam edin`;
+  main.innerHTML=`
+    ${compassHTML(tracking?'Takip ediliyor':'Sesli mod — yürümeye devam edin')}
+    <div class="lore-card">
+      <div class="tag">Dua bitti · Tavaf sürerken</div>
+      <h3>${it.title}</h3>
+      <p>${it.text}</p>
+      ${voiceCmdsHTML()}
+    </div>`;
+  if(tracking) wireCompassStatus();
+  setMic('speaking','Anlatılıyor…');
+  say(it.title+'. '+it.text,'tr',0.92, ()=>{
+    setMic('listening','Şavtı tamamlayınca otomatik geçer · "devam" diyebilirsiniz');
+    startListening();
+    // sonraki lore'a geçmek için: kullanıcı "devam" derse veya süre dolarsa
+    armAdvance(renderLore);
+  });
+}
+
+function completeShavt(){
+  partIdx=0; loreIdx=0; shavt++;
+  if(shavt>=7){ finish(); return; }
+  renderShavt();
+}
+
+function finish(){
+  phase='done'; stopListening();
+  if(watchId) navigator.geolocation.clearWatch(watchId);
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  shavt=7; buildDots(); micBar.style.display='none';
+  labelEl.innerHTML=`Tamamlandı <b>7</b> / 7`;
+  main.innerHTML=`<div class="done-screen">
+    <div class="ar">تَقَبَّلَ اللهُ طَوَافَكَ</div>
+    <p>Allah tavafınızı kabul etsin.<br>7 şavt tamamlandı. Makâm-ı İbrahim arkasında<br>iki rekât tavaf namazı kılınır, ardından zemzem içilir.</p>
+    <div style="margin-top:24px;"><button class="btn-ghost" onclick="location.reload()">Yeniden Başla</button></div>
+  </div>`;
+  say('Allah tavafınızı kabul etsin. Yedi şavt tamamlandı.','tr',0.92);
+}
+
+/* ---------- GPS ---------- */
+function wireCompassStatus(){ /* status zaten compassHTML içinde */ }
+function startGPSauto(){
+  if(!navigator.geolocation) return;
+  watchId=navigator.geolocation.watchPosition(onPos,()=>{}, {enableHighAccuracy:true,maximumAge:1000,timeout:8000});
+  tracking=true;
+}
+function onPos(p){
+  const s=document.getElementById('status'), pg=document.getElementById('pilgrim');
+  if(s) s.classList.add('tracking');
+  const {latitude:lat,longitude:lng,accuracy}=p.coords;
+  const dy=lat-KAABA.lat, dx=(lng-KAABA.lng)*Math.cos(KAABA.lat*Math.PI/180);
+  let angle=Math.atan2(dy,dx)*180/Math.PI;
+  if(pg){ const rad=-angle*Math.PI/180, r=70; pg.style.transform=`translate(${Math.cos(rad)*r}px, ${Math.sin(rad)*r}px)`; }
+  if(s) s.textContent=`Takip ediliyor • ±${Math.round(accuracy)}m`;
+  if(lastAngle!==null && lastAngle>90 && angle<-90){ completeShavt(); }
+  lastAngle=angle;
+}
+
+renderIntro();
+// konum takibini sessizce başlatmayı dene (izin verilirse şavtları otomatik sayar)
+setTimeout(()=>{ try{ startGPSauto(); }catch(e){} }, 1200);
+</script>
+</body>
+</html>
 
