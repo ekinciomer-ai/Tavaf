@@ -61,7 +61,10 @@
   .dua-card{ background:linear-gradient(165deg, rgba(212,175,106,0.06), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:22px; padding:24px 20px; margin-top:6px; box-shadow:0 16px 40px -22px rgba(0,0,0,0.7); animation:fadeUp .6s ease;}
   @keyframes fadeUp{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);}}
   .dua-card .tag{ font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--gold-dim); text-align:center;}
-  .dua-tr{ font-size:16px; color:var(--cream); text-align:center; line-height:1.85; margin-top:16px;}
+  .dua-tr{ font-size:22px; color:var(--cream); text-align:center; line-height:2; margin-top:16px;}
+  .sent{ transition:color .35s, text-shadow .35s; color:#5a6172;}
+  .sent.active-sent{ color:var(--gold-bright); text-shadow:0 0 20px rgba(240,217,160,0.55); font-weight:600;}
+  .sent.read-sent{ color:var(--cream);}
 
   .controls{ display:flex; align-items:center; justify-content:center; gap:12px; margin-top:22px; flex-wrap:wrap;}
   .play-btn{ flex:0 0 auto; display:inline-flex; align-items:center; gap:9px; background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a; border:none; border-radius:30px; padding:14px 26px; font-size:14px; font-weight:600; letter-spacing:.5px; cursor:pointer; font-family:'Jost',sans-serif; transition:all .2s; box-shadow:0 8px 24px -8px rgba(212,175,106,0.6);}
@@ -113,6 +116,7 @@ const shavtDuas = [
 
 let phase='intro', shavt=0;
 let audio=null;
+let sentences=[], curSentence=0, segments=[], segTimer=null, useSpeech=false, playing=false;
 
 const dotsEl=document.getElementById('dots');
 const labelEl=document.getElementById('shavtLabel');
@@ -135,55 +139,152 @@ function renderIntro(){
   document.getElementById('beginBtn').addEventListener('click', ()=>{ shavt=0; renderShavt(); });
 }
 
+// metni cümlelere böl (nokta, ünlem, soru işaretinden)
+function splitSentences(text){
+  const parts = text.match(/[^.!?]+[.!?]+/g) || [text];
+  return parts.map(s=>s.trim()).filter(s=>s.length>0);
+}
+
 function renderShavt(){
   phase='shavt'; buildDots();
   labelEl.innerHTML=`Şavt <b>${shavt+1}</b> / 7`;
   const dua=shavtDuas[shavt];
   const isLast = shavt===6;
+  sentences = splitSentences(dua.text);
+  curSentence = 0;
+  // her cümleyi ayrı span olarak göster
+  const spans = sentences.map((s,i)=>`<span class="sent" id="sent${i}">${s}</span>`).join(' ');
   main.innerHTML=`
     <div class="compass-card">
       <div class="compass"><div class="ring"></div><div class="ring inner"></div>
         <div class="kaaba"></div><div class="hajar"></div><div class="pilgrim" id="pilgrim"></div></div>
-      <div class="status" id="status">Dinleyin, tekrar edin</div>
+      <div class="status" id="status">▸ Dinleyin, tekrar edin</div>
     </div>
     <div class="dua-card">
       <div class="tag">${dua.tag}</div>
-      <div class="dua-tr">${dua.text}</div>
+      <div class="dua-tr" id="duaText">${spans}</div>
       <div class="controls">
-        <button class="play-btn" id="playBtn">🔊 Oku</button>
+        <button class="play-btn" id="contBtn">▸ Başla</button>
         <button class="nav-btn" id="nextBtn">${isLast?'Tavafı Bitir ▸':'Sonraki Şavt ▸'}</button>
       </div>
     </div>`;
-  document.getElementById('playBtn').addEventListener('click', playDua);
+  document.getElementById('contBtn').addEventListener('click', onContinue);
   document.getElementById('nextBtn').addEventListener('click', nextShavt);
-  // otomatik çalmayı dene
-  setTimeout(playDua, 300);
+  // ses dosyasını hazırla
+  prepareAudio(dua);
 }
 
-function playDua(){
-  const dua=shavtDuas[shavt];
+// Sesi hazırla: dosyayı yükle, süresini öğren, cümle başına süre hesapla
+function prepareAudio(dua){
   const status=document.getElementById('status');
-  const btn=document.getElementById('playBtn');
   if(audio){ audio.pause(); audio=null; }
+  clearInterval(segTimer); playing=false;
+  useSpeech=false; segments=[];
   audio=new Audio(dua.audio);
-  if(status){ status.textContent='Okunuyor — siz tekrar edin'; status.classList.add('playing'); }
-  if(btn) btn.textContent='🔊 Okunuyor…';
-  audio.onended=()=>{ if(status){ status.textContent='Tekrar edin, sonra sonraki şavt'; status.classList.remove('playing'); } if(btn) btn.textContent='🔊 Tekrar dinle'; };
-  audio.onerror=()=>{
-    // ses dosyası yoksa tarayıcı sesiyle oku (yedek)
-    if(status){ status.textContent='(Ses dosyası henüz yok — yazıyla okuyabilirsiniz)'; status.classList.remove('playing'); }
-    if(btn) btn.textContent='🔊 Oku';
-    if('speechSynthesis' in window){
-      speechSynthesis.cancel();
-      const u=new SpeechSynthesisUtterance(dua.text); u.lang='tr-TR'; u.rate=0.9;
-      speechSynthesis.speak(u);
-    }
+  audio.onloadedmetadata=()=>{
+    // toplam süreyi cümle uzunluklarına göre paylaştır
+    const total=audio.duration;
+    const lens=sentences.map(s=>s.length);
+    const sum=lens.reduce((a,b)=>a+b,0);
+    let t=0;
+    segments=lens.map(l=>{ const start=t; const dur=total*(l/sum); t+=dur; return {start, end:t}; });
+    if(status) status.textContent='▸ "Başla"ya dokunun';
   };
-  audio.play().catch(()=>{ /* otomatik çalma engellendiyse kullanıcı butona basar */ });
+  audio.onerror=()=>{
+    // ses dosyası yoksa tarayıcı sesiyle cümle cümle oku
+    useSpeech=true;
+    if(status) status.textContent='(Ses dosyası yok — cihaz sesiyle okunacak)';
+  };
+}
+
+// "Başla / Duraklat" butonu
+function onContinue(){
+  const btn=document.getElementById('contBtn');
+  const status=document.getElementById('status');
+  // çalıyorsa duraklat
+  if(playing){
+    pausePlayback();
+    if(btn) btn.textContent='▸ Devam';
+    if(status){ status.textContent='Duraklatıldı'; status.classList.remove('playing'); }
+    return;
+  }
+  // bittiyse baştan
+  if(curSentence>=sentences.length){ curSentence=0; clearHighlight(); }
+  startPlayback();
+  if(btn) btn.textContent='⏸ Duraklat';
+  if(status){ status.textContent='Okunuyor — siz tekrar edin'; status.classList.add('playing'); }
+}
+
+function startPlayback(){
+  playing=true;
+  if(useSpeech || !audio || segments.length===0){
+    speakFrom(curSentence);
+    return;
+  }
+  // ses dosyasını kaldığı cümleden çal
+  audio.currentTime = segments[curSentence] ? segments[curSentence].start : 0;
+  highlight(curSentence);
+  audio.play().catch(()=>{});
+  clearInterval(segTimer);
+  segTimer=setInterval(()=>{
+    if(!audio) return;
+    // hangi cümledeyiz? currentTime'a göre vurgula
+    const t=audio.currentTime;
+    let idx=segments.findIndex(s=> t>=s.start && t<s.end);
+    if(idx===-1 && t>=segments[segments.length-1].end-0.1) idx=segments.length-1;
+    if(idx!==-1 && idx!==curSentence){ curSentence=idx; highlight(idx); }
+    if(audio.ended || t>=audio.duration-0.05){ finishPlayback(); }
+  }, 100);
+  audio.onended=()=>finishPlayback();
+}
+
+// tarayıcı sesiyle cümle cümle (yedek)
+function speakFrom(i){
+  if(i>=sentences.length){ finishPlayback(); return; }
+  curSentence=i; highlight(i);
+  if(!('speechSynthesis' in window)){ finishPlayback(); return; }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(sentences[i]);
+  u.lang='tr-TR'; u.rate=0.9;
+  u.onend=()=>{ if(playing) speakFrom(i+1); };
+  u.onerror=()=>{ if(playing) speakFrom(i+1); };
+  speechSynthesis.speak(u);
+}
+
+function pausePlayback(){
+  playing=false;
+  if(audio) audio.pause();
+  clearInterval(segTimer);
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+}
+
+function finishPlayback(){
+  playing=false;
+  clearInterval(segTimer);
+  if(audio) audio.pause();
+  const btn=document.getElementById('contBtn');
+  const status=document.getElementById('status');
+  curSentence=sentences.length;
+  if(btn) btn.textContent='▸ Baştan dinle';
+  if(status){ status.textContent='✓ Dua bitti — Sonraki Şavt'; status.classList.remove('playing'); }
+}
+
+function highlight(i){
+  document.querySelectorAll('.sent').forEach((e,idx)=>{
+    e.classList.remove('active-sent');
+    if(idx<i) e.classList.add('read-sent'); else e.classList.remove('read-sent');
+  });
+  const el=document.getElementById('sent'+i);
+  if(el) el.classList.add('active-sent');
+}
+function clearHighlight(){
+  document.querySelectorAll('.sent').forEach(e=>{ e.classList.remove('active-sent'); e.classList.remove('read-sent'); });
 }
 
 function nextShavt(){
+  playing=false;
   if(audio){ audio.pause(); audio=null; }
+  clearInterval(segTimer);
   if('speechSynthesis' in window) speechSynthesis.cancel();
   shavt++;
   if(shavt>=7){ finish(); return; }
