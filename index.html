@@ -7,15 +7,13 @@
 <meta name="theme-color" content="#0a0e1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Tavaf">
-<meta name="mobile-web-app-capable" content="yes">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230a0e1a'/%3E%3Crect x='62' y='62' width='56' height='56' rx='6' fill='%23121829' stroke='%23d4af6a' stroke-width='3'/%3E%3Crect x='62' y='84' width='56' height='8' fill='%238a7548'/%3E%3Ccircle cx='90' cy='90' r='72' fill='none' stroke='%23d4af6a' stroke-width='2' stroke-dasharray='4 6' opacity='0.5'/%3E%3Ccircle cx='150' cy='90' r='5' fill='%23f0d9a0'/%3E%3C/svg%3E">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   :root{
     --night:#0a0e1a; --night-2:#121829; --gold:#d4af6a; --gold-bright:#f0d9a0;
     --gold-dim:#8a7548; --cream:#f5efe0; --text-dim:#9aa0b0; --line:rgba(212,175,106,0.18);
+    --green:#7fc99a;
   }
   html,body{ background:var(--night); color:var(--cream); font-family:'Jost',sans-serif; overflow-x:hidden; min-height:100vh; -webkit-font-smoothing:antialiased;}
   body{
@@ -34,55 +32,55 @@
       radial-gradient(1px 1px at 90% 20%, rgba(245,239,224,0.4), transparent);
   }
   .wrap{ position:relative; z-index:1; max-width:480px; margin:0 auto; padding:0 20px;}
-  header{ text-align:center; padding:30px 0 14px;}
+  header{ text-align:center; padding:26px 0 10px;}
   header .eyebrow{ font-size:11px; letter-spacing:5px; text-transform:uppercase; color:var(--gold-dim); font-weight:500;}
-  header h1{ font-family:'Amiri',serif; font-size:30px; color:var(--gold-bright); margin:6px 0 2px; font-weight:700;}
-  header .ar{ font-family:'Amiri',serif; font-size:18px; color:var(--gold); opacity:.8;}
+  header h1{ font-family:'Amiri',serif; font-size:28px; color:var(--gold-bright); margin:6px 0 2px; font-weight:700;}
+  header .ar{ font-family:'Amiri',serif; font-size:17px; color:var(--gold); opacity:.8;}
 
-  .dots{ display:flex; justify-content:center; gap:9px; margin:12px 0 6px;}
-  .dot{ width:11px; height:11px; border-radius:50%; border:1.5px solid var(--gold-dim); background:transparent; transition:all .4s ease;}
+  .dots{ display:flex; justify-content:center; gap:9px; margin:10px 0 4px;}
+  .dot{ width:10px; height:10px; border-radius:50%; border:1.5px solid var(--gold-dim); background:transparent; transition:all .4s ease;}
   .dot.done{ background:var(--gold); border-color:var(--gold); box-shadow:0 0 10px rgba(212,175,106,0.6);}
   .dot.active{ border-color:var(--gold-bright); box-shadow:0 0 12px rgba(240,217,160,0.7); animation:pulse 1.6s infinite;}
   @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
-  .shavt-label{ text-align:center; font-family:'Cormorant Garamond',serif; font-size:19px; color:var(--text-dim); letter-spacing:1px;}
+  .shavt-label{ text-align:center; font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--text-dim); letter-spacing:1px;}
   .shavt-label b{ color:var(--gold-bright); font-weight:600;}
 
-  .compass-card{ margin:14px 0; background:linear-gradient(160deg,var(--night-2),rgba(10,14,26,0.6)); border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:0 20px 50px -20px rgba(0,0,0,0.7), inset 0 1px 0 rgba(245,239,224,0.04);}
-  .compass{ position:relative; width:160px; height:160px; margin:2px auto 0;}
-  .ring{ position:absolute; inset:0; border-radius:50%; border:1px dashed var(--line);}
-  .ring.inner{ inset:28px; border-style:solid;}
-  .kaaba{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:36px; height:36px; background:linear-gradient(145deg,#1a1f30,#05070d); border:1.5px solid var(--gold); border-radius:6px; box-shadow:0 0 24px rgba(212,175,106,0.35);}
-  .kaaba::after{ content:""; position:absolute; top:38%; left:0; right:0; height:5px; background:var(--gold-dim); opacity:.5;}
-  .pilgrim{ position:absolute; top:50%; left:50%; width:13px; height:13px; margin:-6.5px; border-radius:50%; background:var(--gold-bright); box-shadow:0 0 14px var(--gold-bright); transition:transform .5s cubic-bezier(.4,0,.2,1);}
-  .hajar{ position:absolute; width:8px; height:8px; border-radius:50%; background:#fff; box-shadow:0 0 10px #fff; top:50%; right:3px; margin-top:-4px;}
-  .status{ text-align:center; margin-top:10px; font-size:12px; color:var(--text-dim); min-height:16px;}
-  .status.playing{ color:var(--gold-bright);}
+  .progress-wrap{ margin:14px 0 6px;}
+  .progress-bar{ height:4px; background:rgba(245,239,224,0.08); border-radius:4px; overflow:hidden;}
+  .progress-fill{ height:100%; background:linear-gradient(90deg,var(--gold-dim),var(--gold-bright)); width:0%; transition:width .4s ease; border-radius:4px;}
+  .progress-text{ text-align:center; font-size:11px; color:var(--gold-dim); margin-top:6px; letter-spacing:1px;}
 
-  .dua-card{ background:linear-gradient(165deg, rgba(212,175,106,0.06), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:22px; padding:24px 20px; margin-top:6px; box-shadow:0 16px 40px -22px rgba(0,0,0,0.7); animation:fadeUp .6s ease;}
-  @keyframes fadeUp{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);}}
-  .dua-card .tag{ font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--gold-dim); text-align:center;}
-  .dua-tr{ font-size:22px; color:var(--cream); text-align:center; line-height:2; margin-top:16px;}
-  .sent{ transition:color .35s, text-shadow .35s; color:#5a6172;}
-  .sent.active-sent{ color:var(--gold-bright); text-shadow:0 0 20px rgba(240,217,160,0.55); font-weight:600;}
-  .sent.read-sent{ color:var(--cream);}
+  /* Ana öbek kartı */
+  .obek-card{ background:linear-gradient(165deg, rgba(212,175,106,0.07), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:24px; padding:40px 26px; margin-top:14px; min-height:240px; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 16px 40px -22px rgba(0,0,0,0.7);}
+  .obek-text{ font-size:30px; line-height:1.55; text-align:center; color:var(--gold-bright); font-weight:500; transition:opacity .3s; text-shadow:0 0 26px rgba(240,217,160,0.25);}
+  .obek-text.speaking{ animation:glow 1.4s ease-in-out infinite;}
+  @keyframes glow{0%,100%{text-shadow:0 0 22px rgba(240,217,160,0.25);}50%{text-shadow:0 0 36px rgba(240,217,160,0.6);}}
+  .obek-status{ margin-top:22px; font-size:13px; color:var(--text-dim); min-height:18px; letter-spacing:.5px;}
+  .obek-status.listening{ color:var(--gold-bright);}
+  .obek-status.ok{ color:var(--green);}
 
-  .controls{ display:flex; align-items:center; justify-content:center; gap:12px; margin-top:22px; flex-wrap:wrap;}
-  .play-btn{ flex:0 0 auto; display:inline-flex; align-items:center; gap:9px; background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a; border:none; border-radius:30px; padding:14px 26px; font-size:14px; font-weight:600; letter-spacing:.5px; cursor:pointer; font-family:'Jost',sans-serif; transition:all .2s; box-shadow:0 8px 24px -8px rgba(212,175,106,0.6);}
-  .play-btn:active{ transform:scale(.96);}
-  .nav-btn{ flex:0 0 auto; background:rgba(245,239,224,0.05); color:var(--cream); border:1px solid var(--line); border-radius:30px; padding:14px 22px; font-size:14px; font-weight:500; cursor:pointer; font-family:'Jost',sans-serif; transition:all .2s;}
-  .nav-btn:active{ background:rgba(245,239,224,0.1);}
+  /* Kontroller */
+  .controls{ display:flex; align-items:center; justify-content:center; gap:12px; margin-top:22px;}
+  .ctrl{ font-family:'Jost',sans-serif; cursor:pointer; border-radius:30px; font-weight:600; letter-spacing:.4px; transition:all .18s; border:1px solid var(--line);}
+  .ctrl:active{ transform:scale(.95);}
+  .ctrl.main{ flex:1; max-width:220px; background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a; border:none; padding:17px 20px; font-size:16px; box-shadow:0 8px 24px -8px rgba(212,175,106,0.6);}
+  .ctrl.side{ background:rgba(245,239,224,0.05); color:var(--cream); padding:15px 16px; font-size:14px;}
+
+  .bottom-row{ display:flex; justify-content:space-between; gap:10px; margin-top:14px;}
+  .bottom-row .ctrl{ flex:1; padding:13px 10px; font-size:13px; font-weight:500;}
 
   .note{ font-size:12px; color:var(--gold-dim); text-align:center; margin-top:24px; line-height:1.7; padding:0 6px;}
-  .done-screen{ text-align:center; padding:30px 10px; animation:fadeUp .8s ease;}
-  .done-screen .ar{ font-family:'Amiri',serif; font-size:28px; color:var(--gold-bright); line-height:1.8;}
-  .done-screen p{ color:var(--text-dim); margin-top:14px; font-family:'Cormorant Garamond',serif; font-size:18px; font-style:italic;}
 
-  .start-card{ background:linear-gradient(165deg, rgba(212,175,106,0.08), rgba(18,24,41,0.5)); border:1px solid var(--line); border-radius:22px; padding:30px 24px; text-align:center; box-shadow:0 16px 40px -22px rgba(0,0,0,0.7); animation:fadeUp .6s ease;}
-  .start-card h2{ font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--gold-bright); font-weight:600; margin-bottom:6px;}
-  .start-card .lead{ font-size:13.5px; color:var(--text-dim); line-height:1.7; margin-bottom:18px;}
-  .big-btn{ font-family:'Jost',sans-serif; cursor:pointer; border:none; border-radius:14px; padding:15px 22px; font-size:15px; font-weight:600; letter-spacing:.5px;
-    background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a; box-shadow:0 8px 24px -8px rgba(212,175,106,0.6); width:100%;}
+  /* Başlangıç / bitiş kartları */
+  .start-card{ background:linear-gradient(165deg, rgba(212,175,106,0.08), rgba(18,24,41,0.5)); border:1px solid var(--line); border-radius:24px; padding:34px 26px; text-align:center; margin-top:14px; box-shadow:0 16px 40px -22px rgba(0,0,0,0.7);}
+  .start-card h2{ font-family:'Cormorant Garamond',serif; font-size:23px; color:var(--gold-bright); font-weight:600; margin-bottom:8px;}
+  .start-card .lead{ font-size:14px; color:var(--text-dim); line-height:1.75; margin-bottom:22px;}
+  .big-btn{ font-family:'Jost',sans-serif; cursor:pointer; border:none; border-radius:14px; padding:16px 22px; font-size:16px; font-weight:600; letter-spacing:.5px;
+    background:linear-gradient(135deg,var(--gold),var(--gold-bright)); color:#0a0e1a; box-shadow:0 8px 24px -8px rgba(212,175,106,0.6); width:100%;}
   .big-btn:active{ transform:scale(.97);}
+  .done-screen{ text-align:center; padding:34px 12px;}
+  .done-screen .ar{ font-family:'Amiri',serif; font-size:26px; color:var(--gold-bright); line-height:1.8;}
+  .done-screen p{ color:var(--text-dim); margin-top:14px; font-family:'Cormorant Garamond',serif; font-size:17px; font-style:italic; line-height:1.6;}
 </style>
 </head>
 <body>
@@ -97,35 +95,75 @@
   <div class="shavt-label" id="shavtLabel">Hazırlık</div>
   <div id="main"></div>
 
-  <div class="note">
-    Her şavtın duası sesli okunur, siz tekrar edersiniz. "Sonraki şavt" ile ilerleyin. Tavaf, Hacerü'l-Esved hizasından başlar; Kâbe sol omzunuzda kalır, 7 kez dönülür. Ses kayıtları yüklendikçe gerçek seslendirme çalar.
+  <div class="note" id="note">
+    Her öbek tek tek okunur, siz tekrar edersiniz. Hazır olunca "Devam" ile ilerleyin. Hatalı olursa "Tekrar dinle" veya "Geri" ile dönebilirsiniz.
   </div>
 </div>
 
 <script>
-// GitHub'daki ses dosyaları (index.html ile aynı klasörde). Her şavt: savtN.mp3
-const shavtDuas = [
-  { tag:"1. Şavt", audio:"savt1.mp3", text:"Bismillahi Allahu Ekber. Allah'ım, sana inanarak, kitabını tasdik ederek, sana verdiğim sözü tutarak ve peygamberinin sünnetine uyarak işte buradayım. Allah, her türlü noksandan uzaktır. Hamd Allah'a mahsustur. Allah'tan başka ilah yoktur. Allah en büyüktür. Bütün güç ve kuvvet, şanı yüce olan Allah'a aittir. Salat ve selam Efendimiz Muhammed'in, ev halkının ve ashabının üzerine olsun. Rabbimiz, bunu bizden kabul eyle. Sen her şeyi işiten ve bilensin. Rabbimiz! Bizi sana teslim olmuş kimseler kıl. Soyumuzdan da sana teslim olmuş bir ümmet kıl. Bize ibadet yerlerini ve ilkelerini göster. Tövbemizi kabul et. Çünkü sen, tövbeleri çok kabul edensin, çok merhametli olansın. Allah'ım! Haccımızı kabul eyle, gayretimizi boşa çıkarma, günahlarımızı bağışla, amellerimizi salih ve makbul eyle, manevi kazancımızı asla kesata uğratma. Allah'ım! Sen kullarını kutsal beytine çağırdın. Ben de rızanı istemeye geldim. Bunu bana ihsan ettin. Beni bağışla. Bana merhamet et. Bana sağlık afiyet ver ve beni affet. Senin her şeye gücün yeter. Allah'ım! Ben senin kulunum ve ziyaretine geldim. Her ziyaretçinin ziyaret edilen üzerinde hakkı vardır. Sen ise ziyaret edilenlerin en hayırlısısın. Beni bağışla, bana merhamet et ve beni cehennem ateşinden kurtar. Rabbimiz! Bize dünyada da ahirette de güzellik ver ve bizi cehennem azabından koru. İyilerle birlikte bizi cennete koy. Ey sınırsız güç sahibi! Ey günahları çok bağışlayan! Ey âlemlerin Rabbi!" },
-  { tag:"2. Şavt", audio:"savt2.mp3", text:"Bismillahi Allahu Ekber! Allah'ım! Sana inanarak, kitabını tasdik ederek, sana verdiğim sözü tutarak ve Peygamberinin sünnetine uyarak buradayım. Allah, her türlü noksandan uzaktır. Hamd Allah'a mahsustur. Allah'tan başka hiçbir ilah yoktur. Allah en büyüktür. Bütün güç ve kuvvet, şanı yüce olan Allah'a aittir. Salat ve selam Efendimiz Muhammed'in, ev halkının ve ashabının üzerine olsun. Rabbim! Gönlüme genişlik ver, işimi kolaylaştır. Rabbim! Ben haddimi aştım, beni bağışla. Senden başka hiçbir ilah yoktur. Seni tenzih ederim. Gerçekten ben zalimlerden oldum. Allah'ım! Bu mukaddes ev senin evindir. Bu Harem senin haremindir. Burası senin güvenli kıldığın yerdir. Kullar ise senin kulundur. Ben de senin bir kulunum ve kulunun oğluyum. Bir yığın günahla ve birçok kötü işler yapmış olarak sana geldim. Allah'ım! Burası ateşten sana sığınma yeridir. Tenimizi ve vücudumuzu cehennem ateşine haram kıl. Sen çok bağışlayan ve çok merhamet edensin. Rabbim! Beni bağışla ve merhamet et. Sen merhamet edenlerin en hayırlısısın. Rabbim! İlmimi ve anlayışımı artır ve beni salihlere erdir. Allah'ım! İmanı bize sevdir ve onunla kalplerimizi süsle. Küfrü, yoldan çıkmayı, azgınlığı ve itaatsizliği bize çirkin göster. Bizi doğrulardan eyle. Allah'ım! Kullarını dirilteceğin günde bizi azabından koru. Allah'ım! Haccımızı kabul eyle, gayretimizi boşa çıkarma, günahlarımızı bağışla, amellerimizi salih ve makbul eyle. Ticaretimizi asla kesata uğratma. Rabbimiz! Bize dünyada iyilik ver, ahirette de iyilik ver. Bizi cehennem azabından koru. İyilerle birlikte cennete koy. Ey sınırsız güç sahibi! Ey günahları çok bağışlayan! Ey âlemlerin Rabbi!" },
-  { tag:"3. Şavt", audio:"savt3.mp3", text:"Bismillahi Allahu Ekber! Allah'ım! Sana inanarak, kitabını tasdik ederek, sana verdiğim sözü tutarak ve Peygamberinin sünnetine uyarak buradayım. Allah, her türlü noksandan uzaktır. Hamd Allah'a mahsustur. Allah'tan başka hiçbir ilah yoktur. Allah en büyüktür. Bütün güç ve kuvvet, şanı yüce olan Allah'a aittir. Salat ve selam Efendimiz Muhammed'in, ev halkının ve ashabının üzerine olsun. Rabbimiz! Biz kendimize zulmettik. Eğer bizi bağışlamaz ve bize acımazsan, mutlaka ziyan edenlerden oluruz. Ey Rabbimiz! Biz inandık, bizi bağışla, bize merhamet et, sen merhamet edenlerin en hayırlısısın. Allah'ım! Sen benim Rabbimsin. Senden başka hiçbir ilâh yoktur. Beni yaratan sensin. Ben senin kulunum ve gücüm yettiğince sana verdiğim söze ve ahdime bağlı kalacağım. İşlediğim günahların şerrinden sana sığınıyorum. İhsan ettiğin nimetleri ikrar ediyor, günahlarımı sana itiraf ediyorum. Beni affet; çünkü senden başka hiç kimse günahları affedemez. Allah'ım! Hıyanetten, küfürden, şirkten, İslam'ın emir ve yasaklarına karşı gelmekten, münafıklıktan, riyadan ve kötü ahlâktan sana sığınırım. Allah'ım! Faydasız ilimden, korkmayan kalpten, doymayan nefisten, ağlamayan gözden ve kabul olmayan duadan sana sığınırım. Allah'ım! Haccımızı kabul eyle, gayretimizi boşa çıkarma, günahlarımızı bağışla, amellerimizi salih ve makbul eyle. Asla zarar etmeyecek manevi bir ticaret nasip et. Ey kalplerde olanı bilen Allah'ım! Bizi karanlıklardan aydınlığa çıkar. Rabbimiz! Bize dünyada iyilik ver, ahirette de iyilik ver. Bizi cehennem azabından koru. İyilerle birlikte cennete koy. Ey sınırsız güç sahibi! Ey günahları çok bağışlayan! Ey âlemlerin Rabbi!" },
-  { tag:"4. Şavt", audio:"savt4.mp3", text:"Bismillahi Allahu Ekber! Allah'ım! Sana inanarak, kitabını tasdik ederek, sana verdiğim sözü tutarak ve Peygamberinin sünnetine uyarak buradayım. Allah, her türlü noksandan uzaktır. Hamd Allah'a mahsustur. Allah'tan başka hiçbir ilah yoktur. Allah en büyüktür. Bütün güç ve kuvvet, şanı yüce olan Allah'a aittir. Salat ve selam Efendimiz Muhammed'in, ev halkının ve ashabının üzerine olsun. Allah'ım! Beni rahmetine ulaştır. Bana, bağışlamana vesile olacak işler yapmayı nasip et. Her türlü günahtan uzak kıl. Her türlü iyiliği elde etmeyi nasip eyle, Cennete kavuştur, Cehennem ateşinden kurtar. Rabbim! Verdiğin rızıkla beni kanaatkâr kıl ve bana verdiklerini hakkımda hayırlı ve bereketli eyle. Elde edemediğim her hayırlı şeyin yerine daha iyisini nasip et. Ey Rabbimiz! Unutur ya da yanılırsak bizi sorumlu tutma! Ey Rabbimiz! Bize, bizden öncekilere yüklediğin gibi ağır yük yükleme. Ey Rabbimiz! Bize gücümüzün yetmediği şeyleri yükleme! Bizi affet, bizi bağışla, bize acı! Sen bizim Mevlamızsın. Kâfirler topluluğuna karşı bize yardım et. Allah'ım! Kalbimi nifaktan, amelimi riyadan, dilimi yalandan, gözümü hiyanetten temizle. Çünkü sen gözlerin hain bakışını ve kalplerin gizlediğini bilirsin. Allah'ım! Beni işlerin en güzeline ve ahlâkın en güzeline eriştir. Bunlara ancak sen eriştirirsin. Kötü işlerden ve kötü ahlâktan beni koru. Bunlardan da beni ancak sen korursun. Rabbimiz! Bize dünyada iyilik ver, ahirette de iyilik ver. Bizi cehennem azabından koru. İyilerle birlikte cennete koy. Ey sınırsız güç sahibi! Ey günahları çok bağışlayan! Ey âlemlerin Rabbi!" },
-  { tag:"5. Şavt", audio:"savt5.mp3", text:"Bismillahi Allahu Ekber! Allah'ım! Sana inanarak, kitabını tasdik ederek, sana verdiğim sözü tutarak ve Peygamberinin sünnetine uyarak buradayım. Allah, her türlü noksandan uzaktır. Hamd Allah'a mahsustur. Allah'tan başka hiçbir ilah yoktur. Allah en büyüktür. Bütün güç ve kuvvet, şanı yüce olan Allah'a aittir. Salat ve selam Efendimiz Muhammed'in, ev halkının ve ashabının üzerine olsun. Rabbim! Bana, katından temiz bir nesil bahşet. Şüphesiz sen duayı hakkıyla işitensin. Rabbim! Beni namaza devam eden bir kimse eyle. Soyumdan da böyle kimseler yarat. Rabbim! Bana salihlerden olacak bir çocuk bağışla. Benim canımı Müslüman olarak al ve beni iyilere kat. Rabbimiz! Eşlerimizi ve çocuklarımızı bize göz aydınlığı kıl ve bizi Allah'a karşı gelmekten sakınanlara önder eyle. Allah'ım! Hiçbir gölgenin olmadığı ve yüce zatından başka hiçbir şeyin baki kalmadığı günde beni Arşının gölgesinde gölgelendir. Muhammed Aleyhisselam'ın havzından öyle bir afiyetle içir ki bir daha ebediyen susuzluk çekmeyeyim. Allah'ım! Senden, bildiğim ve bilmediğim geçmiş ve gelecekteki tüm iyilikleri bana lütfetmeni niyaz ediyorum. Bildiğim ve bilmediğim, geçmiş ve gelecekteki tüm şerlerden sana sığınıyorum. Senden cenneti ve ona ulaştıracak her türlü söz ve ameli nasip etmeni diliyorum. Cehennemden ve ona götürecek her türlü söz ve amelden de sana sığınıyorum. Allah'ım! Kulun ve elçin Hz. Muhammed'in senden istediği bütün hayırlardan ben de istiyorum. Kulun ve elçin Hz. Muhammed'in sana sığındığı bütün şerlerden ben de sana sığınıyorum. Rabbimiz! Bize dünyada iyilik ver, ahirette de iyilik ver. Bizi cehennem azabından koru. İyilerle birlikte cennete koy. Ey sınırsız güç sahibi! Ey günahları çok bağışlayan! Ey âlemlerin Rabbi!" },
-  { tag:"6. Şavt", audio:"savt6.mp3", text:"Bismillahi Allahu Ekber! Allah'ım! Sana inanarak, kitabını tasdik ederek, sana verdiğim sözü tutarak ve Peygamberinin sünnetine uyarak buradayım. Allah, her türlü noksandan uzaktır. Hamd Allah'a mahsustur. Allah'tan başka hiçbir ilah yoktur. Allah en büyüktür. Bütün güç ve kuvvet, şanı yüce olan Allah'a aittir. Salat ve selam Efendimiz Muhammed'in, ev halkının ve ashabının üzerine olsun. Rabbimiz! Bize kendi katından bir rahmet ver ve içinde bulunduğumuz şu durumda bizim kurtuluş ve doğruluğa ulaşmamızı kolaylaştır. Bizim için bu dünyada da bir iyilik yaz, ahirette de. Çünkü biz sana varan doğru yola yöneldik. Rabbimiz! Üzerimize sabır yağdır ve Müslüman olarak bizim canımızı al. Rabbimiz! Üzerimize sabır yağdır, ayaklarımızı sağlam bastır ve şu kâfir kavme karşı bize yardım et. Rabbimiz! Bizi ve bizden önce iman etmiş olan kardeşlerimizi bağışla. Kalplerimizde, iman edenlere karşı hiçbir kin tutturma! Rabbimiz! Şüphesiz sen çok esirgeyicisin, çok merhametlisin. Allah'ım! Yüce zatının benim üzerimde birçok hakkı olduğu gibi senin kullarının da üzerimde birçok hakkı vardır. Allah'ım! Sana karşı olan eksikliklerimi bağışla. Yarattıklarına karşı olanlardan da beni kurtar. Bana helâlinden ver ki haramdan uzak kalayım. İbadetinle meşgul et ki günaha muhtaç olmayayım. Lütfunu ver ki başkasına muhtaç olmayayım. Ey bağışlaması bol olan Rabbim! Rabbimiz! Bize dünyada iyilik ver, ahirette de iyilik ver. Bizi cehennem azabından koru. İyilerle birlikte cennete koy. Ey sınırsız güç sahibi! Ey günahları çok bağışlayan! Ey âlemlerin Rabbi!" },
-  { tag:"7. Şavt", audio:"savt7.mp3", text:"Bismillahi Allahu Ekber! Allah'ım! Sana inanarak, kitabını tasdik ederek, sana verdiğim sözü tutarak ve Peygamberinin sünnetine uyarak buradayım. Allah, her türlü noksandan uzaktır. Hamd Allah'a mahsustur. Allah'tan başka hiçbir ilah yoktur. Allah en büyüktür. Bütün güç ve kuvvet, şanı yüce olan Allah'a aittir. Salat ve selam Efendimiz Muhammed'in, ev halkının ve ashabının üzerine olsun. Allah'ım! Senden kâmil bir iman, doğru bir inanç, bol ve helal güzel rızık, ürperen bir kalp, seni zikreden bir lisan, asla bozmayacağım samimi bir tövbe ve faydalı ilim niyaz ediyorum. Allah'ım! Senden hidayet, takva, iffet ve zenginlik vermeni niyaz ediyorum. Allah'ım! Senden sağlık, iffet, emanete riayet, güzel ahlâk ve takdire rıza niyaz ediyorum. Allah'ım! Senden hayırlar ve güzellikler işlemeyi, kötülükleri terk etmeyi, yoksulları sevmeyi, beni bağışlaman ve bana merhamet etmeni niyaz ediyorum. Allah'ım! Geçmişte işlediğim tüm günahlarımı bağışla. Ömrümün geriye kalan kısmında da beni günah işlemekten muhafaza buyur. Bana razı olacağın tertemiz işler yapmayı nasip eyle. Allah'ım! Beni göz açıp kapayacak kadar bile nefsime bırakma. Bana lütfettiğin güzellikleri benden çekip alma. Rabbimiz! Kıyamet gününde beni, anamı, babamı ve bütün müminleri bağışla. Rabbimiz! Bize dünyada iyilik ver, ahirette de iyilik ver. Bizi cehennem azabından koru. İyilerle birlikte cennete koy. Ey sınırsız güç sahibi! Ey günahları çok bağışlayan! Ey âlemlerin Rabbi!" }
+// ÖBEK VERİSİ — şimdilik sadece 1. şavt dolu
+const shavtlar = [
+  {
+    no:1,
+    obekler:[
+      "Bismillahi Allahu Ekber.",
+      "Allah'ım, sana inanarak,",
+      "kitabını tasdik ederek,",
+      "sana verdiğim sözü tutarak",
+      "ve peygamberinin sünnetine uyarak işte buradayım.",
+      "Allah, her türlü noksandan uzaktır.",
+      "Hamd Allah'a mahsustur.",
+      "Allah'tan başka ilah yoktur.",
+      "Allah en büyüktür.",
+      "Bütün güç ve kuvvet, şanı yüce olan Allah'a aittir.",
+      "Salat ve selam Efendimiz Muhammed'in,",
+      "ev halkının ve ashabının üzerine olsun.",
+      "Rabbimiz, bunu bizden kabul eyle.",
+      "Sen her şeyi işiten ve bilensin.",
+      "Rabbimiz! Bizi sana teslim olmuş kimseler kıl.",
+      "Soyumuzdan da sana teslim olmuş bir ümmet kıl.",
+      "Bize ibadet yerlerini ve ilkelerini göster.",
+      "Tövbemizi kabul et.",
+      "Çünkü sen, tövbeleri çok kabul edensin, çok merhametli olansın.",
+      "Allah'ım! Haccımızı kabul eyle,",
+      "gayretimizi boşa çıkarma,",
+      "günahlarımızı bağışla,",
+      "amellerimizi salih ve makbul eyle,",
+      "manevi kazancımızı asla kesata uğratma.",
+      "Allah'ım! Sen kullarını kutsal beytine çağırdın.",
+      "Ben de rızanı istemeye geldim.",
+      "Bunu bana ihsan ettin.",
+      "Beni bağışla. Bana merhamet et.",
+      "Bana sağlık afiyet ver ve beni affet.",
+      "Senin her şeye gücün yeter.",
+      "Allah'ım! Ben senin kulunum ve ziyaretine geldim.",
+      "Her ziyaretçinin ziyaret edilen üzerinde hakkı vardır.",
+      "Sen ise ziyaret edilenlerin en hayırlısısın.",
+      "Beni bağışla, bana merhamet et",
+      "ve beni cehennem ateşinden kurtar.",
+      "Rabbimiz! Bize dünyada da ahirette de güzellik ver",
+      "ve bizi cehennem azabından koru.",
+      "İyilerle birlikte bizi cennete koy.",
+      "Ey sınırsız güç sahibi!",
+      "Ey günahları çok bağışlayan!",
+      "Ey âlemlerin Rabbi!"
+    ]
+  }
 ];
 
-let phase='intro', shavt=0;
-let audio=null;
-let sentences=[], curSentence=0, segments=[], segTimer=null, useSpeech=false, playing=false;
+let phase='intro';
+let shavtIndex=0;   // hangi şavt (0 tabanlı)
+let obekIndex=0;    // hangi öbek
 
 const dotsEl=document.getElementById('dots');
 const labelEl=document.getElementById('shavtLabel');
 const main=document.getElementById('main');
+const noteEl=document.getElementById('note');
 
 function buildDots(){
   dotsEl.innerHTML='';
   for(let i=0;i<7;i++){ const d=document.createElement('div'); d.className='dot';
-    if(i<shavt) d.classList.add('done'); else if(i===shavt&&phase==='shavt') d.classList.add('active');
+    if(i<shavtIndex) d.classList.add('done'); else if(i===shavtIndex && phase==='shavt') d.classList.add('active');
     dotsEl.appendChild(d); }
 }
 
@@ -133,172 +171,117 @@ function renderIntro(){
   phase='intro'; labelEl.innerHTML='Hazırlık'; buildDots();
   main.innerHTML=`<div class="start-card">
     <h2>Tavafa Hazırlık</h2>
-    <div class="lead">Hacerü'l-Esved Taşı'nın hizasına gelin, Kâbe sol omzunuzda kalsın. Her şavtta duayı dinleyip tekrar edin, sonra yürüyün. "Sonraki şavt" ile ilerleyin.</div>
+    <div class="lead">Hacerü'l-Esved hizasına gelin, Kâbe sol omzunuzda kalsın. Dua öbek öbek okunacak; her öbeği dinleyip tekrar edin, sonra "Devam"a dokunun.</div>
     <button class="big-btn" id="beginBtn">Tavafa Başla</button>
   </div>`;
-  document.getElementById('beginBtn').addEventListener('click', ()=>{ shavt=0; renderShavt(); });
-}
-
-// metni cümlelere böl (nokta, ünlem, soru işaretinden)
-function splitSentences(text){
-  const parts = text.match(/[^.!?]+[.!?]+/g) || [text];
-  return parts.map(s=>s.trim()).filter(s=>s.length>0);
+  document.getElementById('beginBtn').addEventListener('click', ()=>{ shavtIndex=0; obekIndex=0; renderShavt(); });
 }
 
 function renderShavt(){
   phase='shavt'; buildDots();
-  labelEl.innerHTML=`Şavt <b>${shavt+1}</b> / 7`;
-  const dua=shavtDuas[shavt];
-  const isLast = shavt===6;
-  sentences = splitSentences(dua.text);
-  curSentence = 0;
-  // her cümleyi ayrı span olarak göster
-  const spans = sentences.map((s,i)=>`<span class="sent" id="sent${i}">${s}</span>`).join(' ');
+  const sh=shavtlar[shavtIndex];
+  labelEl.innerHTML=`Şavt <b>${sh.no}</b> / 7`;
+  if(noteEl) noteEl.style.display='';
   main.innerHTML=`
-    <div class="compass-card">
-      <div class="compass"><div class="ring"></div><div class="ring inner"></div>
-        <div class="kaaba"></div><div class="hajar"></div><div class="pilgrim" id="pilgrim"></div></div>
-      <div class="status" id="status">▸ Dinleyin, tekrar edin</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+      <div class="progress-text" id="ptext"></div>
     </div>
-    <div class="dua-card">
-      <div class="tag">${dua.tag}</div>
-      <div class="dua-tr" id="duaText">${spans}</div>
-      <div class="controls">
-        <button class="play-btn" id="contBtn">▸ Başla</button>
-        <button class="nav-btn" id="nextBtn">${isLast?'Tavafı Bitir ▸':'Sonraki Şavt ▸'}</button>
-      </div>
+    <div class="obek-card">
+      <div class="obek-text" id="obekText"></div>
+      <div class="obek-status" id="obekStatus"></div>
+    </div>
+    <div class="controls">
+      <button class="ctrl side" id="replayBtn">🔊 Tekrar dinle</button>
+      <button class="ctrl main" id="contBtn">Devam ▸</button>
+    </div>
+    <div class="bottom-row">
+      <button class="ctrl" id="backBtn">◂ Geri</button>
+      <button class="ctrl" id="nextShavtBtn">Sonraki Şavt ▸▸</button>
     </div>`;
-  document.getElementById('contBtn').addEventListener('click', onContinue);
-  document.getElementById('nextBtn').addEventListener('click', nextShavt);
-  // ses dosyasını hazırla
-  prepareAudio(dua);
+  document.getElementById('contBtn').addEventListener('click', nextObek);
+  document.getElementById('replayBtn').addEventListener('click', ()=>speakObek());
+  document.getElementById('backBtn').addEventListener('click', prevObek);
+  document.getElementById('nextShavtBtn').addEventListener('click', skipToNextShavt);
+  obekIndex=0;
+  showObek();
 }
 
-// Sesi hazırla: dosyayı yükle, süresini öğren, cümle başına süre hesapla
-function prepareAudio(dua){
-  const status=document.getElementById('status');
-  if(audio){ audio.pause(); audio=null; }
-  clearInterval(segTimer); playing=false;
-  useSpeech=false; segments=[];
-  audio=new Audio(dua.audio);
-  audio.onloadedmetadata=()=>{
-    // toplam süreyi cümle uzunluklarına göre paylaştır
-    const total=audio.duration;
-    const lens=sentences.map(s=>s.length);
-    const sum=lens.reduce((a,b)=>a+b,0);
-    let t=0;
-    segments=lens.map(l=>{ const start=t; const dur=total*(l/sum); t+=dur; return {start, end:t}; });
-    if(status) status.textContent='▸ "Başla"ya dokunun';
-  };
-  audio.onerror=()=>{
-    // ses dosyası yoksa tarayıcı sesiyle cümle cümle oku
-    useSpeech=true;
-    if(status) status.textContent='(Ses dosyası yok — cihaz sesiyle okunacak)';
-  };
+function showObek(){
+  const sh=shavtlar[shavtIndex];
+  const total=sh.obekler.length;
+  const txt=sh.obekler[obekIndex];
+  const tEl=document.getElementById('obekText');
+  if(tEl) tEl.textContent=txt;
+  const fill=document.getElementById('pfill');
+  const ptext=document.getElementById('ptext');
+  if(fill) fill.style.width=((obekIndex+1)/total*100)+'%';
+  if(ptext) ptext.textContent=`Öbek ${obekIndex+1} / ${total}`;
+  // geri butonu ilk öbekte pasif görünsün
+  const backBtn=document.getElementById('backBtn');
+  if(backBtn) backBtn.style.opacity = obekIndex===0 ? '0.4' : '1';
+  speakObek();
 }
 
-// "Başla / Duraklat" butonu
-function onContinue(){
-  const btn=document.getElementById('contBtn');
-  const status=document.getElementById('status');
-  // çalıyorsa duraklat
-  if(playing){
-    pausePlayback();
-    if(btn) btn.textContent='▸ Devam';
-    if(status){ status.textContent='Duraklatıldı'; status.classList.remove('playing'); }
-    return;
+function speakObek(){
+  const sh=shavtlar[shavtIndex];
+  const txt=sh.obekler[obekIndex];
+  const status=document.getElementById('obekStatus');
+  const tEl=document.getElementById('obekText');
+  if('speechSynthesis' in window){
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(txt);
+    u.lang='tr-TR'; u.rate=0.85; u.pitch=1.0;
+    if(status){ status.textContent='🔊 Dinleyin…'; status.className='obek-status'; }
+    if(tEl) tEl.classList.add('speaking');
+    u.onend=()=>{
+      if(tEl) tEl.classList.remove('speaking');
+      if(status){ status.textContent='🔁 Şimdi siz tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
+    };
+    u.onerror=()=>{ if(tEl) tEl.classList.remove('speaking'); if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; } };
+    speechSynthesis.speak(u);
+  } else {
+    if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
   }
-  // bittiyse baştan
-  if(curSentence>=sentences.length){ curSentence=0; clearHighlight(); }
-  startPlayback();
-  if(btn) btn.textContent='⏸ Duraklat';
-  if(status){ status.textContent='Okunuyor — siz tekrar edin'; status.classList.add('playing'); }
 }
 
-function startPlayback(){
-  playing=true;
-  if(useSpeech || !audio || segments.length===0){
-    speakFrom(curSentence);
-    return;
+function nextObek(){
+  const sh=shavtlar[shavtIndex];
+  if(obekIndex < sh.obekler.length-1){
+    obekIndex++;
+    showObek();
+  } else {
+    // şavt bitti
+    if('speechSynthesis' in window) speechSynthesis.cancel();
+    skipToNextShavt();
   }
-  // ses dosyasını kaldığı cümleden çal
-  audio.currentTime = segments[curSentence] ? segments[curSentence].start : 0;
-  highlight(curSentence);
-  audio.play().catch(()=>{});
-  clearInterval(segTimer);
-  segTimer=setInterval(()=>{
-    if(!audio) return;
-    // hangi cümledeyiz? currentTime'a göre vurgula
-    const t=audio.currentTime;
-    let idx=segments.findIndex(s=> t>=s.start && t<s.end);
-    if(idx===-1 && t>=segments[segments.length-1].end-0.1) idx=segments.length-1;
-    if(idx!==-1 && idx!==curSentence){ curSentence=idx; highlight(idx); }
-    if(audio.ended || t>=audio.duration-0.05){ finishPlayback(); }
-  }, 100);
-  audio.onended=()=>finishPlayback();
 }
 
-// tarayıcı sesiyle cümle cümle (yedek)
-function speakFrom(i){
-  if(i>=sentences.length){ finishPlayback(); return; }
-  curSentence=i; highlight(i);
-  if(!('speechSynthesis' in window)){ finishPlayback(); return; }
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(sentences[i]);
-  u.lang='tr-TR'; u.rate=0.9;
-  u.onend=()=>{ if(playing) speakFrom(i+1); };
-  u.onerror=()=>{ if(playing) speakFrom(i+1); };
-  speechSynthesis.speak(u);
+function prevObek(){
+  if(obekIndex>0){ obekIndex--; showObek(); }
 }
 
-function pausePlayback(){
-  playing=false;
-  if(audio) audio.pause();
-  clearInterval(segTimer);
+function skipToNextShavt(){
   if('speechSynthesis' in window) speechSynthesis.cancel();
-}
-
-function finishPlayback(){
-  playing=false;
-  clearInterval(segTimer);
-  if(audio) audio.pause();
-  const btn=document.getElementById('contBtn');
-  const status=document.getElementById('status');
-  curSentence=sentences.length;
-  if(btn) btn.textContent='▸ Baştan dinle';
-  if(status){ status.textContent='✓ Dua bitti — Sonraki Şavt'; status.classList.remove('playing'); }
-}
-
-function highlight(i){
-  document.querySelectorAll('.sent').forEach((e,idx)=>{
-    e.classList.remove('active-sent');
-    if(idx<i) e.classList.add('read-sent'); else e.classList.remove('read-sent');
-  });
-  const el=document.getElementById('sent'+i);
-  if(el) el.classList.add('active-sent');
-}
-function clearHighlight(){
-  document.querySelectorAll('.sent').forEach(e=>{ e.classList.remove('active-sent'); e.classList.remove('read-sent'); });
-}
-
-function nextShavt(){
-  playing=false;
-  if(audio){ audio.pause(); audio=null; }
-  clearInterval(segTimer);
-  if('speechSynthesis' in window) speechSynthesis.cancel();
-  shavt++;
-  if(shavt>=7){ finish(); return; }
-  renderShavt();
+  // sonraki şavt verisi var mı?
+  if(shavtIndex < shavtlar.length-1){
+    shavtIndex++; obekIndex=0; renderShavt();
+  } else {
+    // başka şavt yok — şimdilik bitiş
+    finish();
+  }
 }
 
 function finish(){
   phase='done';
-  if(audio){ audio.pause(); audio=null; }
-  shavt=7; buildDots(); labelEl.innerHTML=`Tamamlandı <b>7</b> / 7`;
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  buildDots();
+  labelEl.innerHTML=`1. Şavt tamamlandı`;
+  if(noteEl) noteEl.style.display='none';
   main.innerHTML=`<div class="done-screen">
-    <div class="ar">تَقَبَّلَ اللهُ طَوَافَكَ</div>
-    <p>Allah tavafınızı kabul etsin.<br>7 şavt tamamlandı. Makâm-ı İbrahim arkasında<br>iki rekât tavaf namazı kılınır, ardından zemzem içilir.</p>
-    <div style="margin-top:24px;"><button class="big-btn" onclick="location.reload()">Yeniden Başla</button></div>
+    <div class="ar">تَقَبَّلَ اللهُ</div>
+    <p>1. şavtın duası tamamlandı.<br>Diğer şavtlar da eklenince<br>tüm tavaf boyunca size eşlik edecek.</p>
+    <div style="margin-top:24px;"><button class="big-btn" onclick="location.reload()">Baştan Başla</button></div>
   </div>`;
 }
 
