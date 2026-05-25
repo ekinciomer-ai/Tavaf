@@ -101,7 +101,6 @@
 </div>
 
 <script>
-// ÖBEK VERİSİ — şimdilik sadece 1. şavt dolu
 const shavtlar = [
   {
     no:1,
@@ -414,15 +413,13 @@ const shavtlar = [
     ]
   }
 ];
-
 let phase='intro';
-let shavtIndex=0;   // hangi şavt (0 tabanlı)
-let obekIndex=0;    // hangi öbek
-let curAudio=null;
-let recog=null;        // ses tanıma
-let listening=false;   // şu an dinliyor mu
-let lastHeard='';      // mikrofonun duyduğu son metin
-let sesliMod=true;     // sesli komut açık mı (varsayılan açık)
+let shavtIndex=0;     // hangi şavt (0 tabanlı)
+let obekIndex=0;      // hangi öbek
+let curAudio=null;    // çalan ses
+let otoTimer=null;    // otomatik geçiş zamanlayıcı
+let otoMod=true;      // otomatik geçiş açık mı
+const BEKLEME=3000;   // ses bitince tekrar için bekleme (ms)
 
 const dotsEl=document.getElementById('dots');
 const labelEl=document.getElementById('shavtLabel');
@@ -440,7 +437,7 @@ function renderIntro(){
   phase='intro'; labelEl.innerHTML='Hazırlık'; buildDots();
   main.innerHTML=`<div class="start-card">
     <h2>Tavafa Hazırlık</h2>
-    <div class="lead">Hacerü'l-Esved hizasına gelin, Kâbe sol omzunuzda kalsın. Her öbek okunur, siz tekrar edersiniz; sizi duyunca otomatik ilerler. İsterseniz "Devam" ile elle de geçebilirsiniz.</div>
+    <div class="lead">Hacerü'l-Esved hizasına gelin, Kâbe sol omzunuzda kalsın. Her öbek okunur, siz tekrar edersiniz; ses bittikten birkaç saniye sonra otomatik ilerler. İsterseniz "Devam" ile elle de geçebilirsiniz.</div>
     <button class="big-btn" id="beginBtn">Tavafa Başla</button>
   </div>`;
   document.getElementById('beginBtn').addEventListener('click', ()=>{ shavtIndex=0; obekIndex=0; renderShavt(); });
@@ -469,33 +466,19 @@ function renderShavt(){
       <button class="ctrl" id="nextShavtBtn">Sonraki Şavt ▸▸</button>
     </div>
     <div class="bottom-row" style="margin-top:10px;">
-      <button class="ctrl" id="micBtn" style="flex:1;">🎤 Sesli komut: AÇIK</button>
+      <button class="ctrl" id="otoBtn" style="flex:1;">⏱ Otomatik: AÇIK</button>
     </div>`;
-  document.getElementById('contBtn').addEventListener('click', nextObek);
-  document.getElementById('replayBtn').addEventListener('click', ()=>speakObek());
-  document.getElementById('backBtn').addEventListener('click', prevObek);
-  document.getElementById('nextShavtBtn').addEventListener('click', skipToNextShavt);
-  document.getElementById('micBtn').addEventListener('click', toggleSesliMod);
+  document.getElementById('contBtn').addEventListener('click', elleDevam);
+  document.getElementById('replayBtn').addEventListener('click', tekrarDinle);
+  document.getElementById('backBtn').addEventListener('click', geri);
+  document.getElementById('nextShavtBtn').addEventListener('click', sonrakiShavt);
+  document.getElementById('otoBtn').addEventListener('click', toggleOto);
   obekIndex=0;
   showObek();
 }
 
-function toggleSesliMod(){
-  sesliMod=!sesliMod;
-  const b=document.getElementById('micBtn');
-  if(sesliMod){
-    if(b){ b.textContent='🎤 Sesli komut: AÇIK'; b.style.opacity='1'; }
-    startListening();
-  } else {
-    stopListening();
-    if(b){ b.textContent='🎤 Sesli komut: KAPALI'; b.style.opacity='0.5'; }
-    const status=document.getElementById('obekStatus');
-    if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
-  }
-}
-
 function showObek(){
-  stopListening();
+  clearTimeout(otoTimer);
   const sh=shavtlar[shavtIndex];
   const total=sh.obekler.length;
   const txt=sh.obekler[obekIndex];
@@ -505,24 +488,21 @@ function showObek(){
   const ptext=document.getElementById('ptext');
   if(fill) fill.style.width=((obekIndex+1)/total*100)+'%';
   if(ptext) ptext.textContent=`Öbek ${obekIndex+1} / ${total}`;
-  // geri butonu ilk öbekte pasif görünsün
   const backBtn=document.getElementById('backBtn');
   if(backBtn) backBtn.style.opacity = obekIndex===0 ? '0.4' : '1';
-  speakObek();
+  calObek();
 }
 
-function speakObek(){
-  stopListening();
+function calObek(){
+  clearTimeout(otoTimer);
   const sh=shavtlar[shavtIndex];
   const txt=sh.obekler[obekIndex];
   const status=document.getElementById('obekStatus');
   const tEl=document.getElementById('obekText');
 
-  // önce çalan sesi durdur
   if(curAudio){ curAudio.pause(); curAudio=null; }
   if('speechSynthesis' in window) speechSynthesis.cancel();
 
-  // bu öbeğin ses dosyası: savt{N}_{01}.mp3
   const n=String(obekIndex+1).padStart(2,'0');
   const dosya=`savt${sh.no}_${n}.mp3`;
 
@@ -530,139 +510,94 @@ function speakObek(){
   if(tEl) tEl.classList.add('speaking');
 
   curAudio=new Audio(dosya);
-  curAudio.onended=()=>{
-    if(tEl) tEl.classList.remove('speaking');
-    if(status){ status.textContent='🔁 Şimdi siz tekrar edin'; status.className='obek-status listening'; }
-    if(sesliMod) startListening();
-  };
+  curAudio.onended=()=>{ if(tEl) tEl.classList.remove('speaking'); sesBitti(); };
   curAudio.onerror=()=>{
-    // ses dosyası yoksa cihaz sesiyle oku (yedek)
+    // mp3 yoksa cihaz sesiyle oku (yedek)
     if(tEl) tEl.classList.remove('speaking');
     if('speechSynthesis' in window){
       speechSynthesis.cancel();
       const u=new SpeechSynthesisUtterance(txt);
       u.lang='tr-TR'; u.rate=0.85;
-      u.onend=()=>{ if(status){ status.textContent='🔁 Şimdi siz tekrar edin'; status.className='obek-status listening'; } if(sesliMod) startListening(); };
-      u.onerror=()=>{ if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; } if(sesliMod) startListening(); };
-      if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
+      u.onend=()=>sesBitti();
+      u.onerror=()=>sesBitti();
       speechSynthesis.speak(u);
-    } else {
-      if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
-      if(sesliMod) startListening();
-    }
+    } else { sesBitti(); }
   };
   curAudio.play().catch(()=>{ /* otomatik çalma engellenirse Tekrar dinle ile çalar */ });
 }
 
-// ---- SESLİ KOMUT: mikrofonu aç, kullanıcının tekrarını dinle ----
-function initRecog(){
-  if(recog) return true;
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ sesliMod=false; return false; }
-  recog=new SR();
-  recog.lang='tr-TR'; recog.continuous=false; recog.interimResults=true;
-  recog.onresult=(e)=>{
-    let t='';
-    for(let i=0;i<e.results.length;i++) t+=e.results[i][0].transcript;
-    lastHeard=t;
-  };
-  recog.onend=()=>{ if(listening) degerlendir(); };
-  recog.onerror=()=>{ if(listening) degerlendir(); };
-  return true;
-}
-
-function startListening(){
-  if(!sesliMod) return;
-  if(!initRecog()){ return; }
-  listening=true; lastHeard='';
+// ses bitti — 3 sn bekle, otomatik geç
+function sesBitti(){
   const status=document.getElementById('obekStatus');
-  if(status){ status.textContent='🎤 Sizi dinliyorum… tekrar edin'; status.className='obek-status listening'; }
-  try{ recog.start(); }catch(e){ /* zaten çalışıyorsa */ }
-}
-
-function stopListening(){
-  listening=false;
-  if(recog){ try{ recog.stop(); }catch(e){} }
-}
-
-function degerlendir(){
-  listening=false;
-  const sh=shavtlar[shavtIndex];
-  const hedef=sh.obekler[obekIndex];
-  const skor=benzerlik(lastHeard, hedef);
-  const status=document.getElementById('obekStatus');
-  if(skor>=0.45){
-    // yeterince doğru → otomatik sonraki öbek
-    if(status){ status.textContent='✓ Güzel! Devam ediliyor…'; status.className='obek-status ok'; }
-    setTimeout(()=>{ ilerle(); }, 800);
+  if(otoMod){
+    let kalan=Math.round(BEKLEME/1000);
+    if(status){ status.textContent=`🔁 Şimdi siz tekrar edin… (${kalan})`; status.className='obek-status listening'; }
+    // geri sayım göster
+    clearTimeout(otoTimer);
+    const sayac=setInterval(()=>{
+      kalan--;
+      if(kalan>0){ if(status) status.textContent=`🔁 Şimdi siz tekrar edin… (${kalan})`; }
+    }, 1000);
+    otoTimer=setTimeout(()=>{ clearInterval(sayac); ilerle(); }, BEKLEME);
   } else {
-    // anlaşılmadı → aynı öbeği tekrar çal
-    if(status){ status.textContent='🔁 Tam duyamadım, tekrar dinleyelim'; status.className='obek-status'; }
-    setTimeout(()=>{ speakObek(); }, 1000);
+    if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
   }
 }
 
-// iki metnin kelime bazlı benzerliği (0-1)
-function normalize(s){
-  return (s||'').toLowerCase()
-    .replace(/[.,!?;:'"()]/g,'')
-    .replace(/â/g,'a').replace(/î/g,'i').replace(/û/g,'u')
-    .replace(/\s+/g,' ').trim();
-}
-function benzerlik(duyulan, hedef){
-  const a=new Set(normalize(duyulan).split(' ').filter(Boolean));
-  const b=normalize(hedef).split(' ').filter(Boolean);
-  if(a.size===0||b.length===0) return 0;
-  let kapsam=0;
-  b.forEach(w=>{ if(a.has(w)) kapsam++; });
-  return kapsam/b.length;  // hedef kelimelerin ne kadarı söylendi
-}
-
-// otomatik ilerleme (sesli komuttan)
+// otomatik ilerleme
 function ilerle(){
   const sh=shavtlar[shavtIndex];
   if(obekIndex < sh.obekler.length-1){
     obekIndex++; showObek();
   } else {
-    stopListening();
-    if(curAudio){ curAudio.pause(); curAudio=null; }
-    skipToNextShavt();
+    sonrakiShavt();
   }
 }
 
-function nextObek(){
-  const sh=shavtlar[shavtIndex];
-  if(obekIndex < sh.obekler.length-1){
-    obekIndex++;
-    showObek();
-  } else {
-    // şavt bitti
-    if(curAudio){ curAudio.pause(); curAudio=null; }
-    if('speechSynthesis' in window) speechSynthesis.cancel();
-    skipToNextShavt();
-  }
+// elle "Devam"
+function elleDevam(){
+  clearTimeout(otoTimer);
+  ilerle();
 }
 
-function prevObek(){
+function tekrarDinle(){
+  clearTimeout(otoTimer);
+  calObek();
+}
+
+function geri(){
+  clearTimeout(otoTimer);
   if(obekIndex>0){ obekIndex--; showObek(); }
 }
 
-function skipToNextShavt(){
+function sonrakiShavt(){
+  clearTimeout(otoTimer);
   if(curAudio){ curAudio.pause(); curAudio=null; }
   if('speechSynthesis' in window) speechSynthesis.cancel();
-  // sonraki şavt verisi var mı?
   if(shavtIndex < shavtlar.length-1){
     shavtIndex++; obekIndex=0; renderShavt();
   } else {
-    // başka şavt yok — şimdilik bitiş
     finish();
+  }
+}
+
+function toggleOto(){
+  otoMod=!otoMod;
+  const b=document.getElementById('otoBtn');
+  if(otoMod){
+    if(b){ b.textContent='⏱ Otomatik: AÇIK'; b.style.opacity='1'; }
+  } else {
+    clearTimeout(otoTimer);
+    if(b){ b.textContent='⏱ Otomatik: KAPALI'; b.style.opacity='0.5'; }
+    const status=document.getElementById('obekStatus');
+    if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
   }
 }
 
 function finish(){
   phase='done';
+  clearTimeout(otoTimer);
   if(curAudio){ curAudio.pause(); curAudio=null; }
-  stopListening();
   if('speechSynthesis' in window) speechSynthesis.cancel();
   shavtIndex=7;
   buildDots();
