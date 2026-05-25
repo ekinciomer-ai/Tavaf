@@ -419,7 +419,7 @@ let obekIndex=0;      // hangi öbek
 let curAudio=null;    // çalan ses
 let otoTimer=null;    // otomatik geçiş zamanlayıcı
 let otoMod=true;      // otomatik geçiş açık mı
-const BEKLEME=3000;   // ses bitince tekrar için bekleme (ms)
+const BEKLEME=1500;   // ses bitince tekrar için bekleme (ms)
 
 const dotsEl=document.getElementById('dots');
 const labelEl=document.getElementById('shavtLabel');
@@ -526,19 +526,13 @@ function calObek(){
   curAudio.play().catch(()=>{ /* otomatik çalma engellenirse Tekrar dinle ile çalar */ });
 }
 
-// ses bitti — 3 sn bekle, otomatik geç
+// ses bitti — kısa bekle, otomatik geç
 function sesBitti(){
   const status=document.getElementById('obekStatus');
   if(otoMod){
-    let kalan=Math.round(BEKLEME/1000);
-    if(status){ status.textContent=`🔁 Şimdi siz tekrar edin… (${kalan})`; status.className='obek-status listening'; }
-    // geri sayım göster
+    if(status){ status.textContent='🔁 Şimdi siz tekrar edin…'; status.className='obek-status listening'; }
     clearTimeout(otoTimer);
-    const sayac=setInterval(()=>{
-      kalan--;
-      if(kalan>0){ if(status) status.textContent=`🔁 Şimdi siz tekrar edin… (${kalan})`; }
-    }, 1000);
-    otoTimer=setTimeout(()=>{ clearInterval(sayac); ilerle(); }, BEKLEME);
+    otoTimer=setTimeout(()=>{ ilerle(); }, BEKLEME);
   } else {
     if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
   }
