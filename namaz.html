@@ -1,0 +1,3742 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Namaz Rehberi</title>
+<meta name="theme-color" content="#0a0e1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  :root{
+    --night:#0a0e1a; --night-2:#121829; --gold:#d4af6a; --gold-bright:#f0d9a0;
+    --gold-dim:#8a7548; --cream:#f5efe0; --text-dim:#9aa0b0; --line:rgba(212,175,106,0.18);
+    --green:#7fc99a;
+  }
+  html,body{ background:var(--night); color:var(--cream); font-family:'Jost',sans-serif; overflow-x:hidden; min-height:100vh; -webkit-font-smoothing:antialiased;}
+  body{
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(212,175,106,0.10), transparent 60%),
+      radial-gradient(ellipse 100% 80% at 50% 110%, rgba(18,24,41,0.9), transparent),
+      var(--night);
+    padding:0 0 40px;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(245,239,224,0.5), transparent),
+      radial-gradient(1px 1px at 70% 60%, rgba(245,239,224,0.4), transparent),
+      radial-gradient(1px 1px at 40% 80%, rgba(245,239,224,0.3), transparent),
+      radial-gradient(1px 1px at 90% 20%, rgba(245,239,224,0.4), transparent);
+  }
+  .wrap{ position:relative; z-index:1; max-width:480px; margin:0 auto; padding:0 20px;}
+  header{ text-align:center; padding:26px 0 10px;}
+  header .eyebrow{ font-size:11px; letter-spacing:5px; text-transform:uppercase; color:var(--gold-dim); font-weight:500;}
+  header h1{ font-family:'Amiri',serif; font-size:28px; color:var(--gold-bright); margin:6px 0 2px; font-weight:700;}
+  header .ar{ font-family:'Amiri',serif; font-size:17px; color:var(--gold); opacity:.8;}
+
+  /* Vakit secim kartlari */
+  .vakit-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px;}
+  .vakit-card{ background:linear-gradient(165deg, rgba(212,175,106,0.07), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:18px; padding:22px 16px; text-align:center; cursor:pointer; transition:all .2s;}
+  .vakit-card:active{ transform:scale(.97);}
+  .vakit-card .v-ar{ font-family:'Amiri',serif; font-size:22px; color:var(--gold-bright); margin-bottom:4px;}
+  .vakit-card .v-tr{ font-size:15px; color:var(--cream); font-weight:500;}
+  .vakit-card .v-sub{ font-size:11px; color:var(--text-dim); margin-top:4px;}
+  .vakit-card.full{ grid-column:1 / -1;}
+
+  .lead{ font-size:13.5px; color:var(--text-dim); line-height:1.7; text-align:center; margin:14px 4px 0;}
+
+  /* Birim secim */
+  .birim-list{ margin-top:16px; display:flex; flex-direction:column; gap:10px;}
+  .birim-btn{ background:rgba(245,239,224,0.05); border:1px solid var(--line); border-radius:14px; padding:16px 18px; color:var(--cream); font-size:15px; font-weight:500; font-family:'Jost',sans-serif; cursor:pointer; text-align:left; transition:all .2s; display:flex; justify-content:space-between; align-items:center;}
+  .birim-btn:active{ background:rgba(245,239,224,0.1);}
+  .birim-btn .ok{ color:var(--green); font-size:13px;}
+  .birim-btn .arrow{ color:var(--gold); }
+
+  /* Namaz ekrani */
+  .step-label{ text-align:center; font-family:'Cormorant Garamond',serif; font-size:17px; color:var(--text-dim); letter-spacing:1px; margin-top:4px;}
+  .step-label b{ color:var(--gold-bright); font-weight:600;}
+
+  .progress-wrap{ margin:14px 0 6px;}
+  .progress-bar{ height:4px; background:rgba(245,239,224,0.08); border-radius:4px; overflow:hidden;}
+  .progress-fill{ height:100%; background:linear-gradient(90deg,var(--gold-dim),var(--gold-bright)); width:0%; transition:width .4s ease; border-radius:4px;}
+  .progress-text{ text-align:center; font-size:11px; color:var(--gold-dim); margin-top:6px; letter-spacing:1px;}
+
+  /* Hareket gostergesi */
+  .pose-card{ background:linear-gradient(165deg, rgba(212,175,106,0.07), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:24px; padding:24px; margin-top:14px; text-align:center; box-shadow:0 16px 40px -22px rgba(0,0,0,0.7);}
+  .pose-icon{ font-size:54px; line-height:1; margin-bottom:10px; transition:all .3s;}
+  .pose-name{ font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--gold-dim);}
+  .step-title{ font-size:21px; line-height:1.5; color:var(--gold-bright); font-weight:500; margin-top:16px; min-height:60px; display:flex; align-items:center; justify-content:center; text-shadow:0 0 20px rgba(240,217,160,0.25);}
+  .step-status{ margin-top:14px; font-size:13px; color:var(--text-dim); min-height:18px; letter-spacing:.5px;}
+  .step-status.playing{ color:var(--gold-bright);}
+  .step-status.wait{ color:var(--green);}
+
+  .controls{ display:flex; align-items:center; justify-content:center; gap:12px; margin-top:20px;}
+  .ctrl{ font-family:'Jost',sans-serif; cursor:pointer; border-radius:30px; font-weight:600; letter-spacing:.4px; transition:all .18s; border:1px solid var(--line);}
+  .ctrl:active{ transform:scale(.95);}
+  .ctrl.main{ flex:1; max-width:200px; background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a; border:none; padding:16px 20px; font-size:15px; box-shadow:0 8px 24px -8px rgba(212,175,106,0.6);}
+  .ctrl.side{ background:rgba(245,239,224,0.05); color:var(--cream); padding:14px 16px; font-size:14px;}
+  .bottom-row{ display:flex; justify-content:space-between; gap:10px; margin-top:12px;}
+  .bottom-row .ctrl{ flex:1; padding:13px 10px; font-size:13px; font-weight:500;}
+
+  .note{ font-size:12px; color:var(--gold-dim); text-align:center; margin-top:22px; line-height:1.7; padding:0 6px;}
+  .back-link{ display:inline-block; margin-top:18px; color:var(--gold); font-size:13px; cursor:pointer; border-bottom:1px solid var(--line); padding-bottom:2px;}
+
+  .done-screen{ text-align:center; padding:34px 12px;}
+  .done-screen .ar{ font-family:'Amiri',serif; font-size:26px; color:var(--gold-bright); line-height:1.8;}
+  .done-screen p{ color:var(--text-dim); margin-top:14px; font-family:'Cormorant Garamond',serif; font-size:17px; font-style:italic; line-height:1.6;}
+  .big-btn{ font-family:'Jost',sans-serif; cursor:pointer; border:none; border-radius:14px; padding:15px 22px; font-size:15px; font-weight:600; letter-spacing:.5px; background:linear-gradient(135deg,var(--gold),var(--gold-bright)); color:#0a0e1a; box-shadow:0 8px 24px -8px rgba(212,175,106,0.6); width:100%; margin-top:20px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Beytullah</div>
+    <h1>Namaz Rehberi</h1>
+    <div class="ar">الصلاة</div>
+  </header>
+  <div id="main"></div>
+  <div class="note" id="note"></div>
+</div>
+<script>
+const NAMAZ_VERISI =
+{
+ "sabah": [
+  {
+   "ad": "Sabah Sünneti (2)",
+   "adimlar": [
+    {
+     "ses": "n01_sabah_sunnet",
+     "hareket": "niyet",
+     "baslik": "Niyet: Sabah namazının sünneti"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "11_kevser",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Kevser"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "16_felak",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Felak"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  },
+  {
+   "ad": "Sabah Farzı (2)",
+   "adimlar": [
+    {
+     "ses": "n02_sabah_farz",
+     "hareket": "niyet",
+     "baslik": "Niyet: Sabah namazının farzı"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "16_felak",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Felak"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "17_nas",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Nas"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  }
+ ],
+ "ogle": [
+  {
+   "ad": "Öğle İlk Sünnet (4)",
+   "adimlar": [
+    {
+     "ses": "n03_ogle_ilk_sunnet",
+     "hareket": "niyet",
+     "baslik": "Niyet: Öğle ilk sünneti"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "11_kevser",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Kevser"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "16_felak",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Felak"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  },
+  {
+   "ad": "Öğle Farzı (4)",
+   "adimlar": [
+    {
+     "ses": "n04_ogle_farz",
+     "hareket": "niyet",
+     "baslik": "Niyet: Öğle namazının farzı"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "16_felak",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Felak"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "17_nas",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Nas"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  },
+  {
+   "ad": "Öğle Son Sünnet (2)",
+   "adimlar": [
+    {
+     "ses": "n05_ogle_son_sunnet",
+     "hareket": "niyet",
+     "baslik": "Niyet: Öğle son sünneti"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "11_kevser",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Kevser"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "17_nas",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Nas"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  }
+ ],
+ "ikindi": [
+  {
+   "ad": "İkindi Sünneti (4)",
+   "adimlar": [
+    {
+     "ses": "n06_ikindi_sunnet",
+     "hareket": "niyet",
+     "baslik": "Niyet: İkindi sünneti"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "11_kevser",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Kevser"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "16_felak",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Felak"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  },
+  {
+   "ad": "İkindi Farzı (4)",
+   "adimlar": [
+    {
+     "ses": "n07_ikindi_farz",
+     "hareket": "niyet",
+     "baslik": "Niyet: İkindi namazının farzı"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "16_felak",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Felak"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "17_nas",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Nas"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  }
+ ],
+ "aksam": [
+  {
+   "ad": "Akşam Farzı (3)",
+   "adimlar": [
+    {
+     "ses": "n08_aksam_farz",
+     "hareket": "niyet",
+     "baslik": "Niyet: Akşam namazının farzı"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "11_kevser",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Kevser"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "16_felak",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Felak"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  },
+  {
+   "ad": "Akşam Sünneti (2)",
+   "adimlar": [
+    {
+     "ses": "n09_aksam_sunnet",
+     "hareket": "niyet",
+     "baslik": "Niyet: Akşam sünneti"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "16_felak",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Felak"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "17_nas",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Nas"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  }
+ ],
+ "yatsi": [
+  {
+   "ad": "Yatsı İlk Sünnet (4)",
+   "adimlar": [
+    {
+     "ses": "n10_yatsi_ilk_sunnet",
+     "hareket": "niyet",
+     "baslik": "Niyet: Yatsı ilk sünneti"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "11_kevser",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Kevser"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "16_felak",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Felak"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  },
+  {
+   "ad": "Yatsı Farzı (4)",
+   "adimlar": [
+    {
+     "ses": "n11_yatsi_farz",
+     "hareket": "niyet",
+     "baslik": "Niyet: Yatsı namazının farzı"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "16_felak",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Felak"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "17_nas",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Nas"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  },
+  {
+   "ad": "Yatsı Son Sünnet (2)",
+   "adimlar": [
+    {
+     "ses": "n12_yatsi_son_sunnet",
+     "hareket": "niyet",
+     "baslik": "Niyet: Yatsı son sünneti"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "11_kevser",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Kevser"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "17_nas",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Nas"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  },
+  {
+   "ad": "Vitir (3)",
+   "adimlar": [
+    {
+     "ses": "n13_vitir",
+     "hareket": "niyet",
+     "baslik": "Niyet: Vitir namazı"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "İftitah Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "01_subhaneke",
+     "hareket": "kiyam",
+     "baslik": "Sübhâneke"
+    },
+    {
+     "ses": "20_euzu_besmele",
+     "hareket": "kiyam",
+     "baslik": "Eûzü-Besmele"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "11_kevser",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Kevser"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "16_felak",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: Felak"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ayaga_kalk",
+     "baslik": "Ayağa Kalk — Allâhü Ekber"
+    },
+    {
+     "ses": "07_fatiha",
+     "hareket": "kiyam",
+     "baslik": "Fâtiha"
+    },
+    {
+     "ses": "21_amin",
+     "hareket": "kiyam",
+     "baslik": "Âmîn"
+    },
+    {
+     "ses": "15_ihlas",
+     "hareket": "kiyam",
+     "baslik": "Zammı Sûre: İhlas"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "kiyam",
+     "baslik": "Kunut Tekbiri — Allâhü Ekber (eller kaldırılır)"
+    },
+    {
+     "ses": "27_kunut_1",
+     "hareket": "kiyam",
+     "baslik": "Kunut Duası 1"
+    },
+    {
+     "ses": "28_kunut_2",
+     "hareket": "kiyam",
+     "baslik": "Kunut Duası 2"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "ruku",
+     "baslik": "Rükû — Allâhü Ekber"
+    },
+    {
+     "ses": "22_subhane_rabbiyel_azim",
+     "hareket": "ruku",
+     "baslik": "Rükûda: Sübhâne Rabbiyel-Azîm (3)"
+    },
+    {
+     "ses": "23_semiallahu",
+     "hareket": "dogrul",
+     "baslik": "Doğrulurken: Semiallâhü limen hamideh"
+    },
+    {
+     "ses": "24_rabbena_lekel_hamd",
+     "hareket": "dogrul",
+     "baslik": "Rabbenâ lekel-hamd"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "celse",
+     "baslik": "Otur — Allâhü Ekber"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "secde",
+     "baslik": "2. Secde — Allâhü Ekber"
+    },
+    {
+     "ses": "25_subhane_rabbiyel_ala",
+     "hareket": "secde",
+     "baslik": "Secdede: Sübhâne Rabbiyel-A'lâ (3)"
+    },
+    {
+     "ses": "19_tekbir",
+     "hareket": "otur",
+     "baslik": "Oturuş — Allâhü Ekber"
+    },
+    {
+     "ses": "02_ettehiyyatu",
+     "hareket": "otur",
+     "baslik": "Ettehiyyâtü"
+    },
+    {
+     "ses": "03_allahumme_salli",
+     "hareket": "otur",
+     "baslik": "Allâhümme Salli"
+    },
+    {
+     "ses": "04_allahumme_barik",
+     "hareket": "otur",
+     "baslik": "Allâhümme Bârik"
+    },
+    {
+     "ses": "05_rabbena_atina",
+     "hareket": "otur",
+     "baslik": "Rabbenâ Âtina"
+    },
+    {
+     "ses": "06_rabbenagfirli",
+     "hareket": "otur",
+     "baslik": "Rabbenâğfirli"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sag",
+     "baslik": "Selam (sağa)"
+    },
+    {
+     "ses": "26_selam",
+     "hareket": "selam_sol",
+     "baslik": "Selam (sola)"
+    }
+   ]
+  }
+ ]
+};
+
+// ses dosyalari namaz_sesler/ klasorunde: <anahtar>_ar.mp3
+const SES_YOLU = "namaz_sesler/";
+const SES_SONEK = "_ar.mp3";
+const BEKLEME = 1500; // ses bitince bekleme (ms)
+
+const VAKIT_BILGI = {
+  sabah:  {ar:"الفجر",  tr:"Sabah"},
+  ogle:   {ar:"الظهر",  tr:"Öğle"},
+  ikindi: {ar:"العصر",  tr:"İkindi"},
+  aksam:  {ar:"المغرب", tr:"Akşam"},
+  yatsi:  {ar:"العشاء", tr:"Yatsı"},
+};
+
+const POSE = {
+  niyet:     {icon:"🧍", name:"Niyet"},
+  kiyam:     {icon:"🧍", name:"Kıyam (Ayakta)"},
+  ruku:      {icon:"🙇", name:"Rükû"},
+  dogrul:    {icon:"🧍", name:"Doğrulma (Kavme)"},
+  secde:     {icon:"🛐", name:"Secde"},
+  celse:     {icon:"🧎", name:"Oturuş (Celse)"},
+  otur:      {icon:"🧎", name:"Oturuş (Ka'de)"},
+  ayaga_kalk:{icon:"🧍", name:"Ayağa Kalkış"},
+  selam_sag: {icon:"👉", name:"Selam (Sağa)"},
+  selam_sol: {icon:"👈", name:"Selam (Sola)"},
+};
+
+let vakit=null, birimIndex=0, adimIndex=0;
+let curAudio=null, otoTimer=null, otoMod=true;
+
+const main=document.getElementById('main');
+const noteEl=document.getElementById('note');
+
+function renderVakitler(){
+  let cards='';
+  for(const v of ['sabah','ogle','ikindi','aksam','yatsi']){
+    const b=VAKIT_BILGI[v];
+    const sayi=NAMAZ_VERISI[v].length;
+    cards+=`<div class="vakit-card" onclick="secVakit('${v}')">
+      <div class="v-ar">${b.ar}</div>
+      <div class="v-tr">${b.tr}</div>
+      <div class="v-sub">${sayi} bölüm</div>
+    </div>`;
+  }
+  main.innerHTML=`<div class="lead">Hangi vaktin namazını kılacaksınız? Uygulama her hareketi sırayla okur, siz tekrar edip namazı eda edersiniz.</div>
+    <div class="vakit-grid">${cards}</div>`;
+  noteEl.textContent="Hanefî mezhebine göre hazırlanmıştır. Sesler bittikçe otomatik ilerler; dilerseniz elle de geçebilirsiniz.";
+}
+
+function secVakit(v){
+  vakit=v;
+  const birimler=NAMAZ_VERISI[v];
+  const b=VAKIT_BILGI[v];
+  let list='';
+  birimler.forEach((birim,i)=>{
+    list+=`<div class="birim-btn" onclick="basla(${i})">
+      <span>${birim.ad}</span><span class="arrow">▸</span>
+    </div>`;
+  });
+  main.innerHTML=`<div class="step-label">${b.tr} Namazı · <b>الصلاة</b></div>
+    <div class="lead">Kılınacak bölümü seçin. Sıra ile kılmanız önerilir.</div>
+    <div class="birim-list">${list}</div>
+    <div style="text-align:center;"><span class="back-link" onclick="renderVakitler()">‹ Vakitlere dön</span></div>`;
+  noteEl.textContent="";
+}
+
+function basla(bi){
+  birimIndex=bi; adimIndex=0;
+  renderNamaz();
+}
+
+function renderNamaz(){
+  const birim=NAMAZ_VERISI[vakit][birimIndex];
+  main.innerHTML=`
+    <div class="step-label">${birim.ad}</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+      <div class="progress-text" id="ptext"></div>
+    </div>
+    <div class="pose-card">
+      <div class="pose-icon" id="poseIcon">🧍</div>
+      <div class="pose-name" id="poseName">—</div>
+      <div class="step-title" id="stepTitle"></div>
+      <div class="step-status" id="stepStatus"></div>
+    </div>
+    <div class="controls">
+      <button class="ctrl side" id="replayBtn">🔊 Tekrar</button>
+      <button class="ctrl main" id="contBtn">Devam ▸</button>
+    </div>
+    <div class="bottom-row">
+      <button class="ctrl" id="backBtn">◂ Geri</button>
+      <button class="ctrl" id="otoBtn">⏱ Otomatik: AÇIK</button>
+    </div>
+    <div class="bottom-row" style="margin-top:10px;">
+      <button class="ctrl" id="exitBtn" style="flex:1;">✕ Namazdan çık</button>
+    </div>`;
+  document.getElementById('contBtn').addEventListener('click', elleDevam);
+  document.getElementById('replayBtn').addEventListener('click', ()=>calAdim());
+  document.getElementById('backBtn').addEventListener('click', geri);
+  document.getElementById('otoBtn').addEventListener('click', toggleOto);
+  document.getElementById('exitBtn').addEventListener('click', ()=>{ stopAll(); secVakit(vakit); });
+  noteEl.textContent="";
+  showAdim();
+}
+
+function showAdim(){
+  clearTimeout(otoTimer);
+  const birim=NAMAZ_VERISI[vakit][birimIndex];
+  const adimlar=birim.adimlar;
+  const a=adimlar[adimIndex];
+  const pose=POSE[a.hareket]||{icon:"🧍",name:""};
+  document.getElementById('poseIcon').textContent=pose.icon;
+  document.getElementById('poseName').textContent=pose.name;
+  document.getElementById('stepTitle').textContent=a.baslik;
+  const fill=document.getElementById('pfill');
+  const ptext=document.getElementById('ptext');
+  if(fill) fill.style.width=((adimIndex+1)/adimlar.length*100)+'%';
+  if(ptext) ptext.textContent=`Adım ${adimIndex+1} / ${adimlar.length}`;
+  const backBtn=document.getElementById('backBtn');
+  if(backBtn) backBtn.style.opacity = adimIndex===0 ? '0.4' : '1';
+  calAdim();
+}
+
+function calAdim(){
+  clearTimeout(otoTimer);
+  const birim=NAMAZ_VERISI[vakit][birimIndex];
+  const a=birim.adimlar[adimIndex];
+  const status=document.getElementById('stepStatus');
+  if(curAudio){ curAudio.pause(); curAudio=null; }
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+
+  if(!a.ses){ // ses yok, sadece hareket
+    if(status){ status.textContent='Hareketi yapın'; status.className='step-status'; }
+    sesBitti(); return;
+  }
+  const dosya=SES_YOLU+a.ses+SES_SONEK;
+  if(status){ status.textContent='🔊 Dinleyin…'; status.className='step-status playing'; }
+  const icon=document.getElementById('poseIcon');
+  if(icon) icon.style.transform='scale(1.1)';
+  curAudio=new Audio(dosya);
+  curAudio.onended=()=>{ if(icon) icon.style.transform='scale(1)'; sesBitti(); };
+  curAudio.onerror=()=>{
+    if(icon) icon.style.transform='scale(1)';
+    if('speechSynthesis' in window){
+      speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(a.baslik);
+      u.lang='tr-TR'; u.rate=0.9;
+      u.onend=()=>sesBitti(); u.onerror=()=>sesBitti();
+      speechSynthesis.speak(u);
+    } else sesBitti();
+  };
+  curAudio.play().catch(()=>{});
+}
+
+function sesBitti(){
+  const status=document.getElementById('stepStatus');
+  if(otoMod){
+    if(status){ status.textContent='✓ Devam ediliyor…'; status.className='step-status wait'; }
+    clearTimeout(otoTimer);
+    otoTimer=setTimeout(()=>ilerle(), BEKLEME);
+  } else {
+    if(status){ status.textContent='Hazır olunca "Devam"'; status.className='step-status wait'; }
+  }
+}
+
+function ilerle(){
+  const birim=NAMAZ_VERISI[vakit][birimIndex];
+  if(adimIndex < birim.adimlar.length-1){
+    adimIndex++; showAdim();
+  } else {
+    birimBitti();
+  }
+}
+
+function elleDevam(){ clearTimeout(otoTimer); ilerle(); }
+function geri(){ clearTimeout(otoTimer); if(adimIndex>0){ adimIndex--; showAdim(); } }
+
+function birimBitti(){
+  stopAll();
+  const birimler=NAMAZ_VERISI[vakit];
+  // sonraki birim var mi?
+  if(birimIndex < birimler.length-1){
+    const sonraki=birimler[birimIndex+1].ad;
+    main.innerHTML=`<div class="done-screen">
+      <div class="ar">تَقَبَّلَ اللهُ</div>
+      <p>${birimler[birimIndex].ad} tamamlandı.<br>Sıradaki: <b style="color:var(--gold-bright)">${sonraki}</b></p>
+      <button class="big-btn" onclick="basla(${birimIndex+1})">${sonraki} ▸</button>
+      <div style="margin-top:14px;"><span class="back-link" onclick="secVakit('${vakit}')">‹ Bölümlere dön</span></div>
+    </div>`;
+  } else {
+    main.innerHTML=`<div class="done-screen">
+      <div class="ar">تَقَبَّلَ اللهُ صَلَاتَكَ</div>
+      <p>Allah namazınızı kabul etsin.<br>${VAKIT_BILGI[vakit].tr} namazı tamamlandı.</p>
+      <button class="big-btn" onclick="renderVakitler()">Ana sayfaya dön</button>
+    </div>`;
+  }
+}
+
+function toggleOto(){
+  otoMod=!otoMod;
+  const b=document.getElementById('otoBtn');
+  if(otoMod){ if(b){ b.textContent='⏱ Otomatik: AÇIK'; b.style.opacity='1'; } }
+  else { clearTimeout(otoTimer); if(b){ b.textContent='⏱ Otomatik: KAPALI'; b.style.opacity='0.5'; }
+    const s=document.getElementById('stepStatus'); if(s){ s.textContent='Hazır olunca "Devam"'; s.className='step-status wait'; } }
+}
+
+function stopAll(){
+  clearTimeout(otoTimer);
+  if(curAudio){ curAudio.pause(); curAudio=null; }
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+}
+
+renderVakitler();
+</script>
+</body>
+</html>
