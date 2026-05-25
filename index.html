@@ -223,26 +223,46 @@ function showObek(){
   speakObek();
 }
 
+let curAudio=null;
+
 function speakObek(){
   const sh=shavtlar[shavtIndex];
   const txt=sh.obekler[obekIndex];
   const status=document.getElementById('obekStatus');
   const tEl=document.getElementById('obekText');
-  if('speechSynthesis' in window){
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(txt);
-    u.lang='tr-TR'; u.rate=0.85; u.pitch=1.0;
-    if(status){ status.textContent='🔊 Dinleyin…'; status.className='obek-status'; }
-    if(tEl) tEl.classList.add('speaking');
-    u.onend=()=>{
-      if(tEl) tEl.classList.remove('speaking');
-      if(status){ status.textContent='🔁 Şimdi siz tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
-    };
-    u.onerror=()=>{ if(tEl) tEl.classList.remove('speaking'); if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; } };
-    speechSynthesis.speak(u);
-  } else {
-    if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
-  }
+
+  // önce çalan sesi durdur
+  if(curAudio){ curAudio.pause(); curAudio=null; }
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+
+  // bu öbeğin ses dosyası: savt{N}_{01}.mp3
+  const n=String(obekIndex+1).padStart(2,'0');
+  const dosya=`savt${sh.no}_${n}.mp3`;
+
+  if(status){ status.textContent='🔊 Dinleyin…'; status.className='obek-status'; }
+  if(tEl) tEl.classList.add('speaking');
+
+  curAudio=new Audio(dosya);
+  curAudio.onended=()=>{
+    if(tEl) tEl.classList.remove('speaking');
+    if(status){ status.textContent='🔁 Şimdi siz tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
+  };
+  curAudio.onerror=()=>{
+    // ses dosyası yoksa cihaz sesiyle oku (yedek)
+    if(tEl) tEl.classList.remove('speaking');
+    if('speechSynthesis' in window){
+      speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(txt);
+      u.lang='tr-TR'; u.rate=0.85;
+      u.onend=()=>{ if(status){ status.textContent='🔁 Şimdi siz tekrar edin, sonra "Devam"'; status.className='obek-status listening'; } };
+      u.onerror=()=>{ if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; } };
+      if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
+      speechSynthesis.speak(u);
+    } else {
+      if(status){ status.textContent='🔁 Tekrar edin, sonra "Devam"'; status.className='obek-status listening'; }
+    }
+  };
+  curAudio.play().catch(()=>{ /* otomatik çalma engellenirse Tekrar dinle ile çalar */ });
 }
 
 function nextObek(){
@@ -252,6 +272,7 @@ function nextObek(){
     showObek();
   } else {
     // şavt bitti
+    if(curAudio){ curAudio.pause(); curAudio=null; }
     if('speechSynthesis' in window) speechSynthesis.cancel();
     skipToNextShavt();
   }
@@ -262,6 +283,7 @@ function prevObek(){
 }
 
 function skipToNextShavt(){
+  if(curAudio){ curAudio.pause(); curAudio=null; }
   if('speechSynthesis' in window) speechSynthesis.cancel();
   // sonraki şavt verisi var mı?
   if(shavtIndex < shavtlar.length-1){
@@ -274,6 +296,7 @@ function skipToNextShavt(){
 
 function finish(){
   phase='done';
+  if(curAudio){ curAudio.pause(); curAudio=null; }
   if('speechSynthesis' in window) speechSynthesis.cancel();
   buildDots();
   labelEl.innerHTML=`1. Şavt tamamlandı`;
