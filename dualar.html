@@ -62,6 +62,7 @@
   .ctrl.main{ background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a; border:none; box-shadow:0 8px 24px -8px rgba(212,175,106,0.6);}
   .back-link{ display:inline-block; margin-top:18px; color:var(--gold); font-size:13px; cursor:pointer; border-bottom:1px solid var(--line); padding-bottom:2px;}
   .center{ text-align:center; }
+  .kaynak{ font-size:11px; color:var(--gold-dim); text-align:center; margin-top:16px; line-height:1.6; font-style:italic; padding:0 10px;}
   .note{ font-size:12px; color:var(--gold-dim); text-align:center; margin-top:22px; line-height:1.7; padding:0 6px;}
 </style>
 </head>
@@ -79,36 +80,109 @@
 const DUALAR =
 [
  {
-  "ad": "Arafat Vakfesi Duası",
+  "ad": "Arafat Vakfesi Duası (Peygamberimizin Duası)",
   "ar": "دعاء عرفة",
+  "kaynak": "Hz. Peygamber'in (s.a.v.) Arafat vakfesinde okuduğu dua. Kaynak: Gazâlî, İhyâ I, 337-338; Beyhakî, Şuabu'l-Îmân II, 25-26.",
   "maddeler": [
-   "İlâhî! Sana karşı kim kendisini övebilir?",
-   "Sen kullarına şah damarlarından daha yakınsın.",
-   "İlâhî! Beni ben'den daha iyi bilen sensin.",
-   "Ben sana, senin bana olan yakınlığın kadar yakın olamadım; beni affeyle.",
-   "İlâhî! Günahlarım o kadar çok ki, utancımdan başımı kaldırıp sana bakamıyorum.",
-   "Fakat rahmetinin enginliğini düşününce yeniden ümitleniyorum.",
-   "İlâhî! Senin affın benim günahımdan büyüktür.",
-   "Senin rahmetin benim ümidimden geniştir.",
-   "İlâhî! Beni bağışla, çünkü bağışlamak sana yakışır.",
-   "Bana merhamet et, çünkü merhamet senin şanındandır.",
-   "İlâhî! Kapına geldim, ellerimi açtım, başımı önüme eğdim.",
-   "Senden başka sığınacak bir kapı, senden başka güvenecek bir el bilmiyorum.",
-   "İlâhî! Beni boş çevirme, ellerimi boş döndürme.",
-   "Çünkü senin kapından boş dönen hiçbir kul olmadı.",
-   "İlâhî! Bu mübarek günde, bu mübarek yerde, bütün günahlarımı bağışla.",
-   "Geçmişimi de geleceğimi de affeyle.",
-   "İlâhî! Beni takvâ sahiplerinden, sana şükreden kullarından eyle.",
-   "Kalbimi imanla, dilimi zikrinle, gözümü haşyetinle doldur.",
-   "İlâhî! Anne babamı, çoluk çocuğumu, bütün sevdiklerimi bağışla.",
-   "Onlara dünyada da âhirette de hayır ve afiyet ver.",
-   "İlâhî! Bütün müminlerin, hac ibadetini eda eden kardeşlerimin haccını kabul eyle.",
-   "Bizleri bir daha bu mukaddes topraklara kavuştur.",
-   "İlâhî! Bizi affedilmiş, haccı kabul edilmiş, günahlarından arınmış olarak evimize döndür.",
-   "Senden dünya saadeti, âhiret selâmeti istiyorum.",
-   "İlâhî! Duamı kabul eyle, yüzümü ak eyle, gönlümü hoş eyle.",
-   "Rabbenâ âtinâ fid-dünyâ haseneten ve fil-âhirati haseneten ve kınâ azâben-nâr.",
-   "Âmîn."
+   "Ey Allâh'ım! Senin buyurduğun şekilde ve bizim söylediğimizden daha üstün olarak Sana hamd olsun!",
+   "Ey Allâh'ım! Benim namazım, ibâdetim, hayâtım ve ölümüm Senin içindir!",
+   "Dönüşüm Sanadır!",
+   "Ey Allâh'ım! Kabir azâbından, kalbin vesvesesinden ve işlerin dağınıklığından Sana sığınırım!",
+   "Ey Allâh'ım! Rüzgârların getirdiği âfetin şerrinden Sana sığınırım!",
+   "Ey Allâh'ım! Gözümde bir nûr, kulağımda bir nûr, kalbimde bir nûr yarat!",
+   "Ey Allâh'ım! Göğsüme genişlik ver! İşimi kolaylaştır!",
+   "Ey Allâh'ım! Sağlığın hastalığa çevrilmesinden, birdenbire gelip çatacak azâbından ve bütün gazabından Sana sığınırım!",
+   "Ey Allâh'ım! Her kâfileye hediye, her isteyene atiyye verilir; her ziyâretçiye ikrâm edilir!",
+   "Her sevap umana sevap verilir!",
+   "Bizler topluca Senin Beyt-i Harâm'ına geldik!",
+   "Şu büyük meşâirde vakfeye durduk!",
+   "Şu mübârek yerlerde hazır bulunduk!",
+   "Ümîdimiz, yüce katındaki sevap ve mükâfâta nâil olmaktır!",
+   "Ümîdimizi boşa çıkarma Allâh'ım!"
+  ]
+ },
+ {
+  "ad": "Arafat Vakfe Duası (Geniş Münâcât)",
+  "ar": "دعاء الوقوف بعرفة",
+  "kaynak": "DİTİB (Diyanet İşleri Türk İslam Birliği) resmî Arafat Vakfe Duası metni.",
+  "maddeler": [
+   "Ey Âlemlerin Rabbi, Rahman ve Rahim olan, rahmeti her şeyi kuşatan Yüce Allah!",
+   "Ey göklerin, yerin ve ikisi arasındaki her şeyin sahibi olan Ulu Allah!",
+   "Ey bizleri evine davet edip, bahtiyar misafirleri arasına kabul buyuran Yüce Rabbimiz!",
+   "Ey bu mübarek ayda, günahların en çok affedildiği bu mübarek Arefe gününde; duaların geri çevrilmediği bu mübarek Arafat meydanında bizlere vakfeyi lütfeden Yüce Mevlâ'mız, Sana sonsuz hamdü senalar ediyoruz, Yâ İlâhe'l-Âlemin!",
+   "Âlemlere rahmet, şahit, müjdeleyici ve uyarıcı olarak gönderdiğin, güzel ahlakıyla bütün insanlığa önder ve rehber kıldığın, başımızın tacı, gönlümüzün siracı, Fahr-i Kâinat Efendimiz Muhammed Mustafa başta olmak üzere bütün Peygamberân-ı İzâma, bâhusus Âdem, İbrahim ve İsmail'e sayısız salâtü selam ediyoruz.",
+   "Yâ Rabbe'l-Âlemin! Sen bizleri var ettin, varlığından haberdar ettin, aşkını ve sevgini gönlümüze nakşettin ve bu mukaddes yerde huzuruna kabul ettin! Sana sonsuz şükürler olsun Allah'ım!",
+   "Bizler büyük bir aşk, heyecan ve vecd ile hac görevimizi yaparak Senin rızana nail olmaya, ihramımızı kefen bilerek, dünyanın dört bir yanından gelen Müslüman kardeşlerimizle birlikte kulluğumuzu Sana arz etmeye ve mahşeri burada tecrübe etmeye geldik!",
+   "Sayısız günahlarımıza rağmen, sonsuz affına sığınarak ve 'Bana dua edin, duanıza icabet edeyim' emrine uyarak; yanık gönüllerimiz, yaşlı gözlerimiz, mahcup yüzlerimizle Arafat'ta boynumuzu büktük, ellerimizi Sana açtık.",
+   "Şimdi hep birlikte söylediğimiz; 'Buyur Allah'ım buyur! Buyur, Senin hiçbir ortağın yoktur. Buyur, şüphesiz her türlü övgü, nimet, mülk ve hükümranlık Sana mahsustur. Senin ortağın yoktur' nidalarıyla Sana yalvarıyoruz, hâlimizi arz ediyoruz.",
+   "Yüce dergâhına iltica ediyor, Senden af ve mağfiret diliyoruz: Dua ve niyazlarımızı kabul eyle! Sa'yimizi meşkûr eyle! Vakfemizi mübarek eyle! Günahlarımızı affeyle!",
+   "Bu mübarek yerde Sana açılan ellerimizi, aşkınla yanan gönüllerimizi boş çevirme! Bizi Sana, Senin kulluğuna, sevgine, cennetine lâyık eyle. Bizleri affolunanlar zümresine ilhak eyle yâ Rabbi!",
+   "Yâ İlahi! Atamız Âdem'in tövbesini kabul ettiğin, Peygamber Efendimize Veda Haccında binlerce Mümine 'Veda Hutbesi'ni irad etmeyi müyesser kıldığın, bugüne kadar sayısız kulunu misafir ettiğin bu mübarek mekânda, Yüce Kitabı'nda bizlere öğrettiğin dualarla Sana yalvarıyoruz, kabul buyur Allah'ım:",
+   "'Rabbimiz! Biz kendimize zulmettik. Eğer bizi bağışlamaz ve bize merhamet etmezsen biz, mutlaka hüsrana uğrayacağız.' Bizi hüsrana uğratma Allah'ım!",
+   "'Rabbimiz! Bizi doğru yola eriştirdikten sonra kalplerimizi saptırma, bize katından rahmet ver. Şüphesiz Sen çok lütufkârsın.'",
+   "'Rabbimiz! Günahlarımızı ve aşırılıklarımızı bağışla ve bizi ayakları yere sağlam basanlardan eyle. Kâfirler topluluğuna karşı bize yardım et.'",
+   "'Rabbimiz! Bize dünyada iyilik ver, ahirette de iyilik ver. Bizi cehennem azabından koru.'",
+   "'Rabbimiz! Eğer unutur ya da yanılırsak bizi sorumlu tutma! Rabbimiz! Bize, bizden öncekilere yüklediğin gibi ağır yükler yükleme. Rabbimiz! Bize taşıyamayacağımız şeyleri de yükleme! Bizi affet, bizi bağışla, bize acı! Sen bizim Mevlâ'mızsın. Kâfirler topluluğuna karşı bize yardım et.'",
+   "Yâ Rabbe'l-Âlemin! Bizleri İslâm'ın ve Kur'an'ın yolundan ayırma! Kur'an'ı; kalplerimizin gıdası, ruhlarımızın şifası, kabirlerimizin ziyası, maddî ve manevî dertlerimizin devası eyle Allah'ım!",
+   "Allah'ım! Sen bizleri en güzel surette yarattın, sayısız nimetlerle donattın, bizler bunun kadrini kıymetini bilemedik! Nefsimize ve şeytana uyduk! Hadsiz günah işledik! Defalarca tövbe ettik ve her defasında tövbemizi bozduk!",
+   "Şimdi ise Senin; 'Ey kendilerine yazık eden kullarım! Allah'ın rahmetinden ümit kesmeyin!' müjdene güvenerek kapına geldik, hidayetine sığındık, lütfuna geldik; kulluk edemedik, affına geldik. Mahcup etme bizi, boş çevirme kapından! Lütf-u ihsanını eksik etme üzerimizden!",
+   "Allah'ım! Şüphesiz Sen affedicisin, affetmeyi seversin, bizleri affeyle!",
+   "Allah'ım! Sen bize hakkı hak olarak göster ve ona uymayı nasip eyle. Bâtılı da bâtıl olarak göster ve ondan kaçınmayı nasip eyle!",
+   "Bundan böyle yolumuzu ve yönümüzü şaşırtma! Kalplerimizi doğruluktan, haktan ve hakikatten ayırma! Hata, kusur ve aşırılıklarımızdan dolayı Sen bizleri yakma Allah'ım!",
+   "Bizleri nimetlerine şükreden, takdirine rıza gösteren, belâ ve musibetlere sabreden, korktuklarından emin, umduklarına nâil olan bahtiyar kullarından eyle Allah'ım!",
+   "Yâ Rabbi! Sevgili Peygamberimizin ümmeti için yaptığı; 'Allah'ım! Haccedenleri bağışla! Onların bağışlanmasını istediği kişileri de bağışla!' duası bereketine; Sen bizleri, anamızı-babamızı, eşimiz ve evlatlarımızı affeyle!",
+   "Hocalarımızı, üzerimizde emeği ve hakkı olan herkesi bağışla Allah'ım! Dostlarımıza, arkadaşlarımıza, bizden hayır dua umanlara, buralara bizimle selâm gönderenlere mağfiret eyle Allah'ım!",
+   "İman ile bu dünyadan âhirete göçen bütün kullarını bağışla! Hepsinden hoşnut ve razı ol, hepsini sevgine ve muhabbetine mazhar eyle Allah'ım!",
+   "Rabbimiz! Gönlümüzü Kur'an'ın nuru ile tenvir eyle. Sen bizleri Peygamber Efendimize lâyık ümmet eyle, yolunda ve sünnetinde daim ve kaim eyle. O'nun ahlâkıyla ahlakımızı tezyin eyle, sevgisine lâyık eyle, şefaatine mazhar eyle Allah'ım!",
+   "Mahşer gününde Efendimizin 'Hamd Sancağı' altında toplanmayı, Cennet-i Âlâ'da O'na komşu olmayı cümlemize nasip eyle Allah'ım!",
+   "Efendimiz asırlar önce biz müminleri 'kardeşlerim' diyerek şereflendirmişti. Onun kardeşliğine layık olabilmeyi, bu sorumluluğu hakkıyla taşıyabilmeyi bizlere nasip eyle Allah'ım!",
+   "Yâ İlahi! Sevgili Peygamberimizin; 'Makbul bir haccın bir tek mükâfatı vardır, o da cennettir!' müjdesi gereğince haccımızı mebrûr eyle! Sa'yimizi meşkûr eyle! Günahlarımızı mağfûr eyle! Amellerimizi makbûl eyle!",
+   "Allah'ım! Resûl-i Zîşan Efendimiz 'Hac Arafat'tır!' ve 'Duanın en hayırlısı Arefe günü yapılan duadır' buyuruyor! Bizler de bugün Arafat'ı idrak ediyoruz! Arafat'taki feyiz ve bereket hürmetine bizleri Arafat'ta irfana erenler ve bağışlananlar zümresine dâhil eyle Allah'ım!",
+   "İhram ile hürmete, mikat ile vakti kuşanmaya, tavaf ile sevgiye, sa'y ile âb-ı hayata eriştir. Arafat'ta marifete, Meş'ar-il Haram'da şuura, Mina'da muhabbete ermeyi, kurbanlarımız ile Sana yakınlaşmayı, Cemerâtta bütün nefsanî isteklerden kurtulmayı bizlere lütfeyle Allah'ım!",
+   "Taşlayacağımız şeytanla birlikte; içimizdeki bencilliği, öfkeyi, kibri, gururu, nefreti, ihtirası, hasedi, fitne ve fesadı gönül dünyamızdan atmayı; buna mukabil tevazuyu, diğergamlığı, sevgiyi, hayırda yarışmayı ve cömertliği bizlere lütfeyle Allah'ım!",
+   "Ziyaret tavafı ile de Mescid-i Haram'da rızana ve rahmetine erişmeyi bizlere nasip ve müyesser eyle Allah'ım!",
+   "Rabbimiz! Habib-i Edibin'in; 'Öyle günahlar var ki, onları ancak Arafat'ta vakfeye durmak affettirebilir!' müjdesi gereğince, lütf-u kereminle dua ve niyazlarımızı kabul eyle Allah'ım!",
+   "Daha buradan ayrılmadan; affedilmedik hiçbir günahımızı, setredilmedik hiçbir ayıbımızı, giderilmedik hiçbir sıkıntımızı, karşılanmadık hiçbir ihtiyacımızı, ödenmeyecek hiçbir borcumuzu, şifâ bulmayacak hiçbir hastalığımızı, deva bulmayacak hiçbir derdimizi bırakma Allah'ım!",
+   "Yüce Allah'ım! Bizlere hayırlı işler, helâl ve bereketli kazançlar nasip eyle! Yuvalarımıza, aile ocağımıza mutluluk, huzur ve saadetler ihsan eyle!",
+   "Bizlere; Allah'a ve Peygambere itaat eden, ana ve babasına hürmet eden, insanlığa hizmet eden hayırlı evlatlar ve nesiller bahşeyle Allah'ım! Evlatlarımızın kalplerini iman nuru ile tenvir eyle Allah'ım!",
+   "Yavrularımıza hayırlı kısmetler, başarı, huzur, bereket ve sağlık içinde bir ömür lütfeyle! Onları her türlü kötülüklerden ve zararlı alışkanlıklardan muhafaza eyle Allah'ım!",
+   "Yâ Erhame'r-Râhimin! Ey kimsesizlerin kimsesi, gariplerin sığınağı Yüce Allah'ım! Yetimleri, öksüzleri, garipleri, kimsesizleri mahzun ve boynu bükük bırakma! Onlara yardım elini uzatacak müşfik ve hayır sahibi kullarını eksik etme! Bizleri de merhamet ve cömertlikte yarışan kullarından eyle Allah'ım!",
+   "Yâ Rabbe'l-Âlemin! Bizleri acizlikten, tembellikten, korkaklıktan, cimrilikten, bütün günahlardan, hayatın ve ölümün fitnesinden ve kabir azabından koru. Bizleri ödeyemeyeceğimiz borçtan, taşıyamayacağımız kederden, tahammül edemeyeceğimiz acıdan muhafaza eyle Allah'ım!",
+   "Ürpermeyen kalpten, yaşarmayan gözden, doymayan nefisten ve kabul olunmayan duadan Sana sığınıyoruz, bizleri koru Allah'ım!",
+   "Zalimlerin baskı ve zulmünden, hâinlerin hile ve hıyanetinden, kıskançların hasedinden bizleri muhafaza eyle Allah'ım!",
+   "Nefislerimizin bitmez tükenmez kötü arzu ve isteklerinden, heva ve heveslerimizin peşinde koşmaktan, şeytanın vesvese ve şerrinden; bizleri bildiğimiz bilmediğimiz bütün yarattıklarının şerrinden emin ve muhafaza eyle Allah'ım!",
+   "Yâ Rabbi! Bizlere sağlam ve sarsılmaz bir iman ve güzel ahlak ihsan eyle. İbadetlerimizi hakkıyla yapabilmeyi nasip ve müyesser eyle. Senden hayırlı işler yapmayı, kötülüklerden uzak kalmayı istiyoruz, nasip eyle Allah'ım!",
+   "Seni sevmeyi, Seni sevenleri sevmeyi, sevgine ulaştıran amelleri yapmayı niyaz ediyoruz, lütfeyle Allah'ım! Bizleri sevdiğin kullar zümresine dâhil eyle Allah'ım.",
+   "Senden cenneti, cennete götüren amelleri yapabilmeyi istiyoruz, lütfeyle Allah'ım! Cehennemden, cehenneme sürükleyen davranışlardan, cehennem azabıyla inim inim inlemekten Sana sığınıyoruz, muhafaza eyle Allah'ım!",
+   "Bizleri dünya ve ahirette rezil-rüsvay olmaktan, düşmanlarımızı güldürecek işler yapmaktan, şeytanları sevindirecek hata ve günahlar işlemekten koru Allah'ım! Bizi bizden, nefsimizin şerrinden koru Allah'ım!",
+   "Kalbimizi nifaktan, amelimizi riyadan, dilimizi yalandan, gözümüzü, malımızı, mülkümüzü haramdan muhafaza eyle Allah'ım!",
+   "Yüce Allah'ım! Bizler lâyık-ı veçhiyle Senden istemeyi bilmiyor, dua etmekte aciz kalıyoruz. Buna rağmen Sen bize nice lütuf ve ihsanlarda bulunuyorsun. Allah'ım! Sen gönlümüzden geçirip de istemeyi bilemediğimiz şeylerden hakkımızda hayırlı olanları bizlere ihsan eyle!",
+   "Kâbe'yi görmeyi nasip ettiğin gözlerimize cennette cemalini de görmeyi lütfeyle Allah'ım! Kimi yüzlerin kara, kimi yüzlerin ak olacağı o günde, Kâbe'ne döndüğümüz şu mahcup yüzlerimizi karartma Allah'ım! Aşkınla yanan gönüllerimizi nâr-ı cehennemden azad eyle Allah'ım!",
+   "Ya Rabbi! Kalbimizde sevgini daim eyle! Şu mübarek beldede Seni canı gönülden sevdiğimizi, Sana kayıtsız şartsız itaatimizi ve kulluğumuzu arz ediyoruz. Bizi aşkına ve muhabbetine gark eyle Allah'ım!",
+   "Bizlere faydalı ilim, helal ve bereketli kazanç, hayırlı, sağlıklı bir ömür ihsan eyle Allah'ım. Sevgili Peygamberimiz Muhammed Mustafa'nın Senden istediği bütün hayırları biz de istiyoruz, lütfeyle! Efendimizin sığındığı bütün şerlerden biz de Sana sığınıyoruz, muhafaza eyle Allah'ım!",
+   "Ya Rabbi! Bizlere bu mübarek topraklara gelmeyi lütfettiğin gibi, çoluk çocuğumuza ve isteyip dileyen bütün müminlere de gelme imkânı nasip eyle! Bu manevi ziyafetten onları da hissedar eyle Allah'ım!",
+   "Dünyada Zemzem suyundan kana kana içme imkânı verdiğin gibi, âhirette de Kevser Havzı'ndan içmeyi, beratımızı sağ elimize alarak Sıratı kolayca geçmeyi, sevdiklerimizle birlikte cennetine girmeyi bizlere nasip ve müyesser eyle Allah'ım!",
+   "Allah'ım, içtiğimiz zemzemi; cümle hastalıklarımıza şifa, maddî ve manevî dertlerimize deva, ruhlarımıza gıda, akıllarımıza ziya eyle.",
+   "Yâ Rabbi! Hac yolculuğu boyunca karşılaştığımız sıkıntıları, çektiğimiz zahmet ve meşakkatleri günahlarımızın affına, hatalarımızın bağışlanmasına vesile eyle!",
+   "Hatır yıkıp gönül incitmiş isek, bundan dolayı şu anda birbirimizle helalleşiyor, haklarımızı birbirimize helâl ediyoruz; şahit ol ve kabul eyle Allah'ım!",
+   "Yâ İlahi! Ülkemizi ve İslâm âlemini her türlü felâket ve tehlikelerden emin ve muhafaza eyle Allah'ım! Ülkemizi ve İslam beldelerini rahmet, bereket ve inayetinden mahrum eyleme Allah'ım!",
+   "Dinimiz, milletimiz için çalışanları hayırlı işlerde muvaffak eyle. Güvenliğimiz için hayatını tehlikeye atanları daima başarılı ve muzaffer eyle Allah'ım!",
+   "Ya İlahi! Senin yolunda, vatan ve millet uğruna şehit düşen ciğerparelerimize, aziz şehitlerimizin hepsine gani gani rahmet eyle! Kederli ailelerine bol ecir, sabır ve metanet ihsan eyle! Gazilerimizden vefat edenlere rahmet, sağ olanlara sıhhat ve afiyetler ihsan eyle Allah'ım!",
+   "Yüce Allah'ım! Sen kardeşliği, barışı, adaleti ve doğruluğu bizlere emrettin! Bizler de bu ağır yükleri taşımak için Sana söz verdik Allah'ım! Bizleri sözüne sadık kalanlardan eyle Allah'ım!",
+   "Ya Rabbi! Sen mükerrem kıldığın kullarının dualarına icabet edeceğini, günahlarını itiraf edip bağışlanma dilediklerinde onları bağışlayacağını müjdeledin! İşte suçlarımız. İşte itiraflarımız. İşte bağışlanma yakarışlarımız. Bizleri bağışla Allah'ım!",
+   "Lütuf ve rahmeti sonsuz olan Allah'ım! Bizleri işitip akleden, düşünüp kavrayan, adaletle tedbir alan kullarından eyle! Bu isyanlarımız karşısında yardımını, lütfunu biz Âdemoğullarından esirgeme Allah'ım!",
+   "Ya Rabbe'l-Âlemin! Dünyanın dört bir yanından gelen; dilleri, ırkları, renkleri ve âdetleri farklı, ama iman, niyet, duygu ve düşünceleri aynı olan milyonlarca Müslüman'ı Arafat'ta buluşturduğun gibi, kalplerimizi de sevginle buluştur ve kaynaştır Allah'ım!",
+   "Bizleri ayrılıklardan uzaklaştır, maddî ve manevî güçlerimizi birleştir, aramızdaki dayanışmayı güçlendir, ahirette de cennetinde buluştur yâ Rabbi!",
+   "Yâ Rabbe'l-Âlemin! Dünyanın her neresinde olursa olsun ezilen, üzülen, horlanan, işkence gören; açlık, kıtlık ve sefalet çeken mazlumlara, biçarelere imdat eyle, himmetini, yardımını üzerlerinden esirgeme!",
+   "Server-i Asfiya Efendimizin; 'Kim Allah için hacceder; hayâsızlık ve günahlardan sakınırsa, anasından doğduğu günkü gibi masum olarak memleketine döner' hadis-i şerifine uygun bir şekilde haccımızı yapabilmeyi ve günahlarımızdan tamamen arınarak yurdumuza, yuvamıza kavuşabilmeyi nasip ve müyesser eyle Allah'ım!",
+   "Yüce Allah'ım! Evimize döndükten sonra da; hata ve günahlarımızı tekrarlamadan, haramlara sapmadan, haksızlıklara arka çıkmadan, tefrikaya düşmeden, kimsenin hakkına hukukuna tecavüz etmeden, hatır gönül yıkmadan, şeytana, nefsimize, heva ve hevesimize uymadan, rızana ve dinine uygun bir şekilde yeni bir aşk, ihlas ve samimiyetle hayatımızı sürdürebilmeyi bizlere nasip ve müyesser eyle Allah'ım!",
+   "Arafat'ta arınan yüreklerimizi tertemiz tutabilmeyi bizlere ihsan eyle Allah'ım! Bizlere hacı olmayı nasip ettiğin gibi, ömür boyu hacı olarak kalmayı da nasip ve müyesser eyle.",
+   "Yâ Rabbe'l-Âlemin! Aşkınla tutuşan gönüller hürmetine, zikrinle coşan diller hürmetine, gözlerden akan yaşlar hürmetine, huzurunda eğilen başlar hürmetine; Âhir ve âkıbetimizi hayreyle Allah'ım! Dünya ve ahretimizi mamur eyle Allah'ım!",
+   "Bizleri sağlık ve âfiyette daim eyle! Ahlâkımızı güzel eyle! Kötülerle ve kötülüklerle karşılaştırma Allah'ım! Dert verip derman aratma! Dayanılmaz acılar verme! Bizleri darda ve zorda koyma! Senden başkasına muhtaç etme Allah'ım!",
+   "Son nefesimizde bizleri iman-ı kâmilden ayırma! Şeytanı imanımıza musallat eyleme! Bizlere ölüm acısı çektirme, kabir azabı yaşatma Allah'ım! Mahşer günü yüzlerimizi kara çıkartma! Bizleri naîm cennetinin vârislerinden eyle Allah'ım!",
+   "Allah'ım! Hac farizasını ifa etmek üzere yola çıkan, ancak Arafat'a ulaşamadan vefat eden kardeşlerimize de rahmetinle muamele eyle! Sen onların hac larını da yapılmış kabul eyle!",
+   "Bizlere de haccımızın kalan menasikini, kazasız belâsız, elemsiz kedersiz tamamlayarak yurdumuza, yuvamıza salimen ve gânimen kavuşmayı nasip eyle Allah'ım!",
+   "Âmin! Velhamdü lillâhi Rabbi'l-Âlemin."
   ]
  }
 ];
@@ -154,6 +228,7 @@ function renderOkuma(){
       <button class="ctrl" id="prevBtn">◂ Önceki</button>
       <button class="ctrl main" id="nextBtn">Sonraki ▸</button>
     </div>
+    <div class="kaynak" id="kaynakBox"></div>
     <div class="center"><span class="back-link" onclick="renderListe()">‹ Dualara dön</span></div>`;
   document.getElementById('maddeCard').addEventListener('click', sonraki);
   document.getElementById('nextBtn').addEventListener('click', sonraki);
@@ -164,6 +239,8 @@ function renderOkuma(){
 
 function showMadde(){
   const d=DUALAR[duaIndex];
+  const kb=document.getElementById('kaynakBox');
+  if(kb && d.kaynak) kb.textContent='Kaynak: '+d.kaynak;
   const toplam=d.maddeler.length;
   const tEl=document.getElementById('maddeText');
   if(tEl) tEl.textContent=d.maddeler[maddeIndex];
