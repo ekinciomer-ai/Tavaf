@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dualar</title>
+<meta name="theme-color" content="#0a0e1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  :root{
+    --night:#0a0e1a; --night-2:#121829; --gold:#d4af6a; --gold-bright:#f0d9a0;
+    --gold-dim:#8a7548; --cream:#f5efe0; --text-dim:#9aa0b0; --line:rgba(212,175,106,0.18);
+  }
+  html,body{ background:var(--night); color:var(--cream); font-family:'Jost',sans-serif; overflow-x:hidden; min-height:100vh; -webkit-font-smoothing:antialiased;}
+  body{
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(212,175,106,0.10), transparent 60%),
+      radial-gradient(ellipse 100% 80% at 50% 110%, rgba(18,24,41,0.9), transparent),
+      var(--night);
+    padding:0 0 40px;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(245,239,224,0.5), transparent),
+      radial-gradient(1px 1px at 70% 60%, rgba(245,239,224,0.4), transparent),
+      radial-gradient(1px 1px at 40% 80%, rgba(245,239,224,0.3), transparent),
+      radial-gradient(1px 1px at 90% 20%, rgba(245,239,224,0.4), transparent);
+  }
+  .wrap{ position:relative; z-index:1; max-width:480px; margin:0 auto; padding:0 20px;}
+  header{ text-align:center; padding:26px 0 10px;}
+  header .eyebrow{ font-size:11px; letter-spacing:5px; text-transform:uppercase; color:var(--gold-dim); font-weight:500;}
+  header h1{ font-family:'Amiri',serif; font-size:28px; color:var(--gold-bright); margin:6px 0 2px; font-weight:700;}
+  header .ar{ font-family:'Amiri',serif; font-size:17px; color:var(--gold); opacity:.8;}
+
+  .dua-list{ margin-top:18px; display:flex; flex-direction:column; gap:12px;}
+  .dua-card{ background:linear-gradient(165deg, rgba(212,175,106,0.07), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:18px; padding:20px 18px; cursor:pointer; transition:all .2s; display:flex; justify-content:space-between; align-items:center;}
+  .dua-card:active{ transform:scale(.97);}
+  .dua-card .d-tr{ font-size:16px; color:var(--cream); font-weight:500;}
+  .dua-card .d-ar{ font-family:'Amiri',serif; font-size:18px; color:var(--gold-bright);}
+  .dua-card .d-sub{ font-size:11px; color:var(--text-dim); margin-top:3px;}
+
+  .lead{ font-size:13.5px; color:var(--text-dim); line-height:1.7; text-align:center; margin:14px 4px 0;}
+
+  /* Okuma ekrani */
+  .read-label{ text-align:center; font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--gold-bright); letter-spacing:1px; margin-top:6px; font-weight:600;}
+  .progress-wrap{ margin:14px 0 6px;}
+  .progress-bar{ height:4px; background:rgba(245,239,224,0.08); border-radius:4px; overflow:hidden;}
+  .progress-fill{ height:100%; background:linear-gradient(90deg,var(--gold-dim),var(--gold-bright)); width:0%; transition:width .4s ease; border-radius:4px;}
+  .progress-text{ text-align:center; font-size:11px; color:var(--gold-dim); margin-top:6px; letter-spacing:1px;}
+
+  .madde-card{ background:linear-gradient(165deg, rgba(212,175,106,0.07), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:24px; padding:44px 26px; margin-top:14px; min-height:260px; display:flex; align-items:center; justify-content:center; box-shadow:0 16px 40px -22px rgba(0,0,0,0.7); cursor:pointer;}
+  .madde-text{ font-size:25px; line-height:1.65; text-align:center; color:var(--gold-bright); font-weight:500; text-shadow:0 0 22px rgba(240,217,160,0.22);}
+
+  .hint{ text-align:center; font-size:12px; color:var(--gold-dim); margin-top:12px; letter-spacing:.5px;}
+
+  .controls{ display:flex; align-items:center; justify-content:center; gap:12px; margin-top:18px;}
+  .ctrl{ font-family:'Jost',sans-serif; cursor:pointer; border-radius:30px; font-weight:600; letter-spacing:.4px; transition:all .18s; border:1px solid var(--line); background:rgba(245,239,224,0.05); color:var(--cream); padding:15px 20px; font-size:15px; flex:1;}
+  .ctrl:active{ transform:scale(.95);}
+  .ctrl.main{ background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a; border:none; box-shadow:0 8px 24px -8px rgba(212,175,106,0.6);}
+  .back-link{ display:inline-block; margin-top:18px; color:var(--gold); font-size:13px; cursor:pointer; border-bottom:1px solid var(--line); padding-bottom:2px;}
+  .center{ text-align:center; }
+  .note{ font-size:12px; color:var(--gold-dim); text-align:center; margin-top:22px; line-height:1.7; padding:0 6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Beytullah</div>
+    <h1>Dualar</h1>
+    <div class="ar">الأدعية</div>
+  </header>
+  <div id="main"></div>
+  <div class="note" id="note"></div>
+</div>
+<script>
+const DUALAR =
+[
+ {
+  "ad": "Arafat Vakfesi Duası",
+  "ar": "دعاء عرفة",
+  "maddeler": [
+   "İlâhî! Sana karşı kim kendisini övebilir?",
+   "Sen kullarına şah damarlarından daha yakınsın.",
+   "İlâhî! Beni ben'den daha iyi bilen sensin.",
+   "Ben sana, senin bana olan yakınlığın kadar yakın olamadım; beni affeyle.",
+   "İlâhî! Günahlarım o kadar çok ki, utancımdan başımı kaldırıp sana bakamıyorum.",
+   "Fakat rahmetinin enginliğini düşününce yeniden ümitleniyorum.",
+   "İlâhî! Senin affın benim günahımdan büyüktür.",
+   "Senin rahmetin benim ümidimden geniştir.",
+   "İlâhî! Beni bağışla, çünkü bağışlamak sana yakışır.",
+   "Bana merhamet et, çünkü merhamet senin şanındandır.",
+   "İlâhî! Kapına geldim, ellerimi açtım, başımı önüme eğdim.",
+   "Senden başka sığınacak bir kapı, senden başka güvenecek bir el bilmiyorum.",
+   "İlâhî! Beni boş çevirme, ellerimi boş döndürme.",
+   "Çünkü senin kapından boş dönen hiçbir kul olmadı.",
+   "İlâhî! Bu mübarek günde, bu mübarek yerde, bütün günahlarımı bağışla.",
+   "Geçmişimi de geleceğimi de affeyle.",
+   "İlâhî! Beni takvâ sahiplerinden, sana şükreden kullarından eyle.",
+   "Kalbimi imanla, dilimi zikrinle, gözümü haşyetinle doldur.",
+   "İlâhî! Anne babamı, çoluk çocuğumu, bütün sevdiklerimi bağışla.",
+   "Onlara dünyada da âhirette de hayır ve afiyet ver.",
+   "İlâhî! Bütün müminlerin, hac ibadetini eda eden kardeşlerimin haccını kabul eyle.",
+   "Bizleri bir daha bu mukaddes topraklara kavuştur.",
+   "İlâhî! Bizi affedilmiş, haccı kabul edilmiş, günahlarından arınmış olarak evimize döndür.",
+   "Senden dünya saadeti, âhiret selâmeti istiyorum.",
+   "İlâhî! Duamı kabul eyle, yüzümü ak eyle, gönlümü hoş eyle.",
+   "Rabbenâ âtinâ fid-dünyâ haseneten ve fil-âhirati haseneten ve kınâ azâben-nâr.",
+   "Âmîn."
+  ]
+ }
+];
+
+let duaIndex=0, maddeIndex=0;
+const main=document.getElementById('main');
+const noteEl=document.getElementById('note');
+
+function renderListe(){
+  let cards='';
+  DUALAR.forEach((d,i)=>{
+    cards+=`<div class="dua-card" onclick="acDua(${i})">
+      <div>
+        <div class="d-tr">${d.ad}</div>
+        <div class="d-sub">${d.maddeler.length} bölüm</div>
+      </div>
+      <div class="d-ar">${d.ar||''}</div>
+    </div>`;
+  });
+  main.innerHTML=`<div class="lead">Okumak istediğiniz duayı seçin. Ekrana dokundukça sıradaki bölüme geçer.</div>
+    <div class="dua-list">${cards}</div>`;
+  if(noteEl) noteEl.textContent="Şimdilik okumalıktır; ileride sesli de eklenecek.";
+}
+
+function acDua(i){
+  duaIndex=i; maddeIndex=0;
+  renderOkuma();
+}
+
+function renderOkuma(){
+  const d=DUALAR[duaIndex];
+  main.innerHTML=`
+    <div class="read-label">${d.ad}</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+      <div class="progress-text" id="ptext"></div>
+    </div>
+    <div class="madde-card" id="maddeCard">
+      <div class="madde-text" id="maddeText"></div>
+    </div>
+    <div class="hint">Devam etmek için karta dokunun</div>
+    <div class="controls">
+      <button class="ctrl" id="prevBtn">◂ Önceki</button>
+      <button class="ctrl main" id="nextBtn">Sonraki ▸</button>
+    </div>
+    <div class="center"><span class="back-link" onclick="renderListe()">‹ Dualara dön</span></div>`;
+  document.getElementById('maddeCard').addEventListener('click', sonraki);
+  document.getElementById('nextBtn').addEventListener('click', sonraki);
+  document.getElementById('prevBtn').addEventListener('click', onceki);
+  if(noteEl) noteEl.textContent="";
+  showMadde();
+}
+
+function showMadde(){
+  const d=DUALAR[duaIndex];
+  const toplam=d.maddeler.length;
+  const tEl=document.getElementById('maddeText');
+  if(tEl) tEl.textContent=d.maddeler[maddeIndex];
+  const fill=document.getElementById('pfill');
+  const ptext=document.getElementById('ptext');
+  if(fill) fill.style.width=((maddeIndex+1)/toplam*100)+'%';
+  if(ptext) ptext.textContent=`${maddeIndex+1} / ${toplam}`;
+  const prevBtn=document.getElementById('prevBtn');
+  if(prevBtn) prevBtn.style.opacity = maddeIndex===0 ? '0.4' : '1';
+  const nextBtn=document.getElementById('nextBtn');
+  if(nextBtn) nextBtn.textContent = (maddeIndex===toplam-1) ? 'Bitti ✓' : 'Sonraki ▸';
+}
+
+function sonraki(){
+  const d=DUALAR[duaIndex];
+  if(maddeIndex < d.maddeler.length-1){
+    maddeIndex++; showMadde();
+  } else {
+    // bitti — listeye dön
+    renderListe();
+  }
+}
+function onceki(){
+  if(maddeIndex>0){ maddeIndex--; showMadde(); }
+}
+
+renderListe();
+</script>
+</body>
+</html>
