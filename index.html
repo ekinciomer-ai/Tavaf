@@ -204,6 +204,51 @@
   .center{ text-align:center; }
   .kaynak{ font-size:11px; color:var(--gold-dim); text-align:center; margin-top:16px; line-height:1.6; font-style:italic; padding:0 10px;}
   .note{ font-size:12px; color:var(--gold-dim); text-align:center; margin-top:22px; line-height:1.7; padding:0 6px;}
+
+  /* === KURAN MODULU CSS === */
+  .sure-listesi{ margin-top:16px; display:flex; flex-direction:column; gap:10px;}
+  .sure-card{ background:linear-gradient(165deg, rgba(212,175,106,0.07), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:16px; padding:18px 18px; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:space-between;}
+  .sure-card:active{ transform:scale(.97);}
+  .sure-card .left{ display:flex; align-items:center; gap:14px;}
+  .sure-card .no{ width:36px; height:36px; border-radius:50%; background:rgba(212,175,106,0.12); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--gold-bright); font-size:14px; font-weight:600;}
+  .sure-card .info-text{ display:flex; flex-direction:column;}
+  .sure-card .ad-tr{ font-size:16px; color:var(--cream); font-weight:600;}
+  .sure-card .ad-sub{ font-size:11px; color:var(--text-dim); margin-top:2px;}
+  .sure-card .ar{ font-family:'Amiri',serif; font-size:22px; color:var(--gold-bright);}
+
+  /* Sure detay - bilgi karti */
+  .sure-detay-head{ text-align:center; padding:18px 4px 8px;}
+  .sure-detay-head .ad-tr-buyuk{ font-family:'Cormorant Garamond',serif; font-size:28px; color:var(--gold-bright); font-weight:600;}
+  .sure-detay-head .ad-ar-buyuk{ font-family:'Amiri',serif; font-size:26px; color:var(--gold); margin-top:4px;}
+  .bilgi-kart{ background:linear-gradient(165deg, rgba(212,175,106,0.07), rgba(18,24,41,0.45)); border:1px solid var(--line); border-radius:18px; padding:18px 18px; margin-top:14px;}
+  .bilgi-row{ display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px dashed rgba(212,175,106,0.12); font-size:13.5px;}
+  .bilgi-row:last-child{ border-bottom:none;}
+  .bilgi-row .k{ color:var(--text-dim);}
+  .bilgi-row .v{ color:var(--cream); font-weight:500; text-align:right;}
+  .bilgi-aciklama{ margin-top:12px; padding:14px 4px 4px; font-size:13px; color:var(--text-dim); line-height:1.7; border-top:1px solid var(--line);}
+  .bilgi-aciklama b{ color:var(--gold-bright); font-weight:600;}
+
+  /* Bolum sekmeleri (yatay kaydirilan butonlar) */
+  .bolum-sekmeler{ margin-top:18px; display:flex; gap:8px; overflow-x:auto; padding-bottom:6px; scrollbar-width:none;}
+  .bolum-sekmeler::-webkit-scrollbar{ display:none;}
+  .bolum-sekme-btn{ flex:0 0 auto; background:rgba(245,239,224,0.05); border:1px solid var(--line); border-radius:30px; padding:9px 14px; color:var(--cream); font-family:'Jost',sans-serif; font-size:12px; font-weight:500; cursor:pointer; white-space:nowrap; transition:all .2s;}
+  .bolum-sekme-btn:active{ transform:scale(.95);}
+  .bolum-sekme-btn.aktif{ background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a; border-color:transparent; font-weight:600;}
+
+  /* Bolum icerik */
+  .bolum-baslik{ font-family:'Cormorant Garamond',serif; font-size:20px; color:var(--gold-bright); font-weight:600; margin-top:18px; text-align:center;}
+  .bolum-aralik{ text-align:center; font-size:11px; color:var(--gold-dim); letter-spacing:2px; margin-top:4px;}
+
+  .ayet-blok{ background:linear-gradient(165deg, rgba(212,175,106,0.05), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-top:12px;}
+  .ayet-no{ display:inline-block; min-width:28px; height:24px; padding:0 8px; border-radius:14px; background:rgba(212,175,106,0.12); color:var(--gold-bright); font-size:12px; font-weight:600; text-align:center; line-height:24px; margin-bottom:8px;}
+  .ayet-okunus{ font-size:15px; color:var(--gold-bright); line-height:1.7; font-style:italic; margin-bottom:8px;}
+  .ayet-meal{ font-size:14px; color:var(--cream); line-height:1.7;}
+
+  .bolum-ozet, .bolum-baglanti{ background:linear-gradient(165deg, rgba(212,175,106,0.07), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin-top:14px;}
+  .bolum-ozet h4, .bolum-baglanti h4{ font-family:'Cormorant Garamond',serif; font-size:15px; color:var(--gold-bright); font-weight:600; margin-bottom:6px; letter-spacing:.5px;}
+  .bolum-ozet p, .bolum-baglanti p{ font-size:13.5px; color:var(--cream); line-height:1.75;}
+
+  .geri-link{ display:block; text-align:center; margin-top:22px; color:var(--gold); font-size:13px; cursor:pointer;}
 </style>
 </head>
 <body>
@@ -277,6 +322,14 @@
         </div>
         <div class="ok">▸</div>
       </div>
+      <div class="menu-card" onclick="acSekme('kuran')">
+        <div class="ikon">📖</div>
+        <div class="icerik">
+          <h3>Kuran <span class="ar">القرآن</span></h3>
+          <p>Sure sure: temel bilgiler, okunuş, meal ve tematik özet.</p>
+        </div>
+        <div class="ok">▸</div>
+      </div>
     </div>
 
     <div class="ana-not">Bu uygulamayı ana ekranınıza eklerseniz gerçek bir uygulama gibi açılır.<br>(Safari/Chrome: Paylaş ▸ Ana Ekrana Ekle)</div>
@@ -319,6 +372,17 @@
     <div class="note" id="dualarNote"></div>
   </div>
 
+  <!-- KURAN MODULU -->
+  <div id="kuranEkran" class="modul" style="display:none;">
+    <header>
+      <div class="eyebrow">Beytullah</div>
+      <h1>Kuran Ayetleri</h1>
+      <div class="ar">القرآن الكريم</div>
+    </header>
+    <div id="kuranMain"></div>
+    <div class="note" id="kuranNote"></div>
+  </div>
+
 </div>
 
 <!-- ALT SEKME BARI (modul iclerinde gorunur) -->
@@ -327,6 +391,7 @@
   <button class="sekme-btn" id="sekmeTavaf" onclick="acSekme('tavaf')"><span class="e">🕋</span><span>Tavaf</span></button>
   <button class="sekme-btn" id="sekmeNamaz" onclick="acSekme('namaz')"><span class="e">🕌</span><span>Namaz</span></button>
   <button class="sekme-btn" id="sekmeDualar" onclick="acSekme('dualar')"><span class="e">🤲</span><span>Dualar</span></button>
+  <button class="sekme-btn" id="sekmeKuran" onclick="acSekme('kuran')"><span class="e">📖</span><span>Kuran</span></button>
 </div>
 
 <script>
@@ -5047,9 +5112,167 @@ window.renderListe = renderListe;
 
 })();
 
+// =========== KURAN ===========
+(function(){
+
+const SURELER = [
+  {
+    "ad":"Meryem",
+    "ad_ar":"سُورَةُ مَرْيَم",
+    "no":19,
+    "ayet_sayisi":98,
+    "yer":"Mekkî",
+    "nuzul_sirasi":44,
+    "sayfa":"305-312",
+    "cuz":16,
+    "tilavet_secdesi":"58. ayet",
+    "ad_kaynagi":"İçinde Hz. Meryem'in kıssası anlatıldığı için (16-29. ayetler).",
+    "nuzul_donemi":"Mekke devrinin 4. yılı; Fâtır sûresinden sonra, Tâhâ sûresinden önce inmiştir.",
+    "tema":"Allah'ın mucizevi yaratma kudreti ve rahmeti; peygamberlerin samimi yakarışları ve karşılığında verilen ilahi lütuflar; ahiret ve tevhid vurgusu. <b>'Rahmân'</b> ismi bu sûrede 16 kez geçer.",
+    "bolumler":[
+      {
+        "baslik":"Hz. Zekeriya'nın Duası ve Yahya'nın Müjdesi",
+        "aralik":"1-15",
+        "ayetler":[
+          ["1","Kâf, Hâ, Yâ, Ayn, Sâd.","Kâf, Hâ, Yâ, Ayn, Sâd."],
+          ["2","Zikru rahmeti rabbike abdehû Zekeriyyâ.","Bu, Rabbinin, Zekeriya kuluna olan merhametinin anılmasıdır."],
+          ["3","İz nâdâ rabbehû nidâen hafiyyâ.","Hani o, Rabbine gizli bir sesle yalvarmıştı."],
+          ["4","Kâle Rabbi innî vehene'l-azmü minnî veşte'ale'r-ra'sü şeyben ve lem ekün bi-du'âike Rabbi şekıyyâ.","O şöyle demişti: 'Rabbim! Şüphesiz kemiklerim gevşedi. Saçım sakalım ağardı. Sana yaptığım dualarda (cevapsız bırakılarak) hiç mahrum olmadım.'"],
+          ["5/6","Ve innî hıftü'l-mevâliye min verâî ve kâneti'mraetî âkıran fe-heb lî min ledünke veliyyâ. Yerisünî ve yerisü min âli Ya'kûbe vec'alhü Rabbi radıyyâ.","'Gerçek şu ki ben, benden sonra gelecek akrabalarımdan korkuyorum. Karım da kısırdır. Bana kendi katından; bana ve Yakub hanedanına vâris olacak bir çocuk bağışla ve onu hoşnutluğuna ulaşmış bir kimse kıl.'"],
+          ["7","Yâ Zekeriyyâ innâ nübeşşirüke bi-ğulâmin ismühû Yahyâ lem nec'al lehû min kablü semiyyâ.","(Allah şöyle dedi:) 'Ey Zekeriya! Haberin olsun ki biz sana Yahya adlı bir oğul müjdeliyoruz. Daha önce onun adını kimseye vermedik.'"],
+          ["8","Kâle Rabbi ennâ yekûnü lî ğulâmün ve kâneti'mraetî âkıran ve kad belağtü mine'l-kiberi ıtiyyâ.","Zekeriya: 'Rabbim! Hanımım kısır ve ben de ihtiyarlığın son noktasına ulaşmış iken benim nasıl çocuğum olur?' dedi."],
+          ["9","Kâle kezâlik, kâle Rabbüke hüve aleyye heyyinün ve kad halaktüke min kablü ve lem tekü şey'â.","(Allah) dedi ki: 'Evet, öyle. (Ancak) Rabbin diyor ki: «Bu, bana göre kolaydır. Nitekim daha önce, hiçbir şey değil iken seni de yarattım.»'"],
+          ["10","Kâle Rabbic'al lî âyeh, kâle âyetüke ellâ tükellime'n-nâse selâse leyâlin seviyyâ.","Zekeriya: 'Rabbim! Öyleyse bana (bunun için) bir alâmet ver' dedi. Allah da: 'Senin alâmetin, sapasağlam olduğun hâlde insanlarla üç gece konuşamamandır' dedi."],
+          ["11","Feharace alâ kavmihî mine'l-mihrâbi feevhâ ileyhim en sebbihû bükraten ve aşiyyâ.","Derken Zekeriya, ibadet yerinden halkının karşısına çıktı. (Konuşmak istedi, konuşamadı) ve onlara 'Sabah-akşam Allah'ı tespih edin' diye işaret etti."],
+          ["12","Yâ Yahyâ huzi'l-kitâbe bi-kuvveh, ve âteynâhü'l-hukme sabiyyâ.","(Yahya dünyaya gelip büyüyünce ona dedik ki:) 'Ey Yahya! Kitaba sımsıkı sarıl.' Biz, ona daha çocuk iken hikmet vermiştik."],
+          ["13","Ve hanânen min ledünnâ ve zekâh, ve kâne tekıyyâ.","Katımızdan bir kalp yumuşaklığı ve arınmışlık da (vermiştik). O, Allah'tan sakınan bir kimse idi."],
+          ["14","Ve berran bi-vâlideyhi ve lem yekün cebbâran asıyyâ.","Anne babasına iyi davranan bir kimse idi. İsyancı bir zorba değildi."],
+          ["15","Veselâmün aleyhi yevme vülide veyevme yemûtü veyevme yüb'asü hayyâ.","Ona selam olsun, doğduğu gün, öleceği gün ve diriltileceği gün!"]
+        ],
+        "ozet":"Hz. Zekeriya yaşlanmıştır, eşi de kısırdır. Hiçbir zaman duada mahrum kalmadığını hatırlatarak Rabbine gizli, içten bir sesle yakarır — soyunun devamı için bir vâris ister. Allah ona daha önce kimseye verilmemiş bir isimle (Yahya) bir oğul müjdeler. Bir alamet olarak Zekeriya üç gün konuşamaz, halka sadece işaretle 'Allah'ı tesbih edin' der. Yahya büyür; hikmet, kalp yumuşaklığı, takva ve anne-babaya iyilik verilir ona. 'Doğduğu gün, öldüğü gün, dirildiği gün üzerine selam olsun.'",
+        "baglanti":"Aynı kıssa <b>Âl-i İmrân 37-41</b> ve <b>Enbiyâ 89-90</b>'da daha kısa anlatılır. Meryem sûresindeki anlatım hepsinden daha duygusal ve detaylıdır; özellikle 'gizli sesle yalvarma' ve 'kemiklerim gevşedi' detayları sadece burada vardır. Bu bölüm, sûrenin geri kalanına bir hazırlık niteliğindedir: Hz. Zekeriya'nın 'imkânsız' görünen evlat müjdesi, sonraki bölümdeki Hz. Meryem'in babasız evlat mucizesine zemin hazırlar."
+      }
+      // Diger bolumler buraya eklenecek
+    ]
+  }
+];
+
+let aktifSure = null;
+let aktifBolum = 0;
+
+const kuranMain = document.getElementById('kuranMain');
+const kuranNote = document.getElementById('kuranNote');
+
+function renderSureListesi(){
+  let cards = '';
+  SURELER.forEach((s, i) => {
+    cards += `<div class="sure-card" onclick="acSure(${i})">
+      <div class="left">
+        <div class="no">${s.no}</div>
+        <div class="info-text">
+          <span class="ad-tr">${s.ad} Sûresi</span>
+          <span class="ad-sub">${s.ayet_sayisi} ayet · ${s.yer}</span>
+        </div>
+      </div>
+      <div class="ar">${s.ad_ar}</div>
+    </div>`;
+  });
+  kuranMain.innerHTML = `<div class="lead">Okumak istediğiniz sûreyi seçin. Her sûre temel bilgileri, ayet okunuşları, mealleri ve tematik özetleriyle birlikte sunulur.</div>
+    <div class="sure-listesi">${cards}</div>`;
+  if (kuranNote) kuranNote.textContent = "Daha fazla sûre yakında eklenecek. Kaynak: Diyanet İşleri Başkanlığı Kur'an-ı Kerim meali.";
+}
+
+function acSure(idx){
+  aktifSure = SURELER[idx];
+  aktifBolum = 0;
+  renderSureDetay();
+}
+
+function renderSureDetay(){
+  const s = aktifSure;
+  // Bolum sekmeleri
+  let sekmelerHtml = '';
+  s.bolumler.forEach((b, i) => {
+    sekmelerHtml += `<button class="bolum-sekme-btn ${i===aktifBolum?'aktif':''}" onclick="secBolum(${i})">${i+1}. ${b.aralik}</button>`;
+  });
+
+  // Aktif bolum icerigi
+  const b = s.bolumler[aktifBolum];
+  let ayetHtml = '';
+  b.ayetler.forEach(([no, okunus, meal]) => {
+    ayetHtml += `<div class="ayet-blok">
+      <span class="ayet-no">${no}</span>
+      <div class="ayet-okunus">${okunus}</div>
+      <div class="ayet-meal">${meal}</div>
+    </div>`;
+  });
+
+  kuranMain.innerHTML = `
+    <div class="sure-detay-head">
+      <div class="ad-tr-buyuk">${s.ad} Sûresi</div>
+      <div class="ad-ar-buyuk">${s.ad_ar}</div>
+    </div>
+    <div class="bilgi-kart">
+      <div class="bilgi-row"><span class="k">Sûre numarası</span><span class="v">${s.no}</span></div>
+      <div class="bilgi-row"><span class="k">Ayet sayısı</span><span class="v">${s.ayet_sayisi}</span></div>
+      <div class="bilgi-row"><span class="k">Nâzil olduğu yer</span><span class="v">${s.yer}</span></div>
+      <div class="bilgi-row"><span class="k">Cüz</span><span class="v">${s.cuz}</span></div>
+      <div class="bilgi-row"><span class="k">Mushaf sayfası</span><span class="v">${s.sayfa}</span></div>
+      <div class="bilgi-row"><span class="k">İniş sırası</span><span class="v">${s.nuzul_sirasi}</span></div>
+      <div class="bilgi-row"><span class="k">Tilâvet secdesi</span><span class="v">${s.tilavet_secdesi}</span></div>
+      <div class="bilgi-aciklama">
+        <b>Adının kaynağı:</b> ${s.ad_kaynagi}<br><br>
+        <b>Nüzul dönemi:</b> ${s.nuzul_donemi}<br><br>
+        <b>Genel tema:</b> ${s.tema}
+      </div>
+    </div>
+
+    <div class="bolum-sekmeler">${sekmelerHtml}</div>
+
+    <div class="bolum-baslik">${b.baslik}</div>
+    <div class="bolum-aralik">AYET ${b.aralik}</div>
+
+    ${ayetHtml}
+
+    <div class="bolum-ozet">
+      <h4>📝 Tematik Özet</h4>
+      <p>${b.ozet}</p>
+    </div>
+
+    <div class="bolum-baglanti">
+      <h4>🔗 Başka sûrelerle bağlantı</h4>
+      <p>${b.baglanti}</p>
+    </div>
+
+    <span class="geri-link" onclick="kuranAna()">‹ Sûre listesine dön</span>
+  `;
+  if (kuranNote) kuranNote.textContent = "";
+  // En basa kaydir
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+function secBolum(i){
+  aktifBolum = i;
+  renderSureDetay();
+}
+
+function kuranAna(){
+  aktifSure = null;
+  aktifBolum = 0;
+  renderSureListesi();
+}
+
+window.KuranBaslat = renderSureListesi;
+window.acSure = acSure;
+window.secBolum = secBolum;
+window.kuranAna = kuranAna;
+
+})();
+
+
 // =========== ANA KONTROL (sekme yonetimi) ===========
 let aktifSekme = null;
-let modulBasladi = { tavaf:false, namaz:false, dualar:false };
+let modulBasladi = { tavaf:false, namaz:false, dualar:false, kuran:false };
 
 function acSekme(ad){
   // ana ekrani gizle, modulleri gizle, hedefi goster
@@ -5057,12 +5280,13 @@ function acSekme(ad){
   document.getElementById('tavafEkran').style.display='none';
   document.getElementById('namazEkran').style.display='none';
   document.getElementById('dualarEkran').style.display='none';
+  document.getElementById('kuranEkran').style.display='none';
   document.getElementById(ad+'Ekran').style.display='';
   // sekme bari goster
   const bar=document.getElementById('sekmeBar');
   bar.classList.remove('gizli');
   // aktif sekme isaretle
-  ['Tavaf','Namaz','Dualar'].forEach(s=>{
+  ['Tavaf','Namaz','Dualar','Kuran'].forEach(s=>{
     const b=document.getElementById('sekme'+s);
     if(b) b.classList.toggle('aktif', s.toLowerCase()===ad);
   });
@@ -5072,6 +5296,7 @@ function acSekme(ad){
     if(ad==='tavaf'   && window.TavafBaslat)   window.TavafBaslat();
     if(ad==='namaz'   && window.NamazBaslat)   window.NamazBaslat();
     if(ad==='dualar'  && window.DualarBaslat)  window.DualarBaslat();
+    if(ad==='kuran'   && window.KuranBaslat)   window.KuranBaslat();
     modulBasladi[ad]=true;
   }
   // sayfanin basina kaydir
@@ -5088,6 +5313,7 @@ function anaEkrana(){
   document.getElementById('tavafEkran').style.display='none';
   document.getElementById('namazEkran').style.display='none';
   document.getElementById('dualarEkran').style.display='none';
+  document.getElementById('kuranEkran').style.display='none';
   document.getElementById('sekmeBar').classList.add('gizli');
   aktifSekme=null;
   window.scrollTo({top:0, behavior:'instant'});
