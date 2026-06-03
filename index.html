@@ -244,9 +244,15 @@
   .ayet-okunus{ font-size:15px; color:var(--gold-bright); line-height:1.7; font-style:italic; margin-bottom:8px;}
   .ayet-meal{ font-size:14px; color:var(--cream); line-height:1.7;}
 
-  .bolum-ozet, .bolum-baglanti{ background:linear-gradient(165deg, rgba(212,175,106,0.07), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin-top:14px;}
-  .bolum-ozet h4, .bolum-baglanti h4{ font-family:'Cormorant Garamond',serif; font-size:15px; color:var(--gold-bright); font-weight:600; margin-bottom:6px; letter-spacing:.5px;}
-  .bolum-ozet p, .bolum-baglanti p{ font-size:13.5px; color:var(--cream); line-height:1.75;}
+  .bolum-ozet{ background:linear-gradient(165deg, rgba(212,175,106,0.07), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-top:14px;}
+  .bolum-ozet p{ font-size:14px; color:var(--cream); line-height:1.85;}
+  .bolum-ozet b{ color:var(--gold-bright); font-weight:600;}
+
+  /* Icerik sekme bari (Okunus&Meal / Ozet) */
+  .icerik-sekme-bar{ display:flex; gap:8px; margin-top:14px; margin-bottom:4px; background:rgba(245,239,224,0.04); border:1px solid var(--line); border-radius:30px; padding:4px;}
+  .icerik-sekme-btn{ flex:1; background:none; border:none; cursor:pointer; color:var(--text-dim); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; padding:10px 8px; border-radius:26px; transition:all .2s;}
+  .icerik-sekme-btn:active{ transform:scale(.97);}
+  .icerik-sekme-btn.aktif{ background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a; font-weight:600;}
 
   .geri-link{ display:block; text-align:center; margin-top:22px; color:var(--gold); font-size:13px; cursor:pointer;}
 </style>
@@ -5149,8 +5155,7 @@ const SURELER = [
           ["14","Ve berran bi-vâlideyhi ve lem yekün cebbâran asıyyâ.","Anne babasına iyi davranan bir kimse idi. İsyancı bir zorba değildi."],
           ["15","Veselâmün aleyhi yevme vülide veyevme yemûtü veyevme yüb'asü hayyâ.","Ona selam olsun, doğduğu gün, öleceği gün ve diriltileceği gün!"]
         ],
-        "ozet":"Hz. Zekeriya yaşlanmıştır, eşi de kısırdır. Hiçbir zaman duada mahrum kalmadığını hatırlatarak Rabbine gizli, içten bir sesle yakarır — soyunun devamı için bir vâris ister. Allah ona daha önce kimseye verilmemiş bir isimle (Yahya) bir oğul müjdeler. Bir alamet olarak Zekeriya üç gün konuşamaz, halka sadece işaretle 'Allah'ı tesbih edin' der. Yahya büyür; hikmet, kalp yumuşaklığı, takva ve anne-babaya iyilik verilir ona. 'Doğduğu gün, öldüğü gün, dirildiği gün üzerine selam olsun.'",
-        "baglanti":"Aynı kıssa <b>Âl-i İmrân 37-41</b> ve <b>Enbiyâ 89-90</b>'da daha kısa anlatılır. Meryem sûresindeki anlatım hepsinden daha duygusal ve detaylıdır; özellikle 'gizli sesle yalvarma' ve 'kemiklerim gevşedi' detayları sadece burada vardır. Bu bölüm, sûrenin geri kalanına bir hazırlık niteliğindedir: Hz. Zekeriya'nın 'imkânsız' görünen evlat müjdesi, sonraki bölümdeki Hz. Meryem'in babasız evlat mucizesine zemin hazırlar."
+        "ozet":"Hz. Zekeriya yaşlanmış, saçı sakalı ağarmış, kemikleri zayıflamıştır; eşi de kısırdır. Soyu kesilecek diye endişelenir, kendisinden sonra mirasını ve peygamberlik soyunu sürdürecek bir vâris ister. Sessizce, herkesten gizli — sadece kendisi ile Rabbi arasında kalan içten bir sesle — yakarır. Duasında alçakgönüllüdür: 'Sana yaptığım dualarda hiçbir zaman mahrum kalmadım' diyerek Rabbinin lütfuna güvenini dile getirir.<br><br>Allah ona bir oğul müjdeler ve adını <b>Yahya</b> koyar — daha önce kimseye verilmemiş yeni bir isim. Zekeriya hayretle 'Ben yaşlandım, eşim kısır, nasıl olur?' deyince Allah hatırlatır: 'Bu bana kolaydır; daha önce sen de hiçbir şey değilken seni de yarattım.' Zekeriya bir alâmet ister; alâmet olarak <b>üç gün konuşamaz</b>, sapasağlamken sadece işaretle iletişim kurabilir. İbadethaneden çıkıp halkına 'sabah-akşam Allah'ı tesbih edin' diye işaret eder.<br><br>Yahya büyür; Allah ona daha çocukken hikmet verir, kalbine yumuşaklık, ruhuna arınmışlık koyar. Takva sahibi, anne-babasına iyi davranan, isyancı ve zorba olmayan bir peygamber olur. Bölüm Hz. Yahya'ya verilen üç günlük selam ile kapanır: <b>doğduğu gün, öleceği gün ve diriltileceği gün</b> üzerine selam olsun. Bu üçlü selam, sonraki bölümde Hz. İsa için de aynı şekilde tekrarlanacak — iki peygamberin paralel hayat çizgisine işaret eder.<br><br>Aynı kıssa Âl-i İmrân 37-41 ve Enbiyâ 89-90'da daha kısa anlatılır; Meryem sûresindeki anlatım en duygusal ve detaylı olanıdır. Özellikle 'gizli sesle yalvarma' ve 'kemiklerim gevşedi' detayları sadece burada yer alır. Bu bölüm, sûrenin geri kalanına bir hazırlık niteliğindedir: Hz. Zekeriya'nın imkânsız görünen evlat müjdesi, hemen ardından gelecek Hz. Meryem'in babasız evlat mucizesine zemin hazırlar."
       }
       // Diger bolumler buraya eklenecek
     ]
@@ -5188,6 +5193,8 @@ function acSure(idx){
   renderSureDetay();
 }
 
+let aktifIcerikSekmesi = 'ayet'; // 'ayet' (okunus+meal) veya 'ozet'
+
 function renderSureDetay(){
   const s = aktifSure;
   // Bolum sekmeleri
@@ -5198,6 +5205,8 @@ function renderSureDetay(){
 
   // Aktif bolum icerigi
   const b = s.bolumler[aktifBolum];
+
+  // Okunus + Meal listesi
   let ayetHtml = '';
   b.ayetler.forEach(([no, okunus, meal]) => {
     ayetHtml += `<div class="ayet-blok">
@@ -5206,6 +5215,17 @@ function renderSureDetay(){
       <div class="ayet-meal">${meal}</div>
     </div>`;
   });
+
+  // Icerik sekmesi (Okunus&Meal / Ozet)
+  const icerikSekmeBari = `
+    <div class="icerik-sekme-bar">
+      <button class="icerik-sekme-btn ${aktifIcerikSekmesi==='ayet'?'aktif':''}" onclick="secIcerik('ayet')">📖 Okunuş & Meal</button>
+      <button class="icerik-sekme-btn ${aktifIcerikSekmesi==='ozet'?'aktif':''}" onclick="secIcerik('ozet')">📝 Özet</button>
+    </div>`;
+
+  const icerikHtml = (aktifIcerikSekmesi==='ayet')
+    ? ayetHtml
+    : `<div class="bolum-ozet"><p>${b.ozet}</p></div>`;
 
   kuranMain.innerHTML = `
     <div class="sure-detay-head">
@@ -5232,28 +5252,30 @@ function renderSureDetay(){
     <div class="bolum-baslik">${b.baslik}</div>
     <div class="bolum-aralik">AYET ${b.aralik}</div>
 
-    ${ayetHtml}
+    ${icerikSekmeBari}
 
-    <div class="bolum-ozet">
-      <h4>📝 Tematik Özet</h4>
-      <p>${b.ozet}</p>
-    </div>
-
-    <div class="bolum-baglanti">
-      <h4>🔗 Başka sûrelerle bağlantı</h4>
-      <p>${b.baglanti}</p>
-    </div>
+    ${icerikHtml}
 
     <span class="geri-link" onclick="kuranAna()">‹ Sûre listesine dön</span>
   `;
   if (kuranNote) kuranNote.textContent = "";
-  // En basa kaydir
-  window.scrollTo({top:0, behavior:'instant'});
 }
+
+function secIcerik(tip){
+  aktifIcerikSekmesi = tip;
+  renderSureDetay();
+}
+window.secIcerik = secIcerik;
 
 function secBolum(i){
   aktifBolum = i;
+  aktifIcerikSekmesi = 'ayet';
   renderSureDetay();
+  // bolum baslangic kismina kaydir
+  setTimeout(()=>{
+    const el=document.querySelector('.bolum-baslik');
+    if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 50);
 }
 
 function kuranAna(){
