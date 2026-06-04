@@ -262,6 +262,39 @@
   .bolum-nav-sayac{ flex:0 0 auto; min-width:60px; text-align:center; font-size:12px; font-weight:600; color:var(--gold); letter-spacing:1px;}
 
   .geri-link{ display:block; text-align:center; margin-top:22px; color:var(--gold); font-size:13px; cursor:pointer;}
+
+  /* === TARIH MODULU CSS === */
+  .tarih-intro{ margin:14px 0 18px; padding:16px 18px; background:linear-gradient(165deg, rgba(212,175,106,0.05), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:14px; font-size:13px; color:var(--text-dim); line-height:1.7; text-align:center; font-style:italic;}
+
+  .tarih-listesi{ margin-top:14px; display:flex; flex-direction:column; gap:10px;}
+  .tarih-card{ background:linear-gradient(165deg, rgba(212,175,106,0.07), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:14px; padding:16px 18px; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:14px;}
+  .tarih-card:active{ transform:scale(.97);}
+  .tarih-card .sira{ flex:0 0 auto; width:36px; height:36px; border-radius:50%; background:rgba(212,175,106,0.12); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--gold-bright); font-size:14px; font-weight:600;}
+  .tarih-card .info{ flex:1; display:flex; flex-direction:column;}
+  .tarih-card .ad{ font-size:16px; color:var(--cream); font-weight:600; font-family:'Cormorant Garamond',serif;}
+  .tarih-card .ad-alt{ font-size:12px; color:var(--text-dim); margin-top:2px; font-style:italic;}
+
+  /* Bolum detay */
+  .tarih-detay-head{ text-align:center; padding:18px 4px 14px;}
+  .tarih-detay-head .ad{ font-family:'Cormorant Garamond',serif; font-size:26px; color:var(--gold-bright); font-weight:600; line-height:1.3;}
+  .tarih-detay-head .ad-alt{ font-size:12px; color:var(--gold-dim); margin-top:6px; letter-spacing:2px; text-transform:uppercase; font-style:italic;}
+  .tarih-icerik{ background:linear-gradient(165deg, rgba(212,175,106,0.04), rgba(18,24,41,0.45)); border:1px solid var(--line); border-radius:16px; padding:20px 22px; margin-top:8px;}
+  .tarih-icerik p{ font-size:14.5px; color:var(--cream); line-height:1.85; margin-bottom:14px;}
+  .tarih-icerik p:last-child{ margin-bottom:0;}
+  .tarih-icerik h3{ font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--gold-bright); font-weight:600; margin:18px 0 8px; padding-top:8px; border-top:1px dashed rgba(212,175,106,0.18);}
+  .tarih-icerik h3:first-of-type{ border-top:none; padding-top:0; margin-top:8px;}
+  .tarih-icerik b{ color:var(--gold-bright); font-weight:600;}
+  .tarih-icerik i{ color:var(--gold); font-style:italic;}
+
+  /* Kaynak ayetler kutusu */
+  .ayet-kutusu{ background:linear-gradient(165deg, rgba(212,175,106,0.08), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:16px; padding:18px 18px; margin-top:18px;}
+  .ayet-kutusu h4{ font-family:'Cormorant Garamond',serif; font-size:15px; color:var(--gold-bright); font-weight:600; margin-bottom:12px; letter-spacing:.5px;}
+  .ayet-ref{ background:rgba(245,239,224,0.04); border:1px solid rgba(212,175,106,0.12); border-radius:10px; padding:10px 12px; margin-top:8px;}
+  .ayet-ref:first-of-type{ margin-top:0;}
+  .ayet-ref-baslik{ font-size:12.5px; color:var(--gold); font-weight:600; margin-bottom:4px;}
+  .ayet-ref-baslik.tiklanabilir{ color:var(--gold-bright); cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px;}
+  .ayet-ref-baslik.tiklanabilir:hover{ color:var(--cream);}
+  .ayet-ref-alinti{ font-size:13px; color:var(--text-dim); line-height:1.6; font-style:italic;}
 </style>
 </head>
 <body>
@@ -343,6 +376,14 @@
         </div>
         <div class="ok">▸</div>
       </div>
+      <div class="menu-card" onclick="acSekme('tarih')">
+        <div class="ikon">📜</div>
+        <div class="icerik">
+          <h3>İnsanlık Tarihi <span class="ar">قِصَصُ القُرْآن</span></h3>
+          <p>Yaratılıştan kıyamete: Kuran'ın anlattığı kronolojik akış.</p>
+        </div>
+        <div class="ok">▸</div>
+      </div>
     </div>
 
     <div class="ana-not">Bu uygulamayı ana ekranınıza eklerseniz gerçek bir uygulama gibi açılır.<br>(Safari/Chrome: Paylaş ▸ Ana Ekrana Ekle)</div>
@@ -396,6 +437,17 @@
     <div class="note" id="kuranNote"></div>
   </div>
 
+  <!-- TARIH MODULU -->
+  <div id="tarihEkran" class="modul" style="display:none;">
+    <header>
+      <div class="eyebrow">Beytullah</div>
+      <h1>İnsanlık Tarihi</h1>
+      <div class="ar">قِصَصُ القُرْآن</div>
+    </header>
+    <div id="tarihMain"></div>
+    <div class="note" id="tarihNote"></div>
+  </div>
+
 </div>
 
 <!-- ALT SEKME BARI (modul iclerinde gorunur) -->
@@ -405,6 +457,7 @@
   <button class="sekme-btn" id="sekmeNamaz" onclick="acSekme('namaz')"><span class="e">🕌</span><span>Namaz</span></button>
   <button class="sekme-btn" id="sekmeDualar" onclick="acSekme('dualar')"><span class="e">🤲</span><span>Dualar</span></button>
   <button class="sekme-btn" id="sekmeKuran" onclick="acSekme('kuran')"><span class="e">📖</span><span>Kuran</span></button>
+  <button class="sekme-btn" id="sekmeTarih" onclick="acSekme('tarih')"><span class="e">📜</span><span>Tarih</span></button>
 </div>
 
 <script>
@@ -6494,6 +6547,7 @@ function kuranAna(){
 }
 
 window.KuranBaslat = renderSureListesi;
+window.SURELER = SURELER;
 window.acSure = acSure;
 window.secBolum = secBolum;
 window.kuranAna = kuranAna;
@@ -6501,9 +6555,352 @@ window.kuranAna = kuranAna;
 })();
 
 
+// =========== TARIH ===========
+(function(){
+
+const TARIH_BOLUMLER = [
+ {
+  "id": "01_yaratilisin_baslangici",
+  "ad": "Yaratılışın Başlangıcı",
+  "ad_alt": "Evrenin yokluktan var edilişi",
+  "icerik": "<p>Henüz hiçbir şey yokken — ne gök vardı, ne yer; ne karanlık vardı, ne ışık; ne zaman akıyordu, ne mekân açılmıştı — sadece <b>O</b> vardı. <b>Allah</b>. Başlangıcı olmayan, sonu olmayan; doğmamış, doğurulmamış olan. Hiçbir şeye benzemeyen, eşi ve dengi bulunmayan. Onun dışındaki her şey, onun var ettiklerinden ibaretti — henüz var edilmemişti.</p>\n\n<p>Kuran bizi bu \"öncesizliğin sessizliğinden\" kibarca uyandırır. İnsan suresinin ilk ayetinde sorulur: <i>\"İnsanın üzerinden, anılır bir şey bile değilken, uzun bir zaman geçmedi mi?\"</i> Yani sen daha bir nokta bile değilken — kâinatın derinliklerinde adın geçmezken — büyük bir <b>dehr</b> (mutlak zaman) akıyordu. Sen yoktun. Hiçbir şey yoktu.</p>\n\n<p>Sonra Allah dilediği bir anda, dilediği biçimde, hiçbir örneğe gerek duymaksızın yaratmaya başladı. <b>Tek bir kelimeyle.</b> \"Kün fe-yekûn\" — <i>\"Ol! der, oluverir.\"</i> Bir şeyin var olması için kaynak madde, zaman, sebep gerekmez; Onun \"Ol\" demesi yeterlidir. Kuran bu emrin kudretini defalarca tekrarlar: Meryem'e babasız çocuk verirken aynı kelime, ölüleri diriltirken aynı kelime, dağları yerinden oynatırken aynı kelime: <b>\"Ol\".</b></p>\n\n<p>İlk yaratılanlar hakkında Kuran'da en açık bilgi şudur: Allah gökleri ve yeri <b>altı günde</b> yarattı. Ama buradaki \"gün\" bizim güneşli-güneşsiz günlerimiz değildir — çünkü daha güneş bile yaratılmamıştı. Bir başka ayette Allah'ın katındaki bir günün insanlık ölçüsüyle <b>bin yıl</b>, hatta başka bir ayette <b>elli bin yıl</b> olduğu söylenir. Yani \"altı gün\" bizim için bilinemez, ama Allah için kesin tayin edilmiş altı evredir.</p>\n\n<p>Bu altı evrenin sıralanışı tefsircilere göre şöyledir: Önce gökler ve yerin maddesi tek bir kütle hâlindeyken Allah onları <b>ayırdı</b>. Enbiyâ suresinde geçtiği gibi: <i>\"İnkâr edenler, göklerle yer bitişikken biz onları ayırdığımızı, her canlıyı sudan yarattığımızı görmediler mi?\"</i> Sonra göğü <b>duman hâlindeyken</b> yedi gök olarak şekillendirdi (Fussilet suresi). Yıldızlarla en yakın göğü süsledi (Mülk suresi). Yeryüzüne <b>dağları</b> sabitledi, üzerine <b>bereket</b> koydu, içine <b>besin</b> takdir etti (Fussilet, 10).</p>\n\n<p>Tüm bu evren, tesadüfen değil; bir <b>ölçü</b> ile, bir <b>hikmet</b> ile yaratıldı. Kuran defalarca vurgular: <i>\"Biz her şeyi bir ölçü ile yarattık\"</i> (Kamer 49). Yıldızların yörüngesi, atomun çekirdeği, suyun donma noktası, gözün retinası — hiçbiri rastgele değildir. Yaratılış başlı başına bir <b>\"âyet\"</b>tir — yani Allah'ın varlığına işaret eden bir delil.</p>\n\n<p>İlginç bir nokta: Kuran, evrenin yaratılışını anlatırken hep <b>insanı bir noktaya konuşur gibi</b> anlatır. Sanki bütün bu kozmik düzen, gelecekte var olacak <b>bir varlık için</b> hazırlanmıştır — <b>insan için</b>. Henüz Hz. Âdem yaratılmamıştır ama evren onun için döşenmektedir. Bu, surenin başlığındaki \"İnsan\" kelimesinin neden böylesine merkezi olduğunun cevabıdır: <i>\"Sizin için yeryüzünü döşek, göğü bina yapan, sizi rızıklandırmak için gökten su indiren Allah'tır\"</i> (Bakara 22).</p>\n\n<p>Yaratılış bittiğinde, Allah <b>Arş'ın üzerinde istivâ etti</b> — bu Kuran'ın anlatımıdır (A'râf 54, Yûnus 3, Tâhâ 5 ve diğerleri). \"İstivâ\" kelimesinin nasıl anlaşılacağı tefsirciler arasında en eski tartışma konularındandır: kelimenin gerçek anlamını Allah'a havale ederek \"O'na yakışır şekilde\" kabul etmek (Selef'in yolu), ya da \"hükümranlık kurdu, işleri yönetmeye başladı\" diye yorumlamak (Halef'in yolu). Her iki yolda da ortak nokta şu: <b>Yaratılış bitti, hükümranlık başladı.</b></p>\n\n<p>Ve şimdi sahne, bu büyük tiyatronun ilk perdesi için hazırdır. Daha henüz insan yok — ama melekler var. Ve cinler var. Ve bir gün, bu hazırlanmış evrene <b>halife</b> olacak yeni bir varlık inecek...</p>",
+  "ayetler": [
+   {
+    "sure": "Hadîd",
+    "sure_no": "57",
+    "ayet": "3",
+    "alinti": "O, ilk ve sondur; zâhir ve bâtındır. O, her şeyi hakkıyla bilendir."
+   },
+   {
+    "sure": "İhlâs",
+    "sure_no": "112",
+    "ayet": "1-4",
+    "alinti": "De ki: 'O, Allah'tır, tektir. Allah Samed'dir. O, doğurmamış ve doğmamıştır. Onun hiçbir dengi yoktur.'"
+   },
+   {
+    "sure": "İnsan",
+    "sure_no": "76",
+    "ayet": "1",
+    "alinti": "İnsan (henüz) anılır bir şey değilken üzerinden uzunca bir zaman geçti."
+   },
+   {
+    "sure": "Yâsîn",
+    "sure_no": "36",
+    "ayet": "82",
+    "alinti": "Bir şeyi dilediği zaman, O'nun emri o şeye ancak 'Ol!' demektir. O da hemen oluverir."
+   },
+   {
+    "sure": "A'râf",
+    "sure_no": "7",
+    "ayet": "54",
+    "alinti": "Şüphesiz sizin Rabbiniz, gökleri ve yeri altı gün içinde yaratan, sonra da Arş'a kurulan Allah'tır."
+   },
+   {
+    "sure": "Enbiyâ",
+    "sure_no": "21",
+    "ayet": "30",
+    "alinti": "İnkâr edenler, göklerle yerin bitişik olduğunu, bizim onları ayırdığımızı ve her canlıyı sudan yarattığımızı görmediler mi?"
+   },
+   {
+    "sure": "Fussilet",
+    "sure_no": "41",
+    "ayet": "9-12",
+    "alinti": "De ki: Siz mi yeri iki günde yaratanı inkâr ediyor ve O'na ortaklar koşuyorsunuz? ... Sonra duman hâlindeki göğe yöneldi..."
+   },
+   {
+    "sure": "Mülk",
+    "sure_no": "67",
+    "ayet": "3-5",
+    "alinti": "O, yedi göğü üst üste yaratandır. Rahmân'ın yaratışında hiçbir uyumsuzluk göremezsin."
+   },
+   {
+    "sure": "Kamer",
+    "sure_no": "54",
+    "ayet": "49",
+    "alinti": "Gerçekten biz her şeyi bir ölçüye göre yarattık."
+   },
+   {
+    "sure": "Bakara",
+    "sure_no": "2",
+    "ayet": "22",
+    "alinti": "O, yeri sizin için döşek, göğü de bina yapan, gökten su indirip onunla size rızık olarak çeşitli ürünler çıkarandır."
+   },
+   {
+    "sure": "Secde",
+    "sure_no": "32",
+    "ayet": "5",
+    "alinti": "Onun katında bir gün, sizin saymakta olduklarınızdan bin yıl gibidir."
+   },
+   {
+    "sure": "Me'âric",
+    "sure_no": "70",
+    "ayet": "4",
+    "alinti": "Melekler ve Ruh, ona, miktarı elli bin yıl olan bir günde yükselir."
+   }
+  ]
+ },
+ {
+  "id": "02_melekler_cinler",
+  "ad": "Meleklerin ve Cinlerin Yaratılışı",
+  "ad_alt": "Görünmez âlemin halkları",
+  "icerik": "<p>Allah, henüz insanı yaratmadan önce iki büyük âlemi var etti. Her ikisi de bizim gözümüzle göremediğimiz, ama Kuran'ın varlıklarını kesin olarak haber verdiği iki halk: <b>melekler</b> ve <b>cinler</b>. Bu iki halk, sonradan Hz. Âdem'in yaratılış sahnesinde karşı karşıya gelecek; insanlık tarihinin ilk büyük imtihanı onların etrafında dönecektir.</p>\n\n<h3>Melekler — Nurdan Yaratılanlar</h3>\n\n<p>Melekler hakkında Hz. Peygamber şöyle buyurmuştur: <i>\"Melekler nurdan yaratıldı, cinler dumansız ateşten yaratıldı, Âdem ise size anlatılan çamurdan yaratıldı\"</i> (Müslim, Zühd 60). Bu hadis Kuran'daki bilgilerle tamamen örtüşür.</p>\n\n<p>Melekler Allah'ın <b>emrine isyan etmeyen</b>, <b>kendilerine ne emredilirse onu yapan</b> kullardır. Kuran onları kısaca tanımlar: <i>\"Onlar üstlerindeki Rablerinden korkarlar ve emredildikleri şeyi yaparlar\"</i> (Nahl 50). Yemezler, içmezler, evlenmezler, çoğalmazlar. Yorulmazlar. Allah'ı zikretmekten <b>asla bıkmazlar</b> — sürekli tesbih hâlindedirler.</p>\n\n<p>Sayıları hakkında Kuran şu çarpıcı detayı verir: <i>\"Rabbinin ordularını ancak kendisi bilir\"</i> (Müddessir 31). Yani sayıları yalnızca Allah'ın bilgisinde — milyonlarca, milyarlarca, sonsuz olabilir.</p>\n\n<p>Görevleri Kuran'da farklı yerlerde anılır:</p>\n<p>• <b>Cebrail</b> — vahiy meleği; peygamberlere Allah'ın sözünü taşır.<br>\n• <b>Mîkâil</b> — rızık, yağmur, doğa olaylarının görevlisi.<br>\n• <b>İsrâfil</b> — Sûr'a üfleyecek, kıyameti başlatacak olan.<br>\n• <b>Azrâil</b> (Melekü'l-Mevt) — ruhları teslim alan.<br>\n• <b>Münker ve Nekir</b> — kabirde sorgulayacak olan iki melek.<br>\n• <b>Kirâmen Kâtibîn</b> — sağda ve solda yazan, amelleri kaydeden iki melek.<br>\n• <b>Hafaza melekleri</b> — insanı koruyan melekler.<br>\n• <b>Hamele-i Arş</b> — Allah'ın Arş'ını taşıyan büyük melekler.<br></p>\n\n<p>Bunlardan başka da sayısız melek vardır: secde edenler, namaz kılanların etrafında halka kuranlar, savaşta müminlere yardım edenler — Bedir'de inen üç bin, Uhud'da inen beş bin melek gibi.</p>\n\n<h3>Cinler — Dumansız Ateşten Yaratılanlar</h3>\n\n<p>Cinler de insanlar gibi <b>iradesi olan</b>, <b>imtihan edilen</b>, <b>mümin ve kâfir olabilen</b> varlıklardır. Allah onları kendine kulluk için yarattığını açıkça bildirir: <i>\"Ben cinleri ve insanları, ancak bana kulluk etsinler diye yarattım\"</i> (Zâriyât 56). Yani cinler de bizim gibi imtihan altındadır.</p>\n\n<p>Yaratılışları <b>\"semûm ateşinden\"</b> — yani gözle görülmeyen, derinlere işleyen sıcak bir alevden — yapılmıştır (Hicr 27, Rahmân 15). İnsandan <b>çok daha önce</b> yaratılmışlardır; Hz. Âdem yaratıldığında onlar zaten asırlardır vardı.</p>\n\n<p>Aralarında <b>peygamberleri</b> oldu mu, yoksa insan peygamberlerin tebliği onlara mı ulaştı — tefsirciler arasında tartışılmıştır. Ama Cin suresinde anlatıldığı gibi, Hz. Peygamber'in Kuran okuduğunu duyan bir grup cin Müslüman olmuştur: <i>\"Şüphesiz biz harikulade güzel bir Kuran dinledik. O, doğru yola iletiyor. Biz de ona iman ettik\"</i> (Cin 1-2).</p>\n\n<p>Cinler insanlara göre bazı yeteneklere sahiptir: çok hızlı hareket edebilirler, şekil değiştirebilirler, gözle görünmedikleri için insanın iç dünyasına <b>vesvese</b> verebilirler. Ama bunlar onların üstün olduğu anlamına gelmez — son tahlilde onlar da Allah'ın yarattığı kullardır. Hz. Süleyman'a Allah, hem rüzgârı hem de cinleri ona itaate verdi; cinler onun adına <b>mihraplar, heykeller, büyük havuzlar</b> yapıyordu (Sebe 12-13).</p>\n\n<h3>Ve Bir İsim: İblis</h3>\n\n<p>Şimdi cinlerin arasında özel bir varlık vardı — Kuran'ın bize <b>en ayrıntılı tanıttığı</b> figürlerden biri. Adı <b>İblis</b>'ti. Allah'a olan ibadetinde öyle ileri gitmişti ki <b>meleklerin arasına yükseltilmişti</b> — adeta onlardan biriydi. Cennet tabakalarında Allah'a ibadet ediyor, meleklerle aynı safta bulunuyordu.</p>\n\n<p>Ama onun aslı melek değildi. Kuran açıkça söyler: <i>\"İblis cinlerdendi; Rabbinin emrinden çıktı\"</i> (Kehf 50). Yani melek gibi göründü, ama özünde irade sahibi bir cindi. Bu fark, az sonra anlatacağımız büyük sahnede her şeyi belirleyecektir.</p>\n\n<p>Allah, gökleri yarattı, yeri döşedi, melekleri saf saf dizdi, cinleri sahnenin görünmez köşesine yerleştirdi. Şimdi büyük an gelmişti. Bu kâinatın asıl sahibi — bu uzun hazırlığın asıl muhatabı — sahneye çıkacaktı. <b>Çamurdan yaratılacak yeni bir varlık.</b> Adı <b>Âdem</b> olacak.</p>",
+  "ayetler": [
+   {
+    "sure": "Nahl",
+    "sure_no": "16",
+    "ayet": "49-50",
+    "alinti": "Göklerde ve yerde olan canlılar ve melekler büyüklük taslamadan Allah'a secde ederler. Onlar üstlerindeki Rablerinden korkar ve emrolundukları şeyi yaparlar."
+   },
+   {
+    "sure": "Tahrîm",
+    "sure_no": "66",
+    "ayet": "6",
+    "alinti": "Onun başında Allah'ın emrettiklerine isyan etmeyen, kendilerine emredileni yapan iri yarı melekler vardır."
+   },
+   {
+    "sure": "Müddessir",
+    "sure_no": "74",
+    "ayet": "31",
+    "alinti": "Rabbinin ordularını ancak kendisi bilir."
+   },
+   {
+    "sure": "Enbiyâ",
+    "sure_no": "21",
+    "ayet": "19-20",
+    "alinti": "Göklerde ve yerde kim varsa hep O'nundur. O'nun yanında bulunanlar, ona ibadet etmekten büyüklenmezler ve yorulmazlar."
+   },
+   {
+    "sure": "Zâriyât",
+    "sure_no": "51",
+    "ayet": "56",
+    "alinti": "Ben cinleri ve insanları, ancak bana kulluk etsinler diye yarattım."
+   },
+   {
+    "sure": "Hicr",
+    "sure_no": "15",
+    "ayet": "27",
+    "alinti": "Cinleri de daha önce dumansız ateşten yaratmıştık."
+   },
+   {
+    "sure": "Rahmân",
+    "sure_no": "55",
+    "ayet": "15",
+    "alinti": "Cinleri de yalın bir ateşten yarattı."
+   },
+   {
+    "sure": "Cin",
+    "sure_no": "72",
+    "ayet": "1-2",
+    "alinti": "De ki: Bana, cinlerden bir topluluğun Kuran dinleyip de şöyle dedikleri vahyolundu: 'Şüphesiz biz harikulade güzel bir Kuran dinledik...'"
+   },
+   {
+    "sure": "Kehf",
+    "sure_no": "18",
+    "ayet": "50",
+    "alinti": "İblis ise cinlerdendi de Rabbinin emrinden dışarı çıktı."
+   },
+   {
+    "sure": "Sebe",
+    "sure_no": "34",
+    "ayet": "12-13",
+    "alinti": "Süleyman için de sabah esişi bir ay, akşam esişi bir ay olan rüzgârı… Onun için ne dilerse mihraplar, heykeller, havuzlar gibi havuzlar yapıyorlardı."
+   },
+   {
+    "sure": "Bakara",
+    "sure_no": "2",
+    "ayet": "210",
+    "alinti": "Onlar (kâfirler), ille de Allah'ın ve meleklerin bulutlar içinde kendilerine gelmesini mi bekliyorlar?"
+   },
+   {
+    "sure": "Â-l-i İmrân",
+    "sure_no": "3",
+    "ayet": "124-125",
+    "alinti": "Hani sen müminlere, 'Rabbinizin, indirilmiş üç bin melek ile yardım etmesi size yetmez mi?' diyordun."
+   }
+  ]
+ },
+ {
+  "id": "03_adem_yaratilisi",
+  "ad": "Hz. Âdem'in Yaratılışı ve Şeytanın İsyanı",
+  "ad_alt": "İlk insan, ilk meydan okuma",
+  "icerik": "<p>Yaratılış tamamlanmıştı. Gökler kuruldu, yer döşendi, denizler dolduruldu, dağlar dikildi. Melekler saf saf Allah'ı tespih ediyor, cinler kendi âlemlerinde yaşıyorlardı. Ama her şeyin merkezindeki o asıl varlık henüz yoktu. Allah büyük bir bildirim yapmak üzereydi.</p>\n\n<p>Bakara suresinde Allah o anı bize anlatır: <i>\"Hani Rabbin meleklere, 'Ben yeryüzünde bir halife yaratacağım' demişti.\"</i> (Bakara 30). <b>Halife</b> — yani Allah'ın yeryüzündeki temsilcisi, ona vekâlet edecek olan, yaratılışın anlamını taşıyacak olan varlık.</p>\n\n<p>Melekler şaşırdılar. Allah'a sordular — itiraz değil, anlamak için: <i>\"Orada bozgunculuk yapacak ve kan dökecek birini mi yaratacaksın? Oysa biz seni hamd ile tespih ederiz ve seni takdis ederiz.\"</i> Bazı tefsirler bu sözün arkasında şu bilgiyi koyar: Cinler daha önce yeryüzünde yaşamış, aralarında savaşmış, kan dökmüşlerdi. Melekler \"bu yeni varlık da onlar gibi olur\" diye düşündüler.</p>\n\n<p>Allah'ın cevabı çok kısa ama derin oldu: <b>\"Ben sizin bilmediklerinizi bilirim.\"</b> Onlar yeni varlığın olası kötülüklerini görüyor, Allah ise içindeki potansiyeli — <b>peygamberleri, evliyaları, şehitleri, salih kulları</b> — biliyordu.</p>\n\n<h3>Çamurdan Şekillenen İlk Vücut</h3>\n\n<p>Sonra Allah Hz. Âdem'i yarattı. Kuran'da yaratılış maddesi farklı yerlerde farklı kelimelerle anılır — her biri sürecin bir aşamasına işaret eder gibidir:</p>\n\n<p>• <b>Toprak</b> (turâb) — Â-li İmrân 59: \"İsa'nın durumu Allah katında Âdem'in durumu gibidir. Onu topraktan yarattı.\"<br>\n• <b>Çamur</b> (tîn) — En'âm 2: \"Sizi çamurdan yaratan O'dur.\"<br>\n• <b>Yapışkan çamur</b> (tîn-i lâzib) — Sâffât 11: \"Biz onları yapışkan bir çamurdan yarattık.\"<br>\n• <b>Şekil verilmiş kuru çamur</b> (salsâl) — Hicr 26: \"Andolsun biz insanı, kuru bir çamurdan, şekillenmiş bir balçıktan yarattık.\"<br></p>\n\n<p>Yani Allah Hz. Âdem'i bir anda değil, evreler hâlinde yarattı. Önce toprak, sonra suyla karıştı, çamur oldu; çamura şekil verildi, kurudu, sertleşti — sonunda mükemmel bir biçim aldı. Tefsirlerde bu cesedin <b>belirli bir süre cansız yattığı</b>, iblisin etrafında dolanıp <b>\"Sen bir şey için yaratılmışsın\"</b> diye merakla baktığı rivayet edilir.</p>\n\n<p>Sonra Allah <b>kendi ruhundan</b> ona üfledi: <i>\"Ben onu düzenlediğim ve ona ruhumdan üflediğim zaman, hemen ona secdeye kapanın\"</i> (Sâd 72). Bu \"kendi ruhumdan\" ifadesi — Hz. Âdem'in basit bir biyolojik varlık olmadığını, içine <b>ilahi bir nefes</b> üflendiğini anlatır. İnsan yarısı topraktır, yarısı ilahi nefestir. Bu yüzden hem bedeniyle yere bağlı, hem ruhuyla göğe çekilir.</p>\n\n<h3>İsimler — İnsanın Asıl Üstünlüğü</h3>\n\n<p>Sonra Allah Hz. Âdem'e <b>bütün isimleri öğretti</b>. <i>\"Allah, Âdem'e bütün isimleri öğretti. Sonra onları meleklere sunup, 'Eğer doğru söyleyenler iseniz şunların isimlerini bana söyleyin' dedi\"</i> (Bakara 31).</p>\n\n<p>Bu \"isimler\" — sadece kelimeler değil; <b>bilgi</b>, <b>kavramlar</b>, <b>dilin sırrı</b>, <b>nesnelerin doğası</b>… Tüm bunları Allah Hz. Âdem'e doğrudan ilim olarak verdi. Melekler bilmedikleri için <i>\"Seni tenzih ederiz; senin bize öğrettiğinden başka bizim hiçbir bilgimiz yok\"</i> dediler. Sonra Allah Hz. Âdem'e dönerek isimleri söylemesini istedi — ve o söyleyince meleklerin neden bu yeni varlığa <b>secde edecekleri</b> anlaşıldı.</p>\n\n<p>İnsanı meleklerden üstün kılan, bilgisi ve <b>öğrenebilme yeteneği</b>ydi. Melekler bildiklerini bilir; ama insan <b>bilmediğini öğrenebilirdi</b>. Bu, insanın temel ayrıcalığıdır.</p>\n\n<h3>Secde — ve Tek Bir Reddediş</h3>\n\n<p>Sonra Allah meleklere ve İblis'e Hz. Âdem'e secde etmelerini emretti — bu bir ibadet secdesi değil, <b>saygı secdesi</b> idi. <i>\"Hani biz meleklere, 'Âdem için saygı ile eğilin' demiştik. İblis hariç hepsi saygı ile eğildiler.\"</i> (Bakara 34).</p>\n\n<p>Tüm melekler hemen secdeye kapandı. Ama bir tek varlık dik durdu: <b>İblis</b>. O ki meleklerin arasında ibadetiyle yükselmişti — şimdi melek olmadığı ortaya çıkıyordu.</p>\n\n<p>Allah ona sordu: <i>\"Ey İblis! Ellerimle yarattığıma secde etmekten seni alıkoyan nedir? Büyüklük mü tasladın yoksa yücelerden mi oldun?\"</i> (Sâd 75).</p>\n\n<p>İblis'in cevabı — insanlık tarihinin ilk büyük cümlelerinden biri — şuydu: <b>\"Ben ondan daha hayırlıyım. Beni ateşten yarattın, onu ise çamurdan yarattın.\"</b> (Sâd 76).</p>\n\n<p>Bu cümle önemlidir. İblis Allah'ın emrini reddetmedi — onun varlığını inkâr etmedi. Sadece <b>kendi yorumunu Allah'ın emrine üstün tuttu</b>. \"Bence ateş çamurdan üstündür, o yüzden secde etmem mantıklı değildir.\" Bu, kibrin saf hâliydi: Kendi aklını ilahi emirden üstün görmek.</p>\n\n<p>Allah onu kovdu: <i>\"Çık oradan! Sen artık kovulmuş birisin. Şüphesiz hesap gününe kadar lanetim senin üzerinedir\"</i> (Sâd 77-78). Yıllarca, asırlarca süren ibadeti tek bir <b>kibir anı</b>nda yok oldu.</p>\n\n<p>Ama İblis pes etmedi. Allah'tan bir <b>mühlet</b> istedi: kıyamete kadar yaşamayı. Allah ona bunu verdi — ama bir maksatla: imtihanın tamamlanması için. İblis o anda meşhur yeminini etti: <b>\"Beni azdırdığın için, andolsun ki ben de senin doğru yolunun üzerine onlar için oturacağım. Sonra elbette onlara önlerinden, arkalarından, sağlarından ve sollarından sokulacağım. Sen de çoğunu şükredici bulmayacaksın.\"</b> (A'râf 16-17).</p>\n\n<p>Allah'ın cevabı kesin oldu: <i>\"Onlardan sana uyanlarla birlikte hepinizi cehenneme dolduracağım\"</i> (Sâd 85).</p>\n\n<p>İşte böylece insanlık tarihinin <b>iki ana karakteri</b> belirlendi: bir tarafta <b>Hz. Âdem</b> ve onun soyundan gelecek <b>milyarlarca insan</b>; diğer tarafta <b>İblis</b> ve <b>onun vesveseleri</b>. Sahne hazırdı. Şimdi sıra yeni varlığın <b>cennete yerleştirilmesine</b> gelmişti. Ama o cennet — uzun süreli bir yurt değil, kısa bir sınama yeriydi.</p>",
+  "ayetler": [
+   {
+    "sure": "Bakara",
+    "sure_no": "2",
+    "ayet": "30",
+    "alinti": "Hani Rabbin meleklere, 'Ben yeryüzünde bir halife yaratacağım' demişti. Onlar, 'Orada bozgunculuk yapacak ve kan dökecek birini mi yaratacaksın?' dediler. Allah, 'Şüphesiz ben sizin bilmediklerinizi bilirim' dedi."
+   },
+   {
+    "sure": "Bakara",
+    "sure_no": "2",
+    "ayet": "31-33",
+    "alinti": "Allah, Âdem'e bütün isimleri öğretti. Sonra onları meleklere sunup, 'Eğer doğru söyleyenler iseniz şunların isimlerini bana söyleyin' dedi."
+   },
+   {
+    "sure": "Bakara",
+    "sure_no": "2",
+    "ayet": "34",
+    "alinti": "Hani biz meleklere, 'Âdem için saygı ile eğilin' demiştik. İblis hariç hepsi saygı ile eğildiler. O ise diretti, büyüklendi ve kâfirlerden oldu."
+   },
+   {
+    "sure": "Hicr",
+    "sure_no": "15",
+    "ayet": "26-29",
+    "alinti": "Andolsun, biz insanı kuru bir çamurdan, şekillenmiş bir balçıktan yarattık. Cinleri de daha önce dumansız ateşten yaratmıştık. Hani Rabbin meleklere, 'Ben kuru bir çamurdan, şekillenmiş bir balçıktan bir insan yaratacağım. Onu düzenleyip içine ruhumdan üflediğim zaman ona saygı ile secde edin' demişti."
+   },
+   {
+    "sure": "Sâd",
+    "sure_no": "38",
+    "ayet": "71-85",
+    "alinti": "Hani Rabbin meleklere şöyle demişti: 'Muhakkak ben çamurdan bir insan yaratacağım. Onu şekillendirip içine ruhumdan üflediğim zaman ona saygı ile secde edin.' Derken bütün melekler topluca saygı ile eğildiler. Ancak İblis eğilmedi. O büyüklük tasladı ve kâfirlerden oldu."
+   },
+   {
+    "sure": "A'râf",
+    "sure_no": "7",
+    "ayet": "11-18",
+    "alinti": "Hani biz meleklere 'Âdem'e saygı ile secde edin' demiştik. İblis'ten başka hepsi saygı ile secde ettiler. İblis'e 'Sana emrettiğim zaman seni saygı ile secde etmekten alıkoyan nedir?' dedi. İblis 'Ben ondan hayırlıyım. Çünkü beni ateşten yarattın. Onu ise çamurdan yarattın' dedi."
+   },
+   {
+    "sure": "Â-l-i İmrân",
+    "sure_no": "3",
+    "ayet": "59",
+    "alinti": "Şüphesiz Allah katında İsa'nın durumu, Âdem'in durumu gibidir. Onu topraktan yarattı. Sonra ona 'ol' dedi. O da hemen oluverdi."
+   },
+   {
+    "sure": "Sâffât",
+    "sure_no": "37",
+    "ayet": "11",
+    "alinti": "Şimdi sor onlara, kendileri mi yaratılış bakımından daha çetin, yoksa bizim yarattığımız diğer şeyler mi? Şüphesiz biz onları yapışkan bir çamurdan yarattık."
+   },
+   {
+    "sure": "Tâhâ",
+    "sure_no": "20",
+    "ayet": "115-116",
+    "alinti": "Andolsun, biz bundan önce Âdem'e (cennetteki ağacın meyvesinden yeme, diye) emrettik. O ise bunu unuttu. Biz onda bir kararlılık bulmadık. Hani meleklere, 'Âdem için saygı ile eğilin' demiştik de İblis'ten başka melekler hemen saygı ile eğilmişler; İblis bundan kaçınmıştı."
+   },
+   {
+    "sure": "Kehf",
+    "sure_no": "18",
+    "ayet": "50",
+    "alinti": "Hani biz meleklere, 'Âdem için saygı ile eğilin' demiştik de İblis'ten başka hepsi saygı ile eğilmişlerdi. İblis ise cinlerdendi de Rabbinin emrinden dışarı çıktı."
+   }
+  ]
+ }
+];
+
+// Bizdeki sureler (tıklanabilir referans için)
+const BIZDEKI_SURELER = ['Meryem','Ahzâb','İnsan'];
+
+let aktifTarihBolum = null;
+let aktifTarihIndex = 0;
+
+const tarihMain = document.getElementById('tarihMain');
+const tarihNote = document.getElementById('tarihNote');
+
+function renderTarihListesi(){
+  let cards = '';
+  TARIH_BOLUMLER.forEach((b, i) => {
+    cards += `<div class="tarih-card" onclick="acTarihBolum(${i})">
+      <div class="sira">${i+1}</div>
+      <div class="info">
+        <span class="ad">${b.ad}</span>
+        <span class="ad-alt">${b.ad_alt}</span>
+      </div>
+    </div>`;
+  });
+  tarihMain.innerHTML = `
+    <div class="tarih-intro">Yaratılışın başlangıcından kıyamete kadar, Kuran-ı Kerim'in anlattığı kronolojik akışın akıcı bir anlatımı. Her bölümün altında ilgili sûre ve âyet referansları yer alır.</div>
+    <div class="tarih-listesi">${cards}</div>
+  `;
+  if (tarihNote) tarihNote.textContent = "Bölümler kademe kademe eklenmektedir. Kaynak: Kur'ân-ı Kerîm (Diyanet meali) ve klasik tefsir geleneği.";
+}
+
+function acTarihBolum(idx){
+  aktifTarihIndex = idx;
+  renderTarihDetay();
+}
+
+function renderTarihDetay(){
+  const b = TARIH_BOLUMLER[aktifTarihIndex];
+
+  // Ayet referansları
+  let ayetHtml = '';
+  b.ayetler.forEach(a => {
+    const tiklanabilir = BIZDEKI_SURELER.includes(a.sure);
+    const cls = tiklanabilir ? 'ayet-ref-baslik tiklanabilir' : 'ayet-ref-baslik';
+    const onClick = tiklanabilir ? `onclick="ayetTiklat('${a.sure}', '${a.ayet}')"` : '';
+    ayetHtml += `<div class="ayet-ref">
+      <div class="${cls}" ${onClick}>${a.sure}, ${a.ayet}. ayet</div>
+      <div class="ayet-ref-alinti">${a.alinti}</div>
+    </div>`;
+  });
+
+  tarihMain.innerHTML = `
+    <div class="tarih-detay-head">
+      <div class="ad">${b.ad}</div>
+      <div class="ad-alt">${b.ad_alt}</div>
+    </div>
+    <div class="tarih-icerik">${b.icerik}</div>
+    <div class="ayet-kutusu">
+      <h4>📖 Kaynak âyetler</h4>
+      ${ayetHtml}
+    </div>
+    <div class="bolum-nav">
+      <button class="bolum-nav-btn ${aktifTarihIndex===0?'pasif':''}" onclick="${aktifTarihIndex===0?'':'acTarihBolum('+(aktifTarihIndex-1)+')'}">‹ Önceki</button>
+      <div class="bolum-nav-sayac">${aktifTarihIndex+1} / ${TARIH_BOLUMLER.length}</div>
+      <button class="bolum-nav-btn ${aktifTarihIndex===TARIH_BOLUMLER.length-1?'pasif':''}" onclick="${aktifTarihIndex===TARIH_BOLUMLER.length-1?'':'acTarihBolum('+(aktifTarihIndex+1)+')'}">Sonraki ›</button>
+    </div>
+    <span class="geri-link" onclick="tarihAna()">‹ Bölüm listesine dön</span>
+  `;
+  if (tarihNote) tarihNote.textContent = "";
+  setTimeout(()=>window.scrollTo({top:0,behavior:'instant'}),20);
+}
+
+function tarihAna(){
+  aktifTarihIndex = 0;
+  renderTarihListesi();
+  setTimeout(()=>window.scrollTo({top:0,behavior:'instant'}),20);
+}
+
+// Ayet tıklama: ilgili sureye git ve doğru bolume atla
+function ayetTiklat(sureAd, ayetNo){
+  // Once Kuran sekmesine gec
+  if(typeof acSekme==='function') acSekme('kuran');
+  // Sure listesindeki bizdeki sureleri bul
+  if(typeof window.SURELER === 'undefined') return;
+  setTimeout(()=>{
+    const idx = window.SURELER ? window.SURELER.findIndex(s=>s.ad===sureAd) : -1;
+    if(idx>=0 && typeof window.acSure==='function'){
+      window.acSure(idx);
+      // Bölümleri tara, ayet aralıgına uygun bolumu bul
+      setTimeout(()=>{
+        const sure = window.SURELER[idx];
+        const ayetNum = parseInt(String(ayetNo).split('-')[0].split('/')[0]);
+        for(let i=0; i<sure.bolumler.length; i++){
+          const aralik = sure.bolumler[i].aralik;
+          const [s,e] = aralik.split('-').map(x=>parseInt(x));
+          if(ayetNum >= s && ayetNum <= e){
+            if(typeof window.secBolum==='function') window.secBolum(i);
+            break;
+          }
+        }
+      }, 100);
+    }
+  }, 100);
+}
+
+window.TarihBaslat = renderTarihListesi;
+window.acTarihBolum = acTarihBolum;
+window.tarihAna = tarihAna;
+window.ayetTiklat = ayetTiklat;
+
+// Kuran modulundeki SURELER'i global yap (zaten module-scope'da ama tıklama icin lazim)
+})();
+
 // =========== ANA KONTROL (sekme yonetimi) ===========
 let aktifSekme = null;
-let modulBasladi = { tavaf:false, namaz:false, dualar:false, kuran:false };
+let modulBasladi = { tavaf:false, namaz:false, dualar:false, kuran:false, tarih:false };
 
 function acSekme(ad){
   // ana ekrani gizle, modulleri gizle, hedefi goster
@@ -6512,12 +6909,13 @@ function acSekme(ad){
   document.getElementById('namazEkran').style.display='none';
   document.getElementById('dualarEkran').style.display='none';
   document.getElementById('kuranEkran').style.display='none';
+  document.getElementById('tarihEkran').style.display='none';
   document.getElementById(ad+'Ekran').style.display='';
   // sekme bari goster
   const bar=document.getElementById('sekmeBar');
   bar.classList.remove('gizli');
   // aktif sekme isaretle
-  ['Tavaf','Namaz','Dualar','Kuran'].forEach(s=>{
+  ['Tavaf','Namaz','Dualar','Kuran','Tarih'].forEach(s=>{
     const b=document.getElementById('sekme'+s);
     if(b) b.classList.toggle('aktif', s.toLowerCase()===ad);
   });
@@ -6528,6 +6926,7 @@ function acSekme(ad){
     if(ad==='namaz'   && window.NamazBaslat)   window.NamazBaslat();
     if(ad==='dualar'  && window.DualarBaslat)  window.DualarBaslat();
     if(ad==='kuran'   && window.KuranBaslat)   window.KuranBaslat();
+    if(ad==='tarih'   && window.TarihBaslat)   window.TarihBaslat();
     modulBasladi[ad]=true;
   }
   // sayfanin basina kaydir
@@ -6545,6 +6944,7 @@ function anaEkrana(){
   document.getElementById('namazEkran').style.display='none';
   document.getElementById('dualarEkran').style.display='none';
   document.getElementById('kuranEkran').style.display='none';
+  document.getElementById('tarihEkran').style.display='none';
   document.getElementById('sekmeBar').classList.add('gizli');
   aktifSekme=null;
   window.scrollTo({top:0, behavior:'instant'});
