@@ -254,6 +254,13 @@
   .icerik-sekme-btn:active{ transform:scale(.97);}
   .icerik-sekme-btn.aktif{ background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a; font-weight:600;}
 
+  /* Bolum nav (Onceki / Sayac / Sonraki) */
+  .bolum-nav{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:22px; padding:8px 4px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .bolum-nav-btn{ flex:1; max-width:42%; background:linear-gradient(135deg, rgba(212,175,106,0.13), rgba(212,175,106,0.05)); border:1px solid var(--line); color:var(--gold-bright); font-family:'Jost',sans-serif; font-size:13px; font-weight:500; padding:11px 10px; border-radius:14px; cursor:pointer; transition:all .2s; white-space:nowrap;}
+  .bolum-nav-btn:active{ transform:scale(.96); background:linear-gradient(135deg, rgba(212,175,106,0.22), rgba(212,175,106,0.08));}
+  .bolum-nav-btn.pasif{ opacity:0.35; cursor:default; pointer-events:none;}
+  .bolum-nav-sayac{ flex:0 0 auto; min-width:60px; text-align:center; font-size:12px; font-weight:600; color:var(--gold); letter-spacing:1px;}
+
   .geri-link{ display:block; text-align:center; margin-top:22px; color:var(--gold); font-size:13px; cursor:pointer;}
 </style>
 </head>
@@ -6451,6 +6458,12 @@ function renderSureDetay(){
     ${icerikSekmeBari}
 
     ${icerikHtml}
+
+    <div class="bolum-nav">
+      <button class="bolum-nav-btn ${aktifBolum===0?'pasif':''}" onclick="${aktifBolum===0?'':'secBolum('+(aktifBolum-1)+')'}">‹ Önceki</button>
+      <div class="bolum-nav-sayac">${aktifBolum+1} / ${s.bolumler.length}</div>
+      <button class="bolum-nav-btn ${aktifBolum===s.bolumler.length-1?'pasif':''}" onclick="${aktifBolum===s.bolumler.length-1?'':'secBolum('+(aktifBolum+1)+')'}">Sonraki ›</button>
+    </div>
 
     <span class="geri-link" onclick="kuranAna()">‹ Sûre listesine dön</span>
   `;
