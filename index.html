@@ -263,6 +263,39 @@
 
   .geri-link{ display:block; text-align:center; margin-top:22px; color:var(--gold); font-size:13px; cursor:pointer;}
 
+  /* === YAZI BOYUTU KONTROLU === */
+  /* Varsayilan (orta) - hicbir class yoksa */
+  body.font-buyuk .madde-card,
+  body.font-buyuk .ayet-okunus,
+  body.font-buyuk .ayet-meal,
+  body.font-buyuk .bolum-ozet p,
+  body.font-buyuk .tarih-icerik p,
+  body.font-buyuk .ayet-ref-alinti,
+  body.font-buyuk .bilgi-aciklama{ font-size:17px !important; line-height:1.95 !important;}
+  body.font-buyuk .bolum-baslik,
+  body.font-buyuk .tarih-detay-head .ad{ font-size:24px !important;}
+  body.font-buyuk .ad-tr-buyuk{ font-size:32px !important;}
+
+  body.font-kucuk .madde-card,
+  body.font-kucuk .ayet-okunus,
+  body.font-kucuk .ayet-meal,
+  body.font-kucuk .bolum-ozet p,
+  body.font-kucuk .tarih-icerik p,
+  body.font-kucuk .ayet-ref-alinti,
+  body.font-kucuk .bilgi-aciklama{ font-size:12px !important; line-height:1.6 !important;}
+  body.font-kucuk .bolum-baslik,
+  body.font-kucuk .tarih-detay-head .ad{ font-size:17px !important;}
+
+  /* Yazi boyutu secici (sag ust kose, sabit) */
+  .font-secici{ position:fixed; top:14px; right:14px; z-index:200; background:rgba(10,14,26,0.92); backdrop-filter:blur(10px); border:1px solid var(--line); border-radius:30px; padding:4px; display:flex; gap:2px;}
+  .font-secici.gizli{ display:none;}
+  .font-btn{ width:32px; height:32px; border:none; background:none; color:var(--text-dim); cursor:pointer; font-family:'Cormorant Garamond',serif; font-weight:600; border-radius:24px; transition:all .2s; display:flex; align-items:center; justify-content:center;}
+  .font-btn:active{ transform:scale(.92);}
+  .font-btn.aktif{ background:linear-gradient(135deg,var(--gold),var(--gold-dim)); color:#0a0e1a;}
+  .font-btn.k{ font-size:12px;}
+  .font-btn.o{ font-size:15px;}
+  .font-btn.b{ font-size:18px;}
+
   /* === TARIH MODULU CSS === */
   .tarih-intro{ margin:14px 0 18px; padding:16px 18px; background:linear-gradient(165deg, rgba(212,175,106,0.05), rgba(18,24,41,0.4)); border:1px solid var(--line); border-radius:14px; font-size:13px; color:var(--text-dim); line-height:1.7; text-align:center; font-style:italic;}
 
@@ -448,6 +481,13 @@
     <div class="note" id="tarihNote"></div>
   </div>
 
+</div>
+
+<!-- YAZI BOYUTU SECICI (modul iclerinde gorunur) -->
+<div class="font-secici gizli" id="fontSecici">
+  <button class="font-btn k" onclick="setFont('kucuk')" title="Küçük">A</button>
+  <button class="font-btn o aktif" onclick="setFont('orta')" title="Orta">A</button>
+  <button class="font-btn b" onclick="setFont('buyuk')" title="Büyük">A</button>
 </div>
 
 <!-- ALT SEKME BARI (modul iclerinde gorunur) -->
@@ -6209,6 +6249,383 @@ const SURELER = [
   ]
  },
  {
+  "ad": "Vâkıa",
+  "ad_ar": "سُورَةُ الْوَاقِعَة",
+  "no": 56,
+  "ayet_sayisi": 96,
+  "yer": "Mekkî",
+  "nuzul_sirasi": 46,
+  "sayfa": "533-536",
+  "cuz": 27,
+  "tilavet_secdesi": "Yok",
+  "ad_kaynagi": "1. ayette geçen 'el-vâkıa' (gerçekleşen, meydana gelen olay) kelimesinden alır. Burada 'vâkıa' ile kıyamet kastedilir — meydana gelmesi kesin olan büyük hadise.",
+  "nuzul_donemi": "Mekke devrinde, Tâhâ sûresinden sonra, Şuarâ sûresinden önce nâzil olmuştur.",
+  "tema": "Kıyametin kopuş sahnesi, ahirette insanların <b>üç ana gruba</b> ayrılması (sâbikûn, ashâbü'l-yemîn, ashâbü'ş-şimâl) ve her birinin akıbeti. Cennet ve cehennem tasvirleri, Allah'ın yaratıcı kudretine deliller (insan, ölüm, ekin, su, ateş, yıldızlar), Kuran'ın yüceliği ve son nefes anının çarpıcı tablosu. Hz. Peygamber'in <b>'Her gece Vâkıa'yı okuyan kişiye fakirlik dokunmaz'</b> hadisi nedeniyle halk arasında '<b>zenginlik sûresi</b>' olarak da bilinir.",
+  "bolumler": [
+   {
+    "baslik": "Kıyametin Kopuşu ve Üç Sınıf İnsan",
+    "aralik": "1-9",
+    "ayetler": [
+     [
+      "1/2",
+      "İzâ veka'ati'l-vâkı'ah. Leyse li-vak'atihâ kâzibetün.",
+      "Kesin gerçekleşecek (olan Kıyamet) koptuğu zaman, onun kopuşunu yalanlayacak kimse olmayacaktır."
+     ],
+     [
+      "3/7",
+      "Hâfıdatün râfi'ah. İzâ rüccetil-ardu reccâ. Ve büssetil-cibâlü bessâ. Fekânet hebâen münbessâ. Ve küntüm ezvâcen selâseh.",
+      "Yeryüzü şiddetle sarsıldığı, dağlar parça parça dağılıp saçılmış toz olduğu ve siz de üç sınıf olduğunuz zaman, O, (kimini) yükseltir, (kimini) alçaltır."
+     ],
+     [
+      "8",
+      "Fe-ashâbü'l-meymeneti mâ ashâbü'l-meymeneh.",
+      "Ahiret mutluluğuna erenler var ya; ne mutlu kimselerdir!"
+     ],
+     [
+      "9",
+      "Ve ashâbü'l-meş'emeti mâ ashâbü'l-meş'emeh.",
+      "Kötülüğe batanlara gelince; ne mutsuz kimselerdir!"
+     ]
+    ],
+    "ozet": "Sûre **şiddetli bir başlangıçla** açılır: <i>'Kesin gerçekleşecek olan koptuğu zaman...'</i> İlk kelime <b>el-vâkıa</b> — yani 'meydana gelen, gerçekleşmesi kesin olan büyük olay'. Bu, sûrenin de adıdır. Allah hemen vurguyu pekiştirir: <b>'Onun kopuşunu yalanlayacak kimse olmayacaktır.'</b> Kıyamet günü öyle bir andır ki o anda artık inkâr edecek kimse kalmaz; gerçek herkesin önünde dimdik durur.<br><br>Sonra üç ayet boyunca kıyametin <b>kozmik tablosu</b> çizilir. Yer şiddetle sarsılır, dağlar parça parça dağılır, <b>saçılmış toz</b> haline gelir. Tasvirin gücü dikkat çekici: bugün görkemli görünen dağlar, kıyamette bir bulut zerresi gibi savrulacak. Bu sırada Allah <b>'kimini yükseltir, kimini alçaltır'</b> — dünyada hor görülen müminler yükselir, kibirlenen inkârcılar alçaltılır.<br><br>Sonra surenin ana iskeleti kurulur: o gün insanlar <b>üç sınıf</b> olacaktır. Bu, Kuran'da çok özel bir tasniftir — başka surelerde 'iyi-kötü' olarak ikiye ayrım sıkça geçer, ama burada <b>üç</b>'lü ayrım vardır:<br>• <b>Ashâbü'l-meymene</b> (hakkın ve erdemin yanında olanlar) — sağ tarafın ehli.<br>• <b>Ashâbü'l-meş'eme</b> (bâtılın yanında olanlar) — sol tarafın ehli.<br>• <b>Sâbikûn</b> (önde gelenler) — en üst mertebe (sonraki bölümde anlatılır).<br><br>Sûre boyunca bu üç grubun akıbeti tek tek anlatılacak — her birinin cennetteki konumu, ya da cehennemdeki halı. Vâkıa böylece, **Kıyamet günü insanların nasıl ayrışacağına dair en sistematik Kuran sûrelerinden** biridir."
+   },
+   {
+    "baslik": "Birinci Grup: Sâbikûn (Allah'a En Yakın Olanlar)",
+    "aralik": "10-26",
+    "ayetler": [
+     [
+      "10/11",
+      "Ve's-sâbikûne's-sâbikûn. Ülâike'l-mukarrabûn.",
+      "(İman ve amelde) öne geçenler ise (Ahirette de) öne geçenlerdir. İşte onlar (Allah'a) yaklaştırılmış kimselerdir."
+     ],
+     [
+      "12",
+      "Fî cennâti'n-na'îm.",
+      "Onlar, Naîm cennetlerindedirler."
+     ],
+     [
+      "13/14",
+      "Sülletün mine'l-evvelîn. Ve kalîlün mine'l-âhirîn.",
+      "Onların çoğu öncekilerden, azı da sonrakilerdendir."
+     ],
+     [
+      "15/16",
+      "Alâ sürürin mevdûneh. Müttekiîne aleyhâ mütekâbilîn.",
+      "Onlar, karşılıklı yaslanmış vaziyette mücevherâtla işlenmiş tahtlar üzerindedirler."
+     ],
+     [
+      "17/21",
+      "Yetûfü aleyhim vildânün muhalledûn. Bi-ekvâbin ve ebârîka ve ke'sin min me'în. Lâ yusadda'ûne anhâ ve lâ yünzifûn. Ve fâkihetin mimmâ yetehayyerûn. Ve lahmi tayrin mimmâ yeştehûn.",
+      "Ebediyen genç kalan uşaklar, onların etrafında; içmekle başlarının dönmeyeceği ve sarhoş olmayacakları, cennet pınarından doldurulmuş sürahileri, ibrikleri ve kadehleri, beğendikleri meyveleri ve arzu ettikleri kuş etlerini dolaştırırlar."
+     ],
+     [
+      "22/23",
+      "Ve hûrun îyn. Ke-emsâli'l-lü'lüi'l-meknûn.",
+      "Onlar için saklı inciler gibi, iri gözlü huriler de vardır."
+     ],
+     [
+      "24",
+      "Cezâen bimâ kânû ya'melûn.",
+      "(Bütün bunlar) işledikleri amellere karşılık bir mükâfat olarak (verilir.)"
+     ],
+     [
+      "25",
+      "Lâ yesme'ûne fîhâ lağven ve lâ te'sîmâ.",
+      "Orada ne boş bir söz, ne de günaha sokan bir şey işitirler."
+     ],
+     [
+      "26",
+      "İllâ kîlen selâmen selâmâ.",
+      "Sadece 'selam!', 'selam!' sözünü işitirler."
+     ]
+    ],
+    "ozet": "Bu bölüm <b>sâbikûn</b>un — yani 'önde gelenler, Allah'a en yakın kılınanların' — cennetteki manzarasını anlatır. Bu en üst sınıftır; iman ve amelde **öncü konumda olan**, başkalarına örnek olan, hayırda önde yarışan kimseler. Klasik tefsircilerin bir kısmı bunları <b>'ilk Müslümanlar, ilk muhacirler, iki kıbleye doğru namaz kılmış sahâbe'</b> olarak yorumlar; bir kısmı ise <b>tüm peygamberleri ve öncü müminleri</b> kapsayan geniş bir kategori olarak görür.<br><br>Onların cennetteki hâli inanılmaz güzel sahnelerle tasvir edilir:<br><br>• <b>Naîm cennetlerindedirler</b> (Cennetin nimet bahçeleri).<br>• Çoğu öncekilerden (geçmiş ümmetlerden), azı sonrakilerdendir — yani bu en üst mertebeye **ulaşmak zordur**, sonradan gelenler için daha az.<br>• <b>Mücevheratla işlenmiş tahtlar</b> üzerinde karşılıklı yaslanmış vaziyettedirler — yan yana değil, <b>yüz yüze</b> bakacaklar. Kıskançlık, sırt çevirme yok.<br>• Etraflarında <b>ebediyen genç kalan hizmetçiler</b> (vildânün muhalledûn) dolaşır.<br>• Cennet pınarından doldurulmuş <b>sürahileri, ibrikleri, kadehleri</b> sunarlar — ama bu içecek <b>başlarını döndürmez, sarhoş etmez</b>! Dünya içkilerinden çok farklı bir tat.<br>• Beğendikleri her <b>meyveyi</b> seçebilirler, arzu ettikleri <b>kuş etlerini</b> yiyebilirler.<br>• Eşler olarak <b>'saklı inciler gibi'</b> hûriler vardır.<br><br>Sonra bir incelik gelir (25): orada <b>ne boş söz, ne günaha sokan söz</b> işitirler. Sadece tek bir kelime duyulur: <b>'Selâm, selâm.'</b> Cennetin ses ortamı — sadece esenlik. Dünyada o kadar gürültüye, yalana, dedikoduya, kavgaya boğulan kulaklar — orada sadece 'selâm' duyacak.<br><br>Bütün bu nimetlerin nedeni 24. ayette söylenir: <b>'İşledikleri amellere karşılık bir mükâfat olarak.'</b> Yani hediye değil, **ödül**."
+   },
+   {
+    "baslik": "İkinci Grup: Ashâb-ı Yemîn (Sağ Tarafın Ehli)",
+    "aralik": "27-40",
+    "ayetler": [
+     [
+      "27",
+      "Ve ashâbü'l-yemîni mâ ashâbü'l-yemîn.",
+      "Ahiret mutluluğuna erenler, ne mutlu kimselerdir!"
+     ],
+     [
+      "28/34",
+      "Fî sidrin mahdûd. Ve talhın mendûd. Ve zıllin memdûd. Ve mâin meskûb. Ve fâkihetin kesîrah. Lâ maktû'atin ve lâ memnû'ah. Ve füruşin merfû'ah.",
+      "(Onlar), dikensiz sidir ağaçları ve meyveleri küme küme dizili muz ağaçları altında, yayılmış sürekli bir gölgede, çağlayan bir su başında, tükenmeyen ve yasaklanmayan çok çeşitli meyveler içinde ve yüksek döşekler üzerindedirler."
+     ],
+     [
+      "35",
+      "İnnâ enşe'nâhünne inşâ'â.",
+      "Biz onları (hurileri) yepyeni bir yaratılışta yarattık."
+     ],
+     [
+      "36/38",
+      "Fe-ce'alnâhünne ebkârâ. Uruben etrâbâ. Li-ashâbi'l-yemîn.",
+      "Onları ahiret mutluluğuna erenler için, hep bir yaşta eşlerini çok seven gösterişli bakireler yaptık."
+     ],
+     [
+      "39/40",
+      "Sülletün mine'l-evvelîn. Ve sülletün mine'l-âhirîn.",
+      "Bunların birçoğu öncekilerden, birçoğu da sonrakilerdendir."
+     ]
+    ],
+    "ozet": "Şimdi ikinci grup — <b>ashâbü'l-yemîn</b> (sağ tarafın ehli) — anlatılır. Bunlar sâbikûn'dan bir mertebe altta, ama yine de **kurtulmuş müminlerdir**. Onların cennetteki manzarası da güzeldir, sâbikûn'unkinden bir nüans farklıdır.<br><br>Sûre 'ne mutlu kimselerdir!' diye onları över. Sonra cennetteki tasvirleri çizilir — özellikle <b>tabiat manzaraları</b> öne çıkar:<br><br>• <b>Dikensiz sidir ağaçları</b> — dünyadaki diken çekisi yok.<br>• <b>Meyveleri küme küme dizilmiş muz ağaçları</b> (talh) — tefsircilerin çoğu bunu muz olarak yorumlar.<br>• <b>Yayılmış, sürekli bir gölge</b> — Arabistan'ın güneşinden bunalmış halk için gölge en kıymetli nimetlerden biriydi.<br>• <b>Çağlayan bir su başında</b> — sürekli akan, hiç eksilmeyen.<br>• <b>Tükenmeyen ve yasaklanmayan</b> çok çeşitli meyveler — dünyada meyveler mevsimliktir, biter, yasaklanır; cennette hep var, hep helal.<br>• <b>Yüksek döşekler</b> — rahatlık ve onur.<br><br>Sonra 35-38'de bir mucize anlatılır: <b>Eşleri Allah yepyeni bir yaratılışta yaratacak</b>. Onlar **hep aynı yaşta, gösterişli, bâkire** olacaklar. Tefsirlerde bu eşlerin <b>dünyadaki kendi eşleri</b> olduğu (yenilenmiş, dirilmiş haliyle) ya da <b>özel cennet eşleri</b> olduğu yorumları yapılır. Önemli olan: <b>dünya nimetlerinin gelip geçici doğası orada yok</b>. Yaşlanma yok, hasret yok, kayıp yok.<br><br>(39-40) Bir ek bilgi: Sâbikûn'dan farklı olarak ashâbü'l-yemîn'in <b>hem öncekilerden hem sonrakilerden çoğu</b> vardır — yani sıradan müminler her dönemde çoktur. Bu ayet hem teselli edicidir (her dönemden çok mümin cennete girecek) hem de uyarıcıdır (sâbikûn mertebesi çok zordur, ama yemîn mertebesi de hak edilmesi gereken bir mertebedir, otomatik değil)."
+   },
+   {
+    "baslik": "Üçüncü Grup: Ashâb-ı Şimâl (Cehennem Ehli)",
+    "aralik": "41-56",
+    "ayetler": [
+     [
+      "41",
+      "Ve ashâbü'ş-şimâli mâ ashâbü'ş-şimâl.",
+      "Kötülüğe batanlar ise ne mutsuz kimselerdir!"
+     ],
+     [
+      "42/44",
+      "Fî semûmin ve hamîm. Ve zıllin min yahmûm. Lâ bâridin ve lâ kerîm.",
+      "Onlar, iliklere işleyen bir ateş ve bir kaynar su içindedirler. Ne serin ve ne de yararlı olan zifiri bir gölge içinde!"
+     ],
+     [
+      "45",
+      "İnnehüm kânû kable zâlike mütrafîn.",
+      "Çünkü onlar, bundan önce (dünyada varlık içinde) sefahata dalmış ve azgın kimselerdi."
+     ],
+     [
+      "46",
+      "Ve kânû yusırrûne ale'l-hınsi'l-azîm.",
+      "Büyük günah üzerinde ısrar ediyorlardı."
+     ],
+     [
+      "47",
+      "Ve kânû yekûlûne e-izâ mitnâ ve künnâ türâben ve ızâmen einnâ le-meb'ûsûn.",
+      "Diyorlardı ki: 'Biz öldükten, toprak ve kemik yığını haline geldikten sonra mı, biz mi bir daha diriltilecekmişiz?'"
+     ],
+     [
+      "48",
+      "E-ve âbâüne'l-evvelûn.",
+      "'Evvelki atalarımız da mı?'"
+     ],
+     [
+      "49/50",
+      "Kul inne'l-evvelîne ve'l-âhirîn. Le-mecmû'ûne ilâ mîkâti yevmin ma'lûm.",
+      "De ki: 'Şüphesiz öncekiler ve sonrakiler, mutlaka belli bir günün belli bir vaktinde toplanacaklardır.'"
+     ],
+     [
+      "51/52",
+      "Sümme inneküm eyyühe'd-dâllûne'l-mükezzibûn. Le-âkilûne min şecerin min zakkûm.",
+      "Sonra siz ey haktan sapan yalanlayıcılar! Mutlaka (cehennemde) bir ağaçtan, zakkumdan yiyeceksiniz."
+     ],
+     [
+      "53",
+      "Fe-mâliûne minhe'l-butûn.",
+      "Karınlarınızı ondan dolduracaksınız."
+     ],
+     [
+      "54",
+      "Fe-şâribûne aleyhi mine'l-hamîm.",
+      "Üstüne de o kaynar sudan içeceksiniz."
+     ],
+     [
+      "55",
+      "Fe-şâribûne şürbe'l-hîm.",
+      "Kanmak bilmez susamış develerin suya saldırışı gibi içeceksiniz."
+     ],
+     [
+      "56",
+      "Hâzâ nüzülühüm yevme'd-dîn.",
+      "İşte bu hesap ve ceza gününde onlara ziyafetleridir."
+     ]
+    ],
+    "ozet": "Şimdi üçüncü grubun — <b>ashâbü'ş-şimâl</b> (sol tarafın ehli, cehennem ehli) — tablosu çizilir. Çarpıcı bir kontrast: Önceki iki bölümün güzelliği ne kadar derinse, bunun ürperticiliği o kadar derindir.<br><br>İlk olarak onların cehennemdeki <b>fiziksel hali</b> anlatılır (42-44):<br>• <b>Semûm</b> — iliklere işleyen, gözle görülmeyen sıcak bir ateş.<br>• <b>Hamîm</b> — kaynar su.<br>• <b>Zifiri bir gölge</b> — ama bu gölge <b>ne serindir, ne de yararlı</b>. Dünyada gölge rahatlıktır; orada gölge bile azaptır.<br><br>Sonra <b>nedenleri</b> açıklanır (45-46): Bunlar dünyada <b>sefahat içinde yaşamış, azgın</b> kimselerdi. <b>Büyük günah üzerinde ısrar</b> ediyorlardı. Yani sıradan günahkârlar değil — bilerek, inatla, sürekli kötülükte ısrar eden kimseler.<br><br>(47-48) Klasik inkârcı sorusunu tekrar duyarız: <b>'Biz öldükten, toprak ve kemik yığını haline geldikten sonra mı bir daha diriltileceğiz? Evvelki atalarımız da mı?'</b> Bu soru Mekkeli müşriklerin sürekli sorduğu bir alaycı soruydu.<br><br>(49-50) Allah'ın cevabı kesin: <b>'Şüphesiz öncekiler ve sonrakiler, mutlaka belli bir günün belli bir vaktinde toplanacaklardır.'</b> Hiçbir nesil ahirete uğramadan geçmez.<br><br>Sonra dehşet tablosu (51-55): O gün onlara <b>zakkum ağacından</b> yiyecek verilir — Kuran'ın diğer surelerinde de geçen bu mucizevi ağaç cehennemde yetişir, dikenli ve acı. Karınlarını ondan dolduracaklar, üstüne kaynar su içecekler — ve nasıl içecekler? <b>'Kanmak bilmez susamış develerin suya saldırışı gibi.'</b> Bu benzetme çok güçlü: çölde susamış deve, suyu görünce kana kana içer ama içtikçe daha çok susar. Cehennemde de su içtikçe yangın artar.<br><br>(56) Acı bir hatırlatma: <b>'İşte bu hesap gününde onlara ziyafetleridir.'</b> Yani bütün bu azap, onlara sunulan bir 'ikram'dır — alay edici, içe işleyen bir ifade. Dünyada Allah'ın nimetlerini reddedenlere, ahirette nimet adı altında bu sunulur."
+   },
+   {
+    "baslik": "Yaratılış Delilleri 1: İnsan ve Ölüm",
+    "aralik": "57-62",
+    "ayetler": [
+     [
+      "57",
+      "Nahnü halaknâküm fe-lev lâ tüsaddikûn.",
+      "Sizi biz yarattık. Hâlâ tasdik etmeyecek misiniz?"
+     ],
+     [
+      "58",
+      "E-fe-raeytüm mâ tümnûn.",
+      "Attığınız o meniye ne dersiniz?!"
+     ],
+     [
+      "59",
+      "E-entüm tahlukûnehû em nahnu'l-hâlikûn.",
+      "Onu siz mi yaratıyorsunuz, yoksa yaratan biz miyiz?"
+     ],
+     [
+      "60/61",
+      "Nahnü kaddernâ beyneküm'ü-l-mevte ve mâ nahnü bi-mesbûkîn. Alâ en nübeddile emsâleküm ve nünşieküm fî mâ lâ ta'lemûn.",
+      "Sizin yerinize benzerlerinizi getirmek ve sizi bilemeyeceğiniz bir şekilde yeniden yaratmak üzere aranızda ölümü biz takdir ettik. (Bu konuda) bizim önümüze geçilmez."
+     ],
+     [
+      "62",
+      "Ve le-kad alimtümü'n-neş'ete'l-ûlâ fe-lev lâ tezekkerûn.",
+      "Andolsun, birinci yaratılışı(nızı) biliyorsunuz. O halde düşünseniz ya!"
+     ]
+    ],
+    "ozet": "Önceki bölümün ürpertici sahnelerinden sonra sure soluk alır ve insana <b>aklî bir delil zinciri</b> sunmaya başlar. Allah ardı ardına dört şey hakkında <b>'siz mi yaratıyorsunuz, yoksa biz mi?'</b> sorusunu sorar. Bu bölümde ilk iki delili veriliyor: <b>insan kendisi</b> ve <b>ölüm</b>.<br><br>(57) <b>İlk meydan okuma</b>: <i>'Sizi biz yarattık. Hâlâ tasdik etmeyecek misiniz?'</i> Önce en yakın delil — kendi varlığın. Sen nasıl var oldun? Cevabın ne olursa olsun (anne baba, biyoloji, evrim, mucize), başlangıçta birinin <b>yoktan var etmesi</b> gerekir. Allah burada **'Ben yarattım'** der.<br><br>(58-59) <b>Üreme delili</b>: <i>'Attığınız o meniye ne dersiniz? Onu siz mi yaratıyorsunuz, yoksa yaratan biz miyiz?'</i> Bu çok zekice bir delildir. İnsanın üremesinde sanki insanın katkısı varmış gibi görünür — ama gerçekte tek bir spermden yeni bir bütün insan oluşması, **hiçbir insanın yapamayacağı** bir mucizedir. Bunca biyoloji bilgisinin olduğu çağda bile, hiçbir bilim adamı **sıfırdan** bir insan üretemez. Allah burada <b>üremenin gerçek faili kim</b>, onu sorar.<br><br>(60-61) <b>Ölüm delili</b>: <i>'Sizin yerinize benzerlerinizi getirmek ve sizi bilemeyeceğiniz bir şekilde yeniden yaratmak üzere aranızda ölümü biz takdir ettik.'</i> Bu çok derin bir ayet. Ölüm Allah'ın bir <b>düzenidir</b> — rastgele bir bozulma değil. Eski nesil gider, yeni nesil gelir. Ve aynı zamanda <b>'sizi bilemeyeceğiniz bir şekilde yeniden yaratabiliriz'</b> — ahiret dirilişinin işareti.<br><br>(62) Bağlanış: <b>'Andolsun, birinci yaratılışı(nızı) biliyorsunuz. O halde düşünseniz ya!'</b> Mantık zinciri açık: Eğer ilk yaratılış mümkünse (ki sen kendi varlığın bunun kanıtısın), <b>ikinci yaratılış (diriliş)</b> niye imkânsız olsun? İlkini yapan ikincisini de yapar."
+   },
+   {
+    "baslik": "Yaratılış Delilleri 2: Ekin, Su ve Ateş",
+    "aralik": "63-74",
+    "ayetler": [
+     [
+      "63",
+      "E-fe-raeytüm mâ tahrusûn.",
+      "Ektiğiniz tohuma ne dersiniz?!"
+     ],
+     [
+      "64",
+      "E-entüm tezra'ûnehû em nahnü'z-zâri'ûn.",
+      "Onu siz mi bitiriyorsunuz, yoksa bitiren biz miyiz?"
+     ],
+     [
+      "65/67",
+      "Lev neşâü le-ce'alnâhü hutâmen fe-zaltüm tefekkehûn. İnnâ le-mugremûn. Bel nahnü mahrûmûn.",
+      "Dileseydik, onu kuru bir çöp yapardık da şaşkınlık içinde şöyle geveleyip dururdunuz: 'Muhakkak biz çok ziyandayız! Daha doğrusu büsbütün mahrumuz!'"
+     ],
+     [
+      "68",
+      "E-fe-raeytümü'l-mâe'llezî teşrabûn.",
+      "İçtiğiniz suya ne dersiniz?!"
+     ],
+     [
+      "69",
+      "E-entüm enzeltümûhü mine'l-müzni em nahnü'l-münzilûn.",
+      "Siz mi onu buluttan indirdiniz, yoksa indiren biz miyiz?"
+     ],
+     [
+      "70",
+      "Lev neşâü ce'alnâhü ücâcen fe-lev lâ teşkürûn.",
+      "Dileseydik onu acı bir su yapardık. O halde şükretseydiniz ya!"
+     ],
+     [
+      "71",
+      "E-fe-raeytümü'n-nâre'lletî tûrûn.",
+      "Tutuşturduğunuz ateşe ne dersiniz?!"
+     ],
+     [
+      "72",
+      "E-entüm enşe'tüm şeceretehâ em nahnü'l-münşi'ûn.",
+      "Onun ağacını siz mi yarattınız, yoksa yaratan biz miyiz?"
+     ],
+     [
+      "73",
+      "Nahnü ce'alnâhâ tezkireten ve metâ'an li'l-mukvîn.",
+      "Biz onu bir ibret ve ıssız yerlerde yaşayanlara bir yarar kaynağı kıldık."
+     ],
+     [
+      "74",
+      "Fe-sebbih bismi Rabbike'l-azîm.",
+      "O halde, O yüce Rabbinin adını tesbih et (yücelt)."
+     ]
+    ],
+    "ozet": "Bu bölüm sûrenin en şiirsel ve düşündürücü kısımlarındandır. Allah <b>günlük hayatımızın üç temel öğesi</b> üzerinden meydan okur: <b>ekin, su ve ateş</b>. Bunlar bir önceki sorduğun (Vâkıa suresinde su ile ilgili ayetler) sorunun da merkezindeki bölümdür.<br><br>(63-67) <b>Ekin/Tohum</b>: <i>'Ektiğiniz tohuma ne dersiniz? Onu siz mi bitiriyorsunuz, yoksa bitiren biz miyiz?'</i> Çiftçi tohumu toprağa atar — bundan sonrası onun elinden çıkmıştır. Tohum nasıl filiz olur, ışığa yönelir, kök salar, başak verir? Bu, milyarlarca yıllık bir kozmik tasarımın işidir. Allah bir sonraki ayette acı bir uyarı yapar: <i>'Dileseydik onu kuru bir çöp yapardık da şaşkınlık içinde geveleyip dururdunuz: «Biz çok ziyandayız! Mahrumuz!»'</i> Bütün ekinler bir günde kuruyabilir. Sürekli verim almak Allah'ın bir lütfu.<br><br>(68-70) <b>Su</b>: <i>'İçtiğiniz suya ne dersiniz? Siz mi onu buluttan indirdiniz, yoksa indiren biz miyiz?'</i> İşte sorduğun ayetler. Suyu sen mi yaptın? Bulutu sen mi getirdin? Yağmuru sen mi yağdırdın? Hepsi Allah'ın işidir. Sonra ürpertici bir hatırlatma: <b>'Dileseydik onu acı bir su yapardık. O halde şükretseydiniz ya!'</b> Dünyadaki suyun %97'si zaten tuzludur; sadece %3'ü tatlıdır ve onun büyük kısmı buzullardadır. İçecek tatlı su — istisnai bir nimettir.<br><br>(71-73) <b>Ateş</b>: <i>'Tutuşturduğunuz ateşe ne dersiniz? Onun ağacını siz mi yarattınız, yoksa yaratan biz miyiz?'</i> İlk insanlar ateşi taş ile çıkarıyordu; modernler kibrit, çakmak kullanır. Ama her durumda ateşin <b>yakıtı</b> (odun, kömür, gaz) yine doğadan gelir, Allah'ın yarattıklarındandır. Sonra ilginç bir nokta: <i>'Biz onu bir ibret ve ıssız yerlerde yaşayanlara bir yarar kaynağı kıldık.'</i> <b>Mukvîn</b> kelimesi 'çölde yaşayanlar, ıssız yerlerde olanlar' anlamındadır — onlar için ateşin önemi çok daha büyük.<br><br>(74) <b>Sonuç</b>: Bütün bu delillerin ardından emir gelir: <b>'O halde yüce Rabbinin adını tesbih et.'</b> Yani: 'Bütün bunları gördükten sonra Rabbinin yüceliğini an, ona şükret, onu yücelt.' Bu ayet sûrede iki kez tekrar edilir (74 ve 96) — sûrenin manevi mesajının özüdür."
+   },
+   {
+    "baslik": "Kuran ve Vahyin Yüceliği",
+    "aralik": "75-82",
+    "ayetler": [
+     [
+      "75/76",
+      "Fe-lâ uksimü bi-mevâkı'i'n-nücûm. Ve innehû le-kasemün lev ta'lemûne azîm.",
+      "Yıldızların yerlerine yemin ederim ki, -eğer bilirseniz, gerçekten bu, büyük bir yemindir-"
+     ],
+     [
+      "77",
+      "İnnehû le-kur'ânün kerîm.",
+      "O, elbette değerli bir Kur'an'dır."
+     ],
+     [
+      "78",
+      "Fî kitâbin meknûn.",
+      "Korunmuş bir kitaptadır."
+     ],
+     [
+      "79",
+      "Lâ yemessuhû ille'l-mütahherûn.",
+      "Ona, ancak tertemiz olanlar dokunabilir."
+     ],
+     [
+      "80",
+      "Tenzîlün min Rabbi'l-âlemîn.",
+      "Âlemlerin Rabb'inden indirilmedir."
+     ],
+     [
+      "81/82",
+      "E-fe-bi-hâze'l-hadîsi entüm müdhinûn. Ve tec'alûne rizkaküm enneküm tükezzibûn.",
+      "Şimdi siz, bu sözü mü küçümsüyorsunuz ve Allah'ın verdiği rızka O'nu yalanlayarak mı şükrediyorsunuz?"
+     ]
+    ],
+    "ozet": "Bölüm Kuran'ın bizzat <b>kendisi hakkındaki</b> en güçlü ayetleriyle başlar.<br><br>(75-76) Allah <b>yemin</b> eder — Kuran'da nadir görülen, çok özel bir yemin: <b>'Yıldızların yerlerine yemin ederim ki — eğer bilirseniz bu çok büyük bir yemindir.'</b> Yıldızlar — onların yerleri, yörüngeleri, dağılımı, mesafeleri. Modern astronomi bu yörüngelerin ne kadar muazzam, ne kadar hassas dengelenmiş olduğunu çözmüştür. Allah bizden 'eğer bilirseniz' diyor — sanki bilim ilerledikçe bu yeminin büyüklüğü daha da anlaşılacak.<br><br>(77) Yeminin konusu açıklanır: <b>'O, elbette değerli bir Kur'an'dır.'</b> <b>Kerîm</b> kelimesi 'değerli, asîl, cömert' anlamlarını birlikte taşır. Kuran cömerttir — okuyana, dinleyene, üzerinde düşünene sürekli verir.<br><br>(78-80) Üç ayet Kuran'ın <b>kozmik konumunu</b> anlatır:<br>• <b>'Korunmuş bir kitaptadır'</b> — Levh-i Mahfûz'a (Allah katındaki ana kitap) atıf.<br>• <b>'Ona ancak tertemiz olanlar dokunabilir'</b> — bu ayet hem Kuran'ı tutarken abdestli olmanın fıkhi delillerinden, hem de manevi olarak <b>kalp temizliğinin</b> Kuran'a yaklaşmanın şartı olmasına işaret eder.<br>• <b>'Âlemlerin Rabbinden indirilmedir'</b> — Kuran'ın kaynağı net.<br><br>(81-82) Ardından sert bir uyarı geliyor: <b>'Şimdi siz, bu sözü mü küçümsüyorsunuz?'</b> Mekkeli müşriklere yöneliktir ama her döneme hitap eder. Ve şok edici bir suçlama: <b>'Allah'ın verdiği rızka, O'nu yalanlayarak mı şükrediyorsunuz?'</b> Yani: Yediğin lokma, içtiğin su, soluduğun hava — hepsi Allah'tandır. Sense bunları yiyerek bu nimetleri verene ne yapıyorsun? <b>Yalanlıyorsun</b>. Bu ne biçim şükür?<br><br>Bu çok keskin bir ahlâkî sorudur. Nimeti veren ile nimetin verildiği arasındaki ilişki — eğer şükür yerine inkâr varsa, dünyadaki en büyük çelişkilerden biridir."
+   },
+   {
+    "baslik": "Son Nefes ve Üç Akıbetin Özeti",
+    "aralik": "83-96",
+    "ayetler": [
+     [
+      "83",
+      "Fe-lev lâ izâ belegati'l-hulkûm.",
+      "Can boğaza geldiğinde, onu geri döndürsenize!"
+     ],
+     [
+      "84",
+      "Ve entüm hîneizin tenzurûn.",
+      "Oysa siz o zaman bakıp durursunuz."
+     ],
+     [
+      "85",
+      "Ve nahnü akrabü ileyhi minküm ve lâkin lâ tubsırûn.",
+      "Biz ise ona sizden daha yakınız. Fakat siz göremezsiniz."
+     ],
+     [
+      "86/87",
+      "Fe-lev lâ in küntüm gayra medînîn. Terci'ûnehâ in küntüm sâdikîn.",
+      "Eğer hesaba çekilmeyecekseniz ve doğru söyleyenler iseniz, onu geri döndürsenize!"
+     ],
+     [
+      "88/89",
+      "Fe-emmâ in kâne mine'l-mukarrabîn. Fe-revhun ve reyhânün ve cennetü na'îm.",
+      "Fakat (ölen kişi) Allah'a yakın kılınmışlardan ise, ona rahatlık, güzel rızık ve Naîm cenneti vardır."
+     ],
+     [
+      "90/91",
+      "Ve emmâ in kâne min ashâbi'l-yemîn. Fe-selâmün leke min ashâbi'l-yemîn.",
+      "Eğer Ahiret mutluluğuna ermiş kişilerden ise, kendisine, 'Selam sana Ahiret mutluluğuna ermişlerden!' denir."
+     ],
+     [
+      "92/93",
+      "Ve emmâ in kâne mine'l-mükezzibîne'd-dâllîn. Fe-nüzülün min hamîm.",
+      "Ama haktan sapan yalancılardan ise, işte ona da kaynar sudan bir ziyafet vardır."
+     ],
+     [
+      "94",
+      "Ve tasliyetü cahîm.",
+      "Bir de cehenneme atılma vardır."
+     ],
+     [
+      "95",
+      "İnne hâzâ le-hüve hakku'l-yakîn.",
+      "Şüphesiz bu, kesin gerçektir."
+     ],
+     [
+      "96",
+      "Fe-sebbih bismi Rabbike'l-azîm.",
+      "Öyleyse yüce Rabbinin adını tesbih et."
+     ]
+    ],
+    "ozet": "Sûre olağanüstü güçlü bir kapanışla biter. Önce <b>ölüm anının</b> son derece çarpıcı bir tasviri gelir.<br><br>(83-85) <b>Can boğaza geldiğinde</b>: O an gelmiştir, kişinin canı boğazına dayanmıştır, son nefesidir. Etrafındakiler bakar dururlar, hiçbir şey yapamazlar. Allah çok dikkat çekici bir şey söyler: <b>'Biz ise ona sizden daha yakınız. Fakat siz göremezsiniz.'</b> Yani ölümün eşiğindeki insanın yanında — etrafındaki aile-doktorlardan daha yakın olarak — Allah vardır. Onun melekleri can almak için orada hazırdır.<br><br>(86-87) <b>Tüyler ürpertici meydan okuma</b>: 'Eğer hesaba çekilmeyecekseniz ve doğru söyleyenler iseniz — <b>haydi o canı geri döndürün!</b>' Tabii ki yapamazsın. Hiç kimse yapamaz. Bu, hesap gerçeğinin en somut kanıtıdır. Eğer Allah olmasa, eğer her şey rastgele olsa, insan ölümü engelleyebilmeli — ama engelleyemiyor.<br><br>Sonra sûre <b>üç gruba ait üç akıbetin özetiyle</b> son bulur — daha önce uzun uzun anlatılan üç sınıfın akıbeti şimdi kısa, vurucu cümlelerle hatırlatılır:<br><br><b>1) Sâbikûn (Mukarrebûn) için (88-89):</b> <b>'Rahatlık, güzel rızık ve Naîm cenneti.'</b> Üç kelime — ravh (rahatlık), reyhân (güzel rızık), cennet. Manevi huzurun en yüce hâli.<br><br><b>2) Ashâbü'l-yemîn için (90-91):</b> <b>'Selam sana ashâbü'l-yemîn'den!'</b> Yani melekler veya Allah onları 'selam' ile karşılar. Daha mütevazı ama yine de cennet ehli.<br><br><b>3) Mükezzibûn (yalancılar) için (92-94):</b> <b>'Kaynar sudan bir ziyafet ve cehenneme atılma.'</b> Sade, kesin, sert.<br><br>(95-96) <b>Son iki ayet</b>: 'Şüphesiz bu, kesin gerçektir' (hakku'l-yakîn) — sûrenin başında 'koptuğu zaman yalanlayacak kimse olmayacak' diye başlayan kıyamet vurgusu burada zirveye çıkar. <b>Hakku'l-yakîn</b> kelime tamlaması Kuran'da kesin bilginin en üst derecesini ifade eder.<br><br>Ve son emir: <b>'Öyleyse yüce Rabbinin adını tesbih et.'</b> Aynı emir 74. ayette de geçmişti. Sûre, başladığı kıyamet sahnesinden, geçtiği üç akıbetten, dolaştığı ekin-su-ateş delillerinden sonra şu noktada bağlanır: <b>Şu halde Rabbini yücelt.</b><br><br>Vâkıa sûresi adeta bir <b>kozmik manzara turu</b>dur — kıyametin başlangıcından son nefesin verildiği yatağa kadar. Ve her durakta aynı çağrıyı tekrarlar: <b>Düşün, gör, şükret, tesbih et.</b>"
+   }
+  ]
+ },
+ {
   "ad": "İnsan",
   "ad_ar": "سُورَةُ الْإِنْسَان",
   "no": 76,
@@ -6952,6 +7369,43 @@ function anaEkrana(){
 
 window.acSekme = acSekme;
 window.anaEkrana = anaEkrana;
+
+// Yazi boyutu kontrolu
+function setFont(boyut){
+  document.body.classList.remove('font-kucuk','font-buyuk');
+  if(boyut==='kucuk') document.body.classList.add('font-kucuk');
+  if(boyut==='buyuk') document.body.classList.add('font-buyuk');
+  // Aktif buton isareti
+  const btns = document.querySelectorAll('#fontSecici .font-btn');
+  btns.forEach(b => b.classList.remove('aktif'));
+  const harf = boyut==='kucuk'?'k':(boyut==='buyuk'?'b':'o');
+  const aktifBtn = document.querySelector('#fontSecici .font-btn.'+harf);
+  if(aktifBtn) aktifBtn.classList.add('aktif');
+  // Hatirla
+  try{ localStorage.setItem('fontBoyutu', boyut); }catch(e){}
+}
+window.setFont = setFont;
+
+// Sayfa yuklenince hatirlatilan boyutu uygula
+try{
+  const kayitli = localStorage.getItem('fontBoyutu');
+  if(kayitli) setFont(kayitli);
+}catch(e){}
+
+// acSekme ve anaEkrana'ya font seciciyi goster/gizle ekle (override degil, ek)
+const _eskiAcSekme = window.acSekme;
+window.acSekme = function(ad){
+  _eskiAcSekme(ad);
+  // Font secici sadece okuma modullerinde gorunsun (tavaf ve namaz da olsa olur, esnek tutalim)
+  const fs = document.getElementById('fontSecici');
+  if(fs) fs.classList.remove('gizli');
+};
+const _eskiAnaEkrana = window.anaEkrana;
+window.anaEkrana = function(){
+  _eskiAnaEkrana();
+  const fs = document.getElementById('fontSecici');
+  if(fs) fs.classList.add('gizli');
+};
 
 </script>
 </body>
